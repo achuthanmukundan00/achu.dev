@@ -1,0 +1,103 @@
+---
+// relay-pretext.astro — Living Relay protocol card experiment.
+// Uses PretextCanvas wrapper + relay animation for protocol-machine visuals.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import PretextCanvas from "@components/experiments/PretextCanvas.astro";
+import { getProject } from "@data/projects";
+
+const relay = getProject("relay")!;
+---
+
+<BaseLayout
+  title="Experiment: Relay Pretext Card"
+  description="Living typographic system — a Relay protocol card built with Pretext canvas and dynamic text packets."
+  fullWidth
+>
+  <div class="mx-auto max-w-3xl px-6 py-12 lg:py-16 space-y-10">
+    <!-- Header -->
+    <header class="space-y-3">
+      <a
+        href="/lab"
+        class="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        Lab
+      </a>
+      <h1 class="text-3xl lg:text-4xl font-bold tracking-tight">Relay · Pretext Protocol Card</h1>
+      <p class="text-neutral-400 leading-relaxed max-w-xl">
+        Living typographic system spike. The card renders a protocol-membrane visual
+        where text packets enter raw on the left, pass through a compatibility zone,
+        and exit clean and normalized on the right — just like Relay itself.
+      </p>
+    </header>
+
+    <!-- Living Card -->
+    <PretextCanvas canvasId="relay-pretext-canvas" height={360}>
+      <h2>{relay.title}</h2>
+      <p>{relay.description}</p>
+      <ul>
+        <li>OpenAI-style chat endpoint</li>
+        <li>Anthropic-style messages endpoint</li>
+        <li>Streaming / SSE support</li>
+        <li>llama.cpp-oriented local runtime</li>
+      </ul>
+    </PretextCanvas>
+
+    <!-- Animation script -->
+    <script>
+      import { relayAnimation } from "../../components/experiments/relay-animation";
+
+      // Wait for the pretext system to be ready
+      function tryRegister() {
+        const pretext = (window as any).__pretext;
+        if (pretext) {
+          pretext.register("relay-pretext-canvas", relayAnimation);
+        } else {
+          setTimeout(tryRegister, 50);
+        }
+      }
+      tryRegister();
+    </script>
+
+    <!-- Notes -->
+    <div class="space-y-6 pt-8 border-t border-[#1e1e2e]">
+      <section>
+        <h2 class="section-label">Visual System Notes</h2>
+        <div class="prose max-w-xl">
+          <p>
+            The canvas renders a protocol-membrane topology. Horizontal rails represent
+            routing lanes. Text packets spawn on the left (ingress) carrying raw, noisy
+            protocol fragments. As packets cross the central membrane zone, characters
+            normalize — alignment improves, colors shift from amber/warning to
+            green/clean, and structured API shapes emerge on the right (egress).
+          </p>
+          <p>
+            This is a Pretext-inspired system: characters are chosen for their visual
+            density and rendered as individual typographic units. Future iterations will
+            incorporate measured character widths (via the Pretext library) for precise
+            proportional layouts.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="section-label">Accessibility</h2>
+        <div class="prose max-w-xl">
+          <p>
+            A semantic HTML fallback lives in a screen-reader-accessible layer behind the
+            canvas. All critical content — project name, description, and feature list —
+            remains readable regardless of canvas support.
+          </p>
+          <p>
+            The animation respects <code>prefers-reduced-motion</code> and pauses when
+            the canvas is scrolled offscreen.
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

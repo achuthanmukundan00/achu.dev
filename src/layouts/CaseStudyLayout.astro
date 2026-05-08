@@ -1,0 +1,206 @@
+---
+// CaseStudyLayout.astro — wrapper for /work/[slug] with editorial Pretext treatment.
+import BaseLayout from "./BaseLayout.astro";
+import PretextHeadline from "@components/pretext/PretextHeadline.astro";
+import PretextPullQuote from "@components/pretext/PretextPullQuote.astro";
+import PretextEditorialBlock from "@components/pretext/PretextEditorialBlock.astro";
+import type { Project } from "@data/projects";
+
+export interface Props {
+  project: Project;
+}
+
+const { project } = Astro.props;
+
+const accent = project.accent as "blue" | "magenta" | "green";
+
+const accentBorder: Record<string, string> = {
+  blue: "border-blue-400",
+  magenta: "border-purple-400",
+  green: "border-green-400",
+};
+
+// Pull quotes per project
+const quotes: Record<string, { text: string; attribution: string }> = {
+  relay: {
+    text: "The agent should never know it's talking to a local model.",
+    attribution: "Relay design principle",
+  },
+  synax: {
+    text: "Transparency beats magic when you're running AI on your own machine.",
+    attribution: "Synax design principle",
+  },
+  watchyourtemper: {
+    text: "A creative world you can inhabit, not a portfolio link you can click.",
+    attribution: "watchyourtemper thesis",
+  },
+  wytos: {
+    text: "Your creative context should compound, not scatter.",
+    attribution: "wytOS design principle",
+  },
+  "temper-cloud": {
+    text: "Self-hosted infrastructure deserves production-grade rigour.",
+    attribution: "Temper Cloud design principle",
+  },
+  "secondhand-hub": {
+    text: "Fullstack ownership means every layer, from database to UI.",
+    attribution: "Secondhand Hub thesis",
+  },
+};
+
+const pullQuote = quotes[project.slug];
+---
+
+<BaseLayout title={project.title} description={project.description}>
+  <article class="space-y-16">
+    <!-- ============================================================ -->
+    <!-- HEADER — Pretext editorial headline                            -->
+    <!-- ============================================================ -->
+    <header class="space-y-6">
+      <a
+        href="/work"
+        class="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        All work
+      </a>
+
+      <!-- Editorial headline treatment -->
+      <PretextHeadline text={project.title} accent={accent} as="h1" />
+
+      <p class="text-xl text-neutral-400 leading-relaxed max-w-3xl pl-6">
+        {project.tagline}
+      </p>
+    </header>
+
+    <!-- ============================================================ -->
+    <!-- PULL QUOTE                                                     -->
+    <!-- ============================================================ -->
+    {pullQuote && (
+      <PretextPullQuote
+        quote={pullQuote.text}
+        attribution={pullQuote.attribution}
+        accent={accent}
+      />
+    )}
+
+    <!-- ============================================================ -->
+    <!-- EDITORIAL INTRO BLOCK                                          -->
+    <!-- ============================================================ -->
+    <PretextEditorialBlock accent={accent} title="At a glance">
+      <p>{project.summary}</p>
+    </PretextEditorialBlock>
+
+    <!-- ============================================================ -->
+    <!-- CASE STUDY SECTIONS                                            -->
+    <!-- ============================================================ -->
+
+    <!-- Problem -->
+    <section>
+      <h2 class="section-label">Problem</h2>
+      <div class="prose max-w-3xl">
+        <p>{project.problem}</p>
+      </div>
+    </section>
+
+    <!-- Solution -->
+    <section>
+      <h2 class="section-label">Solution</h2>
+      <div class="prose max-w-3xl">
+        <p>{project.solution}</p>
+      </div>
+    </section>
+
+    <!-- What I Built -->
+    <section>
+      <h2 class="section-label">What I Built</h2>
+      <div class="prose max-w-3xl">
+        <p>{project.whatIBuilt}</p>
+      </div>
+    </section>
+
+    <!-- Extended sections (watchyourtemper) -->
+    {
+      project.extended && (
+        <div class="space-y-12">
+          {Object.entries(project.extended).map(([key, content]) => (
+            <section>
+              <h2 class="section-label">
+                {key === "pressureTest"
+                  ? "PRESSURE TEST"
+                  : key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, " $1")}
+              </h2>
+              <div class="prose max-w-3xl">
+                <p>{content}</p>
+              </div>
+            </section>
+          ))}
+        </div>
+      )
+    }
+
+    <!-- Technical Focus -->
+    <section>
+      <h2 class="section-label">Technical &amp; Product Focus</h2>
+      <div class={`p-6 bg-[#0c0c14] border border-[#1e1e2e] rounded-lg max-w-3xl ${accentBorder[accent] ? `border-l-2` : ""}`}
+        style={accentBorder[accent] ? `border-left-color: var(--accent);` : ""}>
+        <p class="text-neutral-400 leading-relaxed whitespace-pre-line">
+          {project.techFocus}
+        </p>
+      </div>
+    </section>
+
+    <!-- Links -->
+    {
+      project.links.length > 0 && (
+        <section>
+          <h2 class="section-label">Links</h2>
+          <ul class="space-y-2">
+            {project.links.map((link) => (
+              <li>
+                <a
+                  href={link.url}
+                  class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors underline underline-offset-2"
+                >
+                  {link.label}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="M7 17L17 7m0 0H7m10 0v10" />
+                  </svg>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    <!-- Next Steps -->
+    <section>
+      <h2 class="section-label">Next Steps</h2>
+      <div class="prose max-w-3xl">
+        <p>{project.nextSteps}</p>
+      </div>
+    </section>
+
+    <!-- Back -->
+    <footer class="pt-8 border-t border-[#1e1e2e]">
+      <a
+        href="/work"
+        class="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+          fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+          stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        Back to all work
+      </a>
+    </footer>
+  </article>
+</BaseLayout>

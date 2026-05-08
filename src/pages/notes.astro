@@ -1,0 +1,51 @@
+---
+// notes.astro — Notes index with placeholder entries.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { notes } from "@data/notes";
+---
+
+<BaseLayout
+  title="Notes"
+  description="Engineering notes by Achu Mukundan — thoughts on local-first AI, developer tools, agent UX, and creative technology."
+>
+  <header class="space-y-4 mb-12">
+    <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">Notes</h1>
+    <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
+      Engineering notes on local-first AI, developer tools, agent UX, protocol design, creative technology, and self-hosted infrastructure.
+      Longer-form pieces live here.
+    </p>
+  </header>
+
+  <div class="space-y-1">
+    {notes.map((note) => (
+      <a
+        href={note.slug}
+        class={`group block px-5 py-4 -mx-3 rounded-lg transition-colors ${
+          note.published
+            ? "hover:bg-[#0c0c14]"
+            : "cursor-default hover:bg-transparent"
+        }`}
+        aria-disabled={!note.published ? "true" : undefined}
+      >
+        <article class="space-y-1">
+          <div class="flex items-baseline gap-3 flex-wrap">
+            <h2 class={`text-base font-medium ${
+              note.published
+                ? "text-white group-hover:text-blue-400 transition-colors"
+                : "text-neutral-500"
+            }`}>
+              {note.title}
+            </h2>
+            <span class="text-xs text-neutral-600 font-mono shrink-0">{note.date}</span>
+          </div>
+          <p class="text-sm text-neutral-500 leading-relaxed">{note.summary}</p>
+        </article>
+        {!note.published && (
+          <p class="text-xs text-neutral-700 mt-2 font-mono">— Coming soon</p>
+        )}
+      </a>
+    ))}
+  </div>
+
+  <!-- TODO Phase 3: Replace with MDX content collection + RSS feed -->
+</BaseLayout>

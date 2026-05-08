@@ -1,0 +1,186 @@
+---
+import HomeControlSurface from "@components/home/HomeControlSurface";
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { links } from "@data/links";
+import { seo } from "@data/site";
+
+const thesis = [
+  {
+    label: "local-first AI",
+    copy: "Interfaces and gateways that make local models feel fast, inspectable, and useful in real workflows.",
+  },
+  {
+    label: "developer systems",
+    copy: "Agent loops, protocol layers, CLIs, and product surfaces built for people who ship software.",
+  },
+  {
+    label: "creative tooling",
+    copy: "Memory, workflow, and context systems for making creative output compound instead of scatter.",
+  },
+  {
+    label: "experiential web/worlds",
+    copy: "Cinematic web surfaces, music systems, live events, and worlds that feel inhabited.",
+  },
+];
+
+const modules = [
+  {
+    title: "Relay",
+    mode: "MODEL GATEWAY",
+    status: "LOCAL RUNTIME",
+    copy: "OpenAI/Anthropic-compatible shim for local llama.cpp inference.",
+    outcome: "Turns fragmented local inference APIs into a stable agent target.",
+    tags: ["TypeScript", "SSE", "llama.cpp"],
+    href: "/work/relay",
+  },
+  {
+    title: "Synax",
+    mode: "CODING AGENT",
+    status: "AGENT TRACE",
+    copy: "Terminal-native agent loop for quantized local and cloud models.",
+    outcome: "Makes the agent loop inspectable while code is being changed.",
+    tags: ["TUI", "Providers", "Tools"],
+    href: "/work/synax",
+  },
+  {
+    title: "wytOS",
+    mode: "MEMORY OS",
+    status: "MEMORY GRAPH",
+    copy: "Structured creative memory with SQLite FTS5 search and local LLM assistance.",
+    outcome: "Keeps creative context available instead of scattered across tools.",
+    tags: ["Retrieval", "Automation", "Context"],
+    href: "/work/wytos",
+  },
+  {
+    title: "watchyourtemper",
+    mode: "AUDIO WORLD",
+    status: "WORLD IO",
+    copy: "Electronic music, events, merch, and worldbuilding.",
+    outcome: "Connects releases, events, content, and commerce into one world.",
+    tags: ["Workers", "Music", "Commerce"],
+    href: links.watchyourtemper,
+    external: true,
+  },
+];
+
+const roleTags = ["Fullstack Engineer", "Backend Engineer", "AI Tools", "Local LLM Systems", "Edge / Serverless"];
+---
+
+<BaseLayout title="Home" description={seo.home.description} fullWidth>
+  <HomeControlSurface links={links} client:load />
+
+  <section class="surface-section border-t border-white/10" aria-labelledby="focus-areas">
+    <div class="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end">
+        <div>
+          <p class="section-label">Focus areas</p>
+          <h2 id="focus-areas" class="max-w-3xl font-display text-3xl font-semibold leading-tight text-white sm:text-5xl">
+            I like working at the boundary between systems and surfaces.
+          </h2>
+        </div>
+        <p class="max-w-md text-sm leading-6 text-slate-400">
+          Local AI infrastructure, developer tools, creative technology, and web experiences that feel alive.
+        </p>
+      </div>
+
+      <div class="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
+        {thesis.map((item, index) => (
+          <article class="interface-panel min-h-52">
+            <span class="panel-index">0{index + 1}</span>
+            <h3 class="mt-8 text-xl font-semibold text-white">{item.label}</h3>
+            <p class="mt-4 text-sm leading-6 text-slate-400">{item.copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="projects-overview" class="surface-section" aria-labelledby="projects-overview-heading">
+    <div class="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="mb-10 flex items-end justify-between gap-6">
+        <div>
+          <p class="section-label">Projects</p>
+          <h2 id="projects-overview-heading" class="font-display text-3xl font-semibold text-white sm:text-5xl">
+            Things I've built
+          </h2>
+        </div>
+        <a href="/work" class="text-sm font-medium text-blue-100/70 transition-colors hover:text-white">
+          View all work
+        </a>
+      </div>
+
+      <div class="module-grid">
+        {modules.map((module) => (
+          <a
+            href={module.href}
+            target={module.external ? "_blank" : undefined}
+            rel={module.external ? "noopener noreferrer" : undefined}
+            class={`module-card ${module.title === "watchyourtemper" ? "module-card-green" : ""}`}
+          >
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-xs uppercase tracking-[0.22em] text-blue-100/50">{module.mode}</span>
+              <span class="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-white/35">{module.status}</span>
+            </div>
+            <h3 class="mt-5 font-display text-2xl font-semibold text-white">{module.title}</h3>
+            <p class="mt-4 text-sm leading-6 text-slate-400">{module.copy}</p>
+            <p class="mt-5 text-sm leading-6 text-slate-300">{module.outcome}</p>
+            <div class="mt-6 flex flex-wrap gap-2">
+              {module.tags.map((tag) => (
+                <span class="role-chip">{tag}</span>
+              ))}
+            </div>
+            <span class="mt-8 inline-flex text-xs uppercase tracking-[0.2em] text-white/55">open module</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="about-brief" class="surface-section border-y border-white/10" aria-labelledby="about-brief-heading">
+    <div class="mx-auto grid max-w-7xl gap-8 px-5 py-16 sm:px-6 lg:grid-cols-[0.8fr_1.2fr] lg:px-8 lg:py-24">
+      <div>
+        <p class="section-label">Background</p>
+        <h2 id="about-brief-heading" class="font-display text-3xl font-semibold text-white sm:text-5xl">
+          Fullstack/backend engineer based in Toronto.
+        </h2>
+      </div>
+      <div class="interface-panel">
+        <div class="flex flex-wrap gap-3">
+          {roleTags.map((tag) => (
+            <span class="role-chip">{tag}</span>
+          ))}
+        </div>
+        <p class="mt-7 max-w-2xl text-base leading-7 text-slate-300">
+          I build across model gateways, coding agents, creative operating systems, edge-deployed
+          applications, and self-hosted infrastructure. The throughline is local-first architecture,
+          fast feedback loops, and interfaces that reveal how the system behaves.
+        </p>
+        <a class="interface-button interface-button-primary mt-8" href="/resume">
+          Resume
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="surface-section" aria-labelledby="notes-preview-heading">
+    <div class="mx-auto max-w-7xl px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <div class="interface-panel build-log-panel">
+        <div>
+          <p class="section-label">Writing</p>
+          <h2 id="notes-preview-heading" class="font-display text-3xl font-semibold text-white sm:text-5xl">
+            Notes and devlogs.
+          </h2>
+        </div>
+        <div>
+          <p class="max-w-xl text-sm leading-6 text-slate-400">
+            Notes on local inference, agent observability, protocol design, creative tooling,
+            self-hosted infrastructure, and the build process behind this portfolio system.
+          </p>
+          <a class="interface-button mt-7" href="/notes">
+            Notes
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

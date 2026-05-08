@@ -1,0 +1,21 @@
+---
+// [slug].astro — Dynamic case-study route. Data-driven from projects.ts.
+import { getProject, projects } from "@data/projects";
+import CaseStudyLayout from "@layouts/CaseStudyLayout.astro";
+import type { GetStaticPaths } from "astro";
+
+export const getStaticPaths: GetStaticPaths = () => {
+  return projects.map((p) => ({
+    params: { slug: p.slug },
+  }));
+};
+
+const { slug } = Astro.params;
+const project = getProject(slug as string);
+
+if (!project) {
+  return Astro.redirect("/404");
+}
+---
+
+<CaseStudyLayout project={project} />

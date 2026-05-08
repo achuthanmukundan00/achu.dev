@@ -1,0 +1,81 @@
+---
+// contact.astro — Centralized contact and links page.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { links } from "@data/links";
+
+const contactLinks = [
+  {
+    label: "GitHub",
+    url: links.github,
+    description: "Open-source projects — Relay, Synax, wytOS, Temper Cloud, and experiments.",
+    external: true,
+    accent: "border-l-neutral-500",
+    hoverBorder: "hover:border-neutral-400",
+  },
+  {
+    label: "LinkedIn",
+    url: links.linkedin,
+    description: "Professional background, experience at Replicant AI, and connections.",
+    external: true,
+    accent: "border-l-blue-400",
+    hoverBorder: "hover:border-blue-400",
+  },
+  {
+    label: "Email",
+    url: `mailto:${links.email}`,
+    description: `Reach me at ${links.email} for collaborations, opportunities, or questions.`,
+    external: false,
+    accent: "border-l-neutral-500",
+    hoverBorder: "hover:border-neutral-400",
+  },
+  {
+    label: "watchyourtemper",
+    url: links.watchyourtemper,
+    description: "Electronic music project, PRESSURE TEST events, merch, and visual world.",
+    external: true,
+    accent: "border-l-green-400",
+    hoverBorder: "hover:border-green-400",
+  },
+];
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Achu Mukundan — links to GitHub, LinkedIn, email, and watchyourtemper."
+>
+  <header class="space-y-4 mb-12">
+    <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">Contact</h1>
+    <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
+      Based in Toronto. Feel free to reach out.
+    </p>
+  </header>
+
+  <div class="grid gap-4 sm:grid-cols-2">
+    {contactLinks.map((link) => (
+      <a
+        href={link.url}
+        target={link.external ? "_blank" : undefined}
+        rel={link.external ? "noopener noreferrer me" : undefined}
+        class={`group block p-6 rounded-lg border border-[#1e1e2e] bg-[#0c0c14] ${link.hoverBorder} border-l-2 ${link.accent} transition-all duration-200 hover:-translate-y-0.5`}
+      >
+        <article class="space-y-2">
+          <div class="flex items-center gap-2">
+            <h2 class="text-lg font-semibold text-white group-hover:text-blue-400 transition-colors">
+              {link.label}
+            </h2>
+            {link.external && (
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round"
+                class="text-neutral-600 group-hover:text-neutral-300 transition-colors"
+                aria-hidden="true">
+                <path d="M7 17L17 7m0 0H7m10 0v10" />
+              </svg>
+            )}
+          </div>
+          <p class="text-sm text-neutral-400 leading-relaxed">{link.description}</p>
+        </article>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

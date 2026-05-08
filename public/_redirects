@@ -1,0 +1,2 @@
+# Redirect www.achu.dev → achu.dev
+https://www.achu.dev/* https://achu.dev/:splat 301

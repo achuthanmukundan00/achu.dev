@@ -1,0 +1,145 @@
+---
+// lab.astro — Experiments and project links.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { links } from "@data/links";
+
+const experiments = [
+  {
+    title: "Relay · Pretext Protocol Card",
+    description:
+      "Living typographic system spike — a Relay protocol card built with canvas and dynamic text packets.",
+    url: "/experiments/relay-pretext",
+    status: "live",
+    accent: "blue",
+  },
+  {
+    title: "Synax · Core Morphology Viewer",
+    description:
+      "Interactive viewer for Synax AI core model-aware morphologies.",
+    url: "#",
+    status: "planned",
+    accent: "purple",
+  },
+];
+
+const allRepos = [
+  { name: "relay", url: links.relayRepo, desc: "OpenAI/Anthropic-compatible gateway for local llama.cpp inference." },
+  { name: "synax", url: links.synaxRepo, desc: "Transparent local-first coding agent with TUI." },
+  { name: "wytOS", url: links.wytosRepo, desc: "Local-first creative OS with structured memory and LLM assistance." },
+  { name: "temper-cloud", url: links.temperCloudRepo, desc: "Self-hosted distributed storage and compute platform." },
+  { name: "watchyourtemper", url: links.watchyourtemperRepo, desc: "Electronic music, events, merch, and visual world." },
+  { name: "package-name-gen", url: links.packageNameGenRepo, desc: "Creative package name generator for npm." },
+  { name: "AutoCareer", url: links.autoCareerRepo, desc: "AI job application copilot." },
+  { name: "Resample-Lab", url: links.resampleLabRepo, desc: "Browser-based audio resampling with Paulstretch and spectral transforms." },
+  { name: "wyt-SPA", url: "https://github.com/achuthanmukundan00/wyt-SPA", desc: "watchyourtemper single-page application." },
+  { name: "Secondhand-Hub", url: "https://github.com/achuthanmukundan00/Secondhand-Hub", desc: "Fullstack marketplace — React, Flask, Docker, PostgreSQL." },
+  { name: "Fractal-Explorer", url: "https://github.com/achuthanmukundan00/Fractal-Explorer", desc: "Unity game exploring the Mandelbrot set interactively." },
+  { name: "INSIGHT", url: "https://github.com/achuthanmukundan00/INSIGHT", desc: "ML algorithm in Verilog with real-time polynomial fitting visualization." },
+  { name: "DigitalDistortion", url: "https://github.com/achuthanmukundan00/DigitalDistortion", desc: "VST plugin for digital distortion in music production." },
+  { name: "Capstone202425", url: "https://github.com/achuthanmukundan00/Capstone202425", desc: "University of Toronto capstone project." },
+  { name: "ECE297-NoBS-GIS", url: "https://github.com/achuthanmukundan00/ECE297---NoBS-GIS", desc: "GIS application in C++ for ECE297." },
+];
+
+const accentStyles: Record<string, string> = {
+  blue: "bg-blue-400",
+  purple: "bg-purple-400",
+  green: "bg-green-400",
+};
+---
+
+<BaseLayout
+  title="Lab"
+  description="Experiments, prototypes, and project links from Achu Mukundan."
+>
+  <header class="space-y-3 mb-12">
+    <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">Lab</h1>
+    <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
+      Experiments, prototypes, and links to everything on GitHub.
+    </p>
+  </header>
+
+  <!-- Experiments -->
+  <section class="mb-14">
+    <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-5">
+      Experiments
+    </h2>
+    <div class="grid gap-4 sm:grid-cols-2">
+      {experiments.map((exp) => (
+        <a
+          href={exp.url}
+          class={`group block p-6 rounded-lg border border-[#1e1e2e] bg-[#0c0c14] transition-all duration-200 hover:-translate-y-0.5 ${
+            exp.status === "planned"
+              ? "opacity-50 cursor-not-allowed hover:translate-y-0"
+              : "hover:border-blue-400/30"
+          }`}
+        >
+          <article class="space-y-2">
+            <div class="flex items-center gap-2">
+              <span
+                class={`w-2 h-2 rounded-full ${accentStyles[exp.accent] || "bg-neutral-600"}`}
+                aria-hidden="true"
+              ></span>
+              <h2 class={`text-lg font-semibold ${
+                exp.status === "planned"
+                  ? "text-neutral-500"
+                  : "text-white group-hover:text-blue-400 transition-colors"
+              }`}>
+                {exp.title}
+              </h2>
+            </div>
+            <p class="text-sm text-neutral-500 leading-relaxed">
+              {exp.description}
+            </p>
+            <p class="text-xs text-neutral-600 font-mono">
+              Status: {exp.status === "live" ? "Live" : "Planned"}
+            </p>
+          </article>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- All GitHub Repos -->
+  <section>
+    <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-5">
+      GitHub projects
+    </h2>
+    <div class="grid gap-2 sm:grid-cols-2">
+      {allRepos.map((repo) => (
+        <a
+          href={repo.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-start gap-3 p-3 rounded-lg border border-transparent hover:border-[#1e1e2e] hover:bg-[#0c0c14] transition-all"
+        >
+          <div class="shrink-0 mt-0.5">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="text-neutral-600 group-hover:text-neutral-400 transition-colors"
+              aria-hidden="true"
+            >
+              <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+              <path d="M9 18c-4.51 2-5-2-7-2" />
+            </svg>
+          </div>
+          <div class="min-w-0">
+            <h3 class="text-sm font-medium text-white group-hover:text-blue-400 transition-colors truncate">
+              {repo.name}
+            </h3>
+            <p class="text-xs text-neutral-500 leading-relaxed mt-0.5 line-clamp-1">
+              {repo.desc}
+            </p>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

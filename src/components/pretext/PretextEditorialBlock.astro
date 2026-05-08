@@ -1,0 +1,38 @@
+---
+// PretextEditorialBlock.astro — larger editorial container for case-study intros.
+// Provides a dark, structured text surface with measured typography.
+export interface Props {
+  title?: string;
+  accent?: "blue" | "magenta" | "green" | "neutral";
+  className?: string;
+}
+
+const { title, accent = "neutral", className = "" } = Astro.props;
+
+const borders: Record<string, string> = {
+  blue: "border-blue-400/20",
+  magenta: "border-purple-400/20",
+  green: "border-green-400/20",
+  neutral: "border-neutral-500/20",
+};
+
+const titleColors: Record<string, string> = {
+  blue: "text-blue-300",
+  magenta: "text-purple-300",
+  green: "text-green-300",
+  neutral: "text-neutral-200",
+};
+---
+
+<aside
+  class={`border ${borders[accent]} bg-[#0c0c14] rounded-lg p-6 lg:p-8 my-10 ${className}`}
+>
+  {title && (
+    <h3 class={`text-sm font-mono uppercase tracking-[0.2em] ${titleColors[accent]} mb-4`}>
+      {title}
+    </h3>
+  )}
+  <div class="text-neutral-300 leading-relaxed space-y-3">
+    <slot />
+  </div>
+</aside>

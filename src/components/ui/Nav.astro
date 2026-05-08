@@ -1,0 +1,57 @@
+---
+// Nav.astro — accessible sticky nav with active-state detection.
+import { site } from "@data/site";
+
+const navItems = [
+  { href: "/work", label: "Work" },
+  { href: "/lab", label: "Lab" },
+  { href: "/notes", label: "Notes" },
+  { href: "/contact", label: "Contact" },
+];
+
+const currentPath = Astro.url.pathname;
+---
+
+<nav
+  class="sticky top-0 z-50 border-b border-white/10 bg-[#020307]/82 backdrop-blur-xl supports-[backdrop-filter]:bg-[#020307]/70"
+  aria-label="Main navigation"
+>
+  <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+    <a
+      href="/"
+      class="font-display text-xl font-semibold tracking-normal text-white hover:text-blue-200 transition-colors"
+      aria-label={`${site.name} home`}
+    >
+      {site.name}
+    </a>
+
+    <!-- Desktop nav -->
+    <ul class="hidden md:flex items-center gap-8">
+      {navItems.map((item) => {
+        const isActive =
+          item.href === "/"
+            ? currentPath === "/"
+            : currentPath.startsWith(item.href);
+        return (
+          <li>
+            <a
+              href={item.href}
+              class={`font-mono text-[0.72rem] uppercase tracking-[0.18em] transition-colors ${
+                isActive
+                  ? "text-white font-medium"
+                  : "text-blue-100/50 hover:text-white"
+              }`}
+              aria-current={isActive ? "page" : undefined}
+            >
+              {item.label}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
+
+    <a class="md:hidden font-mono text-xs uppercase tracking-[0.18em] text-blue-100/65" href="/work">
+      Menu
+    </a>
+  </div>
+</nav>

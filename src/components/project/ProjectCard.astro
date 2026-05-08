@@ -1,0 +1,110 @@
+---
+// ProjectCard.astro — sharp product-module card for project listings.
+import type { Project } from "@data/projects";
+
+export interface Props {
+  project: Project;
+  variant?: "default" | "compact";
+}
+
+const { project, variant = "default" } = Astro.props;
+
+const accentBorders: Record<string, string> = {
+  blue: "border-l-blue-400",
+  magenta: "border-l-purple-400",
+  green: "border-l-green-400",
+};
+
+const accentTexts: Record<string, string> = {
+  blue: "text-blue-400",
+  magenta: "text-purple-400",
+  green: "text-green-400",
+};
+
+const accentHovers: Record<string, string> = {
+  blue: "hover:border-blue-400/50",
+  magenta: "hover:border-purple-400/50",
+  green: "hover:border-green-400/50",
+};
+
+const borderColor = accentBorders[project.accent] || "border-l-neutral-600";
+const textColor = accentTexts[project.accent] || "text-neutral-400";
+const hoverColor = accentHovers[project.accent] || "hover:border-neutral-500";
+---
+
+<a
+  href={`/work/${project.slug}`}
+  class={`group block border border-[#1e1e2e] bg-[#0c0c14] ${hoverColor} transition-all duration-200 hover:-translate-y-0.5 ${
+    variant === "default" ? "rounded-lg p-6" : "rounded p-4"
+  }`}
+>
+  <article class="space-y-3">
+    <!-- Top row: category + arrow -->
+    <div class="flex items-start justify-between gap-3">
+      <div class={`border-l-2 ${borderColor} pl-3`}>
+        <p class="text-xs font-mono uppercase tracking-[0.15em] text-neutral-500 mb-1">
+          {project.category}
+        </p>
+        <h3 class={`text-lg font-semibold text-white group-hover:${textColor} transition-colors`}>
+          {project.title}
+        </h3>
+      </div>
+      <svg
+        xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+        stroke-linejoin="round"
+        class="text-neutral-600 group-hover:text-neutral-300 transition-colors shrink-0 mt-1"
+        aria-hidden="true"
+      >
+        <path d="M7 17L17 7m0 0H7m10 0v10" />
+      </svg>
+    </div>
+
+    <!-- Tagline -->
+    <p class="text-sm font-mono text-neutral-500">{project.tagline}</p>
+
+    <!-- Description -->
+    <p class="text-sm text-neutral-400 leading-relaxed line-clamp-3">
+      {project.description}
+    </p>
+
+    <!-- Tech chips -->
+    <div class="flex flex-wrap gap-1.5 pt-1">
+      {project.category === "Infrastructure" && (
+        <>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">API Gateway</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Docker</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Zero Trust</span>
+        </>
+      )}
+      {project.category === "Developer Tools" && (
+        <>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Agent</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">TUI</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Observability</span>
+        </>
+      )}
+      {project.category === "AI / Developer Tools" && (
+        <>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Memory</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Retrieval</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">LLM</span>
+        </>
+      )}
+      {project.category === "Fullstack" && (
+        <>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">React</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">PostgreSQL</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">CI/CD</span>
+        </>
+      )}
+      {project.category === "Creative" && (
+        <>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Music</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Events</span>
+          <span class="px-2 py-0.5 text-xs rounded border border-[#1e1e2e] text-neutral-500 bg-[#14141f]">Commerce</span>
+        </>
+      )}
+    </div>
+  </article>
+</a>

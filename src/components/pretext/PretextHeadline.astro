@@ -1,0 +1,55 @@
+---
+// PretextHeadline.astro — editorial headline treatment for case studies.
+// Uses CSS variable typography with measured spacing.
+// Accessible: renders real HTML text, not canvas.
+export interface Props {
+  text: string;
+  as?: "h1" | "h2" | "h3";
+  accent?: "blue" | "magenta" | "green" | "neutral";
+  className?: string;
+}
+
+const { text, as = "h1", accent = "neutral", className = "" } = Astro.props;
+const Tag = as;
+
+const accentStyles: Record<string, string> = {
+  blue: "before:bg-blue-400/20",
+  magenta: "before:bg-purple-400/20",
+  green: "before:bg-green-400/20",
+  neutral: "before:bg-neutral-400/10",
+};
+
+const accentText: Record<string, string> = {
+  blue: "text-blue-300",
+  magenta: "text-purple-300",
+  green: "text-green-300",
+  neutral: "text-neutral-200",
+};
+---
+
+<!--
+  PretextHeadline — Editorial typography treatment.
+  Renders clean HTML text with decorative structure.
+  The visual marker (left bar + faint background glyph) adds
+  editorial weight without replacing or hiding the readable text.
+-->
+<div class={`relative pl-6 py-4 ${className}`}>
+  <!-- Left accent bar -->
+  <div
+    class={`absolute left-0 top-0 bottom-0 w-[3px] rounded-full ${accentStyles[accent] || ""} opacity-60`}
+    aria-hidden="true"
+  ></div>
+
+  <!-- Decorative background character — subtle, non-interfering -->
+  <span
+    class="absolute top-0 left-8 text-[120px] leading-none font-mono select-none pointer-events-none opacity-[0.03]"
+    aria-hidden="true"
+  >
+    {text.charAt(0)}
+  </span>
+
+  <!-- Actual text — semantic, accessible, readable -->
+  <Tag class={`text-3xl lg:text-4xl font-bold tracking-tight leading-tight ${accentText[accent]} ${className}`}>
+    {text}
+  </Tag>
+</div>

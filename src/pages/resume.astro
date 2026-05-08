@@ -1,0 +1,167 @@
+---
+// resume.astro — Recruiter-readable resume page.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import { links } from "@data/links";
+import { site } from "@data/site";
+import { projects } from "@data/projects";
+
+const featuredProjects = projects.filter((p) => p.featured);
+
+const skills = [
+  "TypeScript", "JavaScript", "Node.js", "React", "Vite", "Next.js",
+  "Python", "FastAPI", "Flask", "SQL", "REST APIs", "WebSocket / SSE",
+  "PostgreSQL", "SQLite", "SQLite FTS5", "Docker", "Linux", "CI/CD",
+  "OpenAI-compatible APIs", "Anthropic-compatible APIs", "llama.cpp", "GGUF",
+  "Agent Architecture", "Tool Calling", "Streaming/SSE", "TUI Development",
+  "Cloudflare Workers", "Cloudflare Pages", "Cloudflare Tunnel", "Zero Trust",
+  "Three.js / WebGL", "Terminal UI Design", "Observability", "Jest", "pytest",
+  "Caddy", "systemd", "Music Production", "Creative Direction",
+];
+
+const experience = [
+  {
+    role: "AI / Fullstack Engineer",
+    company: "Independent",
+    period: "2024 — Present",
+    description:
+      "Building local-first AI developer infrastructure and fullstack product systems. Focused on model gateways, coding agents, creative operating systems, and edge-deployed web applications.",
+    highlights: [
+      "Built Relay, an OpenAI/Anthropic-compatible gateway for local llama.cpp models, with streaming, tool-call normalization, SDK smoke tests, and deployment docs",
+      "Built Synax, a local-first coding agent with transparent TUI, provider flexibility, model-aware core visuals, and observable agent-loop architecture",
+      "Built wytOS, a local-first creative memory OS with SQLite FTS5 search and local LLM summarization pipelines",
+      "Architected Temper Cloud, a self-hosted distributed storage platform with Cloudflare Zero Trust access, observability stack, and concurrent metadata pipelines processing 10K+ files in under 4 minutes",
+      "Built watchyourtemper.com as a Cloudflare Workers edge-deployed SPA with Durable Objects, optimized bundles, and load-tested API paths",
+      "Designed and shipped full product surfaces across docs, landing pages, CLI/TUI UX, backend APIs, and frontend systems",
+    ],
+  },
+  {
+    role: "Junior Developer",
+    company: "Replicant AI",
+    period: "May 2023 — May 2024",
+    description:
+      "Worked on production conversational AI systems, internal LLM tooling, and NLP testing infrastructure for a platform serving 10K+ daily users.",
+    highlights: [
+      "Built and shipped production conversational AI bots in TypeScript/Node.js serving 10K+ daily users",
+      "Implemented low-latency conversation-state handlers processing 500K+ bot events/day with approximately 150ms median latency",
+      "Led development of an internal LLM chat interface used by 200+ company employees",
+      "Migrated legacy workflows to LLM-based data collection, improving bot/data accuracy by approximately 30%",
+      "Designed timezone-aware scheduling/detection modules that reduced bot misfires by approximately 15% and improved CSAT",
+      "Built an automated NLP intent-recognition testing suite with Jest, reaching 90%+ test coverage and reducing regressions",
+      "Introduced structured logging and health endpoints, improving debugging under elevated load",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Resume"
+  description={`Resume of ${site.fullName} — ${site.title} building local-first AI tools, developer infrastructure, and product systems.`}
+>
+  <article class="space-y-16">
+    <!-- Header -->
+    <header class="space-y-4">
+      <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">{site.fullName}</h1>
+      <p class="text-xl text-blue-400 font-medium">{site.title}</p>
+      <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
+        Building local-first AI tools, developer systems, and production-grade infrastructure.
+      </p>
+
+      <div class="flex flex-wrap gap-4 pt-2 text-sm">
+        <a href={links.github} target="_blank" rel="noopener noreferrer me"
+          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">GitHub</a>
+        <span class="text-[#2a2a3c]" aria-hidden="true">·</span>
+        <a href={links.linkedin} target="_blank" rel="noopener noreferrer me"
+          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">LinkedIn</a>
+        <span class="text-[#2a2a3c]" aria-hidden="true">·</span>
+        <a href={`mailto:${links.email}`}
+          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">{links.email}</a>
+      </div>
+
+      <!-- PDF placeholder -->
+      <div>
+        <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#2a2a3c] text-sm text-neutral-500 opacity-50 cursor-not-allowed"
+          aria-disabled="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
+            <path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" />
+          </svg>
+          Download PDF — coming soon
+        </span>
+      </div>
+    </header>
+
+    <!-- Experience -->
+    <section>
+      <h2 class="section-label">Experience</h2>
+      <div class="space-y-8">
+        {experience.map((exp) => (
+          <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-2">
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+              <h3 class="text-lg font-semibold text-white">{exp.role}</h3>
+              <span class="text-sm text-neutral-500 shrink-0">{exp.period}</span>
+            </div>
+            <p class="text-sm text-blue-400 font-medium">{exp.company}</p>
+            <p class="text-sm text-neutral-400 leading-relaxed">{exp.description}</p>
+            <ul class="space-y-1 pt-1">
+              {exp.highlights.map((h) => (
+                <li class="text-sm text-neutral-400 flex gap-2">
+                  <span class="text-neutral-600 shrink-0 mt-0.5" aria-hidden="true">—</span>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h2 class="section-label">Education</h2>
+      <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-2">
+        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+          <h3 class="text-lg font-semibold text-white">University of Toronto</h3>
+          <span class="text-sm text-neutral-500 shrink-0">Graduated 2025</span>
+        </div>
+        <p class="text-sm text-blue-400 font-medium">BASc, Computer Engineering</p>
+        <p class="text-sm text-neutral-400 leading-relaxed">
+          Relevant coursework: Algorithms and Data Structures, Machine Learning, Software Engineering,
+          Databases, Computer Networks, Computer Security, Operating Systems.
+        </p>
+      </div>
+    </section>
+
+    <!-- Featured Projects -->
+    <section>
+      <h2 class="section-label">Featured Projects</h2>
+      <div class="space-y-4">
+        {featuredProjects.map((project) => (
+          <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-1">
+            <div class="flex flex-col sm:flex-row sm:items-center gap-1">
+              <a href={`/work/${project.slug}`}
+                class="text-lg font-semibold text-white hover:text-blue-400 transition-colors">
+                {project.title}
+              </a>
+              <span class="text-xs text-neutral-500 font-mono hidden sm:inline">— {project.tagline}</span>
+            </div>
+            <p class="text-sm text-neutral-400 leading-relaxed">{project.description}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <h2 class="section-label">Skills</h2>
+      <div class="flex flex-wrap gap-2">
+        {skills.map((skill) => (
+          <span class="px-3 py-1.5 text-xs rounded-full border border-[#1e1e2e] text-neutral-400 bg-[#0c0c14]">
+            {skill}
+          </span>
+        ))}
+      </div>
+    </section>
+  </article>
+</BaseLayout>

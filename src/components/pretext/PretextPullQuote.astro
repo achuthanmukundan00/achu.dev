@@ -1,0 +1,36 @@
+---
+// PretextPullQuote.astro — editorial pull quote with decorative structure.
+// Accessible: text lives in HTML. Visual treatment is CSS-only.
+export interface Props {
+  quote: string;
+  attribution?: string;
+  accent?: "blue" | "magenta" | "green" | "neutral";
+}
+
+const { quote, attribution, accent = "neutral" } = Astro.props;
+
+const colors: Record<string, string> = {
+  blue: "border-blue-400/30 text-blue-200",
+  magenta: "border-purple-400/30 text-purple-200",
+  green: "border-green-400/30 text-green-200",
+  neutral: "border-neutral-500/30 text-neutral-200",
+};
+---
+
+<figure class={`border-l-2 ${colors[accent]} pl-6 py-2 my-10 max-w-2xl`}>
+  <blockquote class="text-lg lg:text-xl font-medium leading-relaxed tracking-tight">
+    {quote}
+  </blockquote>
+  {attribution && (
+    <figcaption class="mt-4 text-sm font-mono text-neutral-500">
+      — {attribution}
+    </figcaption>
+  )}
+  <!-- Decorative mark — subtle corner element -->
+  <span
+    class="block mt-3 font-mono text-xs opacity-15 select-none"
+    aria-hidden="true"
+  >
+    {accent === "blue" ? "─ ─ ─" : accent === "magenta" ? "· · ·" : accent === "green" ? "▌▌▌" : "─ · ─"}
+  </span>
+</figure>

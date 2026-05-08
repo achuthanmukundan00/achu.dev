@@ -1,0 +1,155 @@
+---
+// PretextCanvas.astro — Reusable canvas wrapper for living typographic systems.
+// Handles DPR scaling, resize, prefers-reduced-motion, offscreen pausing.
+// Exposes window.__pretext.register(id, fn) for animation registration.
+
+export interface Props {
+  canvasId: string;
+  height?: number;
+}
+
+const { canvasId, height = 400 } = Astro.props;
+---
+
+<div
+  class="pretext-wrapper relative w-full overflow-hidden rounded-lg border border-[#1e1e2e] bg-[#06060a]"
+  style={`min-height: ${height}px;`}
+>
+  <!-- Semantic HTML layer — screen-reader only, always accessible -->
+  <div class="sr-only" aria-live="polite">
+    <slot />
+  </div>
+
+  <!-- Canvas layer — decorative typographic surface -->
+  <canvas
+    id={canvasId}
+    class="absolute inset-0 w-full h-full"
+    aria-hidden="true"
+  ></canvas>
+</div>
+
+<script>
+  interface PretextState {
+    width: number;
+    height: number;
+    time: number;
+    deltaTime: number;
+    reducedMotion: boolean;
+    visible: boolean;
+    dpr: number;
+  }
+
+  type AnimationFn = (ctx: CanvasRenderingContext2D, state: PretextState) => void;
+
+  interface AnimationEntry {
+    fn: AnimationFn;
+    canvas: HTMLCanvasElement;
+    ctx: CanvasRenderingContext2D;
+    state: PretextState;
+    rafId: number | null;
+    lastTime: number;
+    running: boolean;
+  }
+
+  function setupPretextSystem() {
+    const registry = new Map<string, AnimationEntry>();
+
+    function createState(canvas: HTMLCanvasElement): PretextState {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      return {
+        width: rect.width,
+        height: rect.height,
+        time: 0,
+        deltaTime: 0,
+        reducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+        visible: true,
+        dpr,
+      };
+    }
+
+    function resizeCanvas(entry: AnimationEntry) {
+      const { canvas, ctx, state } = entry;
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      const w = Math.floor(rect.width * dpr);
+      const h = Math.floor(rect.height * dpr);
+      if (canvas.width !== w || canvas.height !== h) {
+        canvas.width = w;
+        canvas.height = h;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        state.width = rect.width;
+        state.height = rect.height;
+        state.dpr = dpr;
+      }
+    }
+
+    function tick(entry: AnimationEntry, now: number) {
+      if (!entry.running) return;
+      const dt = entry.lastTime ? (now - entry.lastTime) / 1000 : 0;
+      entry.lastTime = now;
+      entry.state.time += dt;
+      entry.state.deltaTime = Math.min(dt, 0.1);
+
+      if (entry.state.visible && !entry.state.reducedMotion) {
+        const { ctx, state } = entry;
+        ctx.clearRect(0, 0, state.width, state.height);
+        entry.fn(ctx, state);
+      }
+
+      entry.rafId = requestAnimationFrame((t) => tick(entry, t));
+    }
+
+    function start(entry: AnimationEntry) {
+      if (entry.running) return;
+      entry.running = true;
+      entry.lastTime = 0;
+      entry.rafId = requestAnimationFrame((t) => tick(entry, t));
+    }
+
+    function stop(entry: AnimationEntry) {
+      entry.running = false;
+      if (entry.rafId !== null) {
+        cancelAnimationFrame(entry.rafId);
+        entry.rafId = null;
+      }
+    }
+
+    (window as any).__pretext = {
+      register(canvasId: string, fn: AnimationFn) {
+        const canvas = document.getElementById(canvasId) as HTMLCanvasElement | null;
+        if (!canvas) { console.warn(`[pretext] canvas #${canvasId} not found`); return; }
+        const ctx = canvas.getContext("2d");
+        if (!ctx) { console.warn(`[pretext] no 2d context for #${canvasId}`); return; }
+
+        const state = createState(canvas);
+        const entry: AnimationEntry = { fn, canvas, ctx, state, rafId: null, lastTime: 0, running: false };
+
+        resizeCanvas(entry);
+        new ResizeObserver(() => resizeCanvas(entry)).observe(canvas);
+
+        new IntersectionObserver(
+          ([obs]) => {
+            state.visible = obs.isIntersecting;
+            state.visible ? start(entry) : stop(entry);
+          },
+          { threshold: 0.1 }
+        ).observe(canvas);
+
+        const mm = window.matchMedia("(prefers-reduced-motion: reduce)");
+        state.reducedMotion = mm.matches;
+        mm.addEventListener("change", (e) => { state.reducedMotion = e.matches; });
+
+        registry.set(canvasId, entry);
+        start(entry);
+      },
+
+      unregister(canvasId: string) {
+        const entry = registry.get(canvasId);
+        if (entry) { stop(entry); registry.delete(canvasId); }
+      },
+    };
+  }
+
+  if (!(window as any).__pretext) setupPretextSystem();
+</script>
