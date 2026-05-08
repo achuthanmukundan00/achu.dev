@@ -11,10 +11,10 @@ export const links = {
   resumePdf: "#", // TODO Phase 2: real PDF download
 
   // Project-specific links
-  relayRepo: "https://github.com/achuthanmukundan00/relay",
+  relayRepo: "https://achuthanmukundan00.github.io/relay",
   relayDocs: "#",
   relayLive: "#",
-  synaxRepo: "https://github.com/achuthanmukundan00/synax",
+  synaxRepo: "https://synax.pages.dev",
   synaxDocs: "#",
   synaxLive: "#",
   wytosRepo: "https://github.com/achuthanmukundan00/wytOS",

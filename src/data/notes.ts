@@ -14,7 +14,7 @@ export interface NoteEntry {
 export const notes: NoteEntry[] = [
   {
     title: "Why local-first AI agents need different UX",
-    date: "2025 Q1",
+    date: "Q3 2026",
     slug: "#",
     summary:
       "When agents run locally against quantized models, the assumptions behind chat-based interfaces break down. This note explores what kind of UX actually works when latency is low, models are smaller, and the developer needs full observability into the agent loop.",
@@ -37,8 +37,7 @@ export const notes: NoteEntry[] = [
     published: false,
   },
   {
-    title:
-      "Using Astro, Pretext, and WebGL without making a slow portfolio",
+    title: "Using Astro, Pretext, and WebGL without making a slow portfolio",
     date: "2025 Q1",
     slug: "#",
     summary:
