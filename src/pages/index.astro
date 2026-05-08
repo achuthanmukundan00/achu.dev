@@ -36,10 +36,10 @@ const modules = [
   {
     title: "Synax",
     mode: "CODING AGENT",
-    status: "AGENT TRACE",
-    copy: "Terminal-native agent loop for quantized local and cloud models.",
-    outcome: "Makes the agent loop inspectable while code is being changed.",
-    tags: ["TUI", "Providers", "Tools"],
+    status: "CLOSED ALPHA",
+    copy: "Experimental terminal agent loop for quantized local and open models.",
+    outcome: "Research into local-first agent architectures — actively dogfooded, not yet public.",
+    tags: ["TUI", "Providers", "Local LLM"],
     href: "/work/synax",
   },
   {
@@ -129,7 +129,14 @@ const roleTags = ["Fullstack Engineer", "Backend Engineer", "AI Tools", "Local L
                 <span class="role-chip">{tag}</span>
               ))}
             </div>
-            <span class="mt-8 inline-flex text-xs uppercase tracking-[0.2em] text-white/55">open module</span>
+            {module.title === "Synax" ? (
+              <span class="mt-8 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-purple-300/50">
+                <span class="w-1.5 h-1.5 rounded-full bg-purple-400" aria-hidden="true"></span>
+                closed alpha
+              </span>
+            ) : (
+              <span class="mt-8 inline-flex text-xs uppercase tracking-[0.2em] text-white/55">open module</span>
+            )}
           </a>
         ))}
       </div>

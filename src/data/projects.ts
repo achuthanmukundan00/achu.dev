@@ -57,27 +57,27 @@ export const projects: Project[] = [
   {
     slug: "synax",
     title: "Synax",
-    tagline: "A transparent local-first coding agent",
-    category: "Developer Tools",
+    tagline: "A local-first coding agent for quantized and open models.",
+    category: "AI / Developer Tools",
     accent: "magenta",
     description:
-      "A local-first coding agent built for quantized models, transparent execution, and developer observability.",
+      "An experimental terminal coding agent built around local inference, OpenAI-compatible model gateways, and small/quantized model workflows. Currently in closed alpha.",
     summary:
-      "Synax is a transparent local-first coding agent. It is designed for quantized models, visible execution, provider flexibility, steering, TUI clarity, and developer observability.",
+      "Synax is an experimental terminal coding agent built around local inference, OpenAI-compatible model gateways, and small/quantized model workflows. It is currently in closed alpha while the agent loop, TUI, configuration system, and model compatibility layers stabilize.",
     problem:
-      "Most coding agents operate as black boxes: they consume a prompt, execute tool calls, and produce output without exposing what happened in between. When things go wrong — hallucinated commands, silent failures, unexpected state changes — the developer has no visibility into the agent's reasoning or actions. Running these agents locally against quantized models adds further complexity: smaller models need different prompting strategies, produce different failure modes, and don't benefit from the latency headroom that hides cloud-agent slowness.",
+      "Most coding agents are built and tested against large cloud models with generous latency budgets and near-perfect instruction following. When those same agent architectures are run against quantized local models, the assumptions break: smaller models need different prompting strategies, produce different failure modes, and don't benefit from the latency headroom that hides cloud-agent slowness. The tooling gap between cloud-first agents and local-first development remains wide.",
     solution:
-      "Synax makes the entire agent loop observable. Every reasoning step, tool invocation, model response, provider state change, and command execution is surfaced in a structured, inspectable format. The agent is designed to work well with quantized local models by using constrained output grammars, explicit verification steps, and a patient retry strategy that accounts for the probabilistic nature of smaller models. The TUI renders the agent loop in real time — not as a chat log, but as a living transcript of reasoning, tool execution, and state transitions.",
+      "Synax is an experiment in making local models useful in real development loops. Instead of treating local inference as a degraded version of cloud inference, it builds the agent architecture around local-model constraints from the start: constrained output grammars, explicit verification steps, patient retry strategies, and a TUI designed for transparency rather than magic. The goal is not to be another cloud-first coding assistant — it is to explore what agent architecture looks like when the model is local, quantized, and imperfect-but-fast.",
     whatIBuilt:
-      "I built Synax as a TypeScript agent runtime with a first-class TUI. The interface shows the current reasoning step, active tool calls, model response streaming, and execution logs — all organised in collapsible panels with a central AI core display that morphs based on the loaded model and runtime state. A control surface lets developers pause, step through, or redirect the agent mid-loop. The backend uses a provider abstraction that normalises local model APIs and handles the quirks of quantized inference. The agent core visual system uses a model-aware morphology resolver so the containment chamber identity stays stable while the inner intelligence shape changes with the loaded model.",
+      "I built Synax as a TypeScript agent runtime with a first-class TUI. The interface shows the current reasoning step, active tool calls, model response streaming, and execution logs — all organised in collapsible panels. A control surface lets developers pause, step through, or redirect the agent mid-loop. The backend uses a provider abstraction that normalises local model APIs and handles the quirks of quantized inference. The system is actively dogfooded in my own development workflow but is not yet ready for general use.",
     techFocus:
-      "Observable agent loop architecture with structured logging at every step. Terminal UI (TUI) with real-time streaming panels and model-aware core morphology. Provider abstraction for local model APIs. TypeScript, Node.js, quantified output grammars for reliable structured generation from quantized models.",
+      "Experimental agent loop architecture with structured logging at every step. Terminal UI (TUI) with real-time streaming panels. Provider abstraction for local model APIs. TypeScript, Node.js. Quantified output grammars for reliable structured generation from quantized models. Active research into local-first agent UX patterns.",
     links: [
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/synax" },
-      { label: "Docs (coming soon)", url: "#" },
+      { label: "Closed alpha notes", url: "#" },
+      { label: "Development ongoing", url: "#" },
     ],
     nextSteps:
-      "Expand provider support to cover more local model servers. Add agent checkpoints so developers can rewind and replay loops. Build a headless mode for CI integration. Release as open source with comprehensive docs for extension authors and model profile contributors.",
+      "Stabilize the agent loop and configuration system. Expand provider support for additional local model servers. Add agent checkpoints for rewind/replay. Continue dogfooding to identify failure modes and UX gaps before considering any broader release.",
     featured: true,
   },
   {

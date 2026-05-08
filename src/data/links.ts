@@ -14,7 +14,7 @@ export const links = {
   relayRepo: "https://achuthanmukundan00.github.io/relay",
   relayDocs: "#",
   relayLive: "#",
-  synaxRepo: "https://synax.pages.dev",
+  synaxRepo: "#",
   synaxDocs: "#",
   synaxLive: "#",
   wytosRepo: "https://github.com/achuthanmukundan00/wytOS",

@@ -28,7 +28,7 @@ const quotes: Record<string, { text: string; attribution: string }> = {
   },
   synax: {
     text: "Transparency beats magic when you're running AI on your own machine.",
-    attribution: "Synax design principle",
+    attribution: "Synax research direction",
   },
   watchyourtemper: {
     text: "A creative world you can inhabit, not a portfolio link you can click.",
@@ -94,6 +94,63 @@ const pullQuote = quotes[project.slug];
     <PretextEditorialBlock accent={accent} title="At a glance">
       <p>{project.summary}</p>
     </PretextEditorialBlock>
+
+    <!-- ============================================================ -->
+    <!-- SYNAX TERMINAL PREVIEW (closed alpha placeholder)              -->
+    <!-- ============================================================ -->
+    {
+      project.slug === "synax" && (
+        <section>
+          <h2 class="section-label">Terminal Preview</h2>
+          <div class="max-w-3xl">
+            <div class="relative rounded-lg border border-purple-400/20 bg-[#03080f] overflow-hidden" style="box-shadow: inset 0 1px 0 rgba(192,132,252,0.08), 0 0 40px rgba(192,132,252,0.06);">
+              <!-- Terminal chrome -->
+              <div class="flex items-center gap-2 px-4 py-3 border-b border-purple-400/10 bg-[#06060e]">
+                <span class="w-3 h-3 rounded-full bg-[#ff5f56]" aria-hidden="true"></span>
+                <span class="w-3 h-3 rounded-full bg-[#ffbd2e]" aria-hidden="true"></span>
+                <span class="w-3 h-3 rounded-full bg-[#27c93f]" aria-hidden="true"></span>
+                <span class="ml-3 text-xs font-mono text-purple-300/50 uppercase tracking-[0.15em]">Synax TUI — agent session</span>
+              </div>
+              <!-- Placeholder body -->
+              <div class="flex items-center justify-center min-h-[360px] p-8">
+                <div class="text-center space-y-4">
+                  <div class="w-16 h-16 mx-auto rounded-full border-2 border-dashed border-purple-400/20 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round" class="text-purple-400/40" aria-hidden="true">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                      <line x1="3" y1="9" x2="21" y2="9" />
+                      <line x1="9" y1="21" x2="9" y2="9" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p class="text-sm font-mono text-purple-300/70 font-medium">
+                      Terminal screenshot placeholder
+                    </p>
+                    <p class="mt-1 text-xs text-purple-300/40 font-mono">
+                      Synax TUI preview — static image coming soon
+                    </p>
+                    <p class="mt-3 text-[0.62rem] text-purple-300/25 font-mono uppercase tracking-[0.15em]">
+                      /assets/synax-terminal-preview.png
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <!-- Status metadata footer -->
+              <div class="flex items-center justify-between px-4 py-2.5 border-t border-purple-400/10 bg-[#06060e]">
+                <span class="text-[0.62rem] font-mono uppercase tracking-[0.12em] text-purple-300/40">
+                  closed alpha · local-first agent research
+                </span>
+                <span class="inline-flex items-center gap-1.5 text-[0.62rem] font-mono uppercase tracking-[0.12em] text-purple-300/40">
+                  <span class="w-1.5 h-1.5 rounded-full bg-purple-400/60" aria-hidden="true"></span>
+                  experimental
+                </span>
+              </div>
+            </div>
+          </div>
+        </section>
+      )
+    }
 
     <!-- ============================================================ -->
     <!-- CASE STUDY SECTIONS                                            -->
@@ -164,14 +221,21 @@ const pullQuote = quotes[project.slug];
               <li>
                 <a
                   href={link.url}
-                  class="inline-flex items-center gap-2 text-blue-400 hover:text-blue-300 transition-colors underline underline-offset-2"
+                  class={`inline-flex items-center gap-2 transition-colors underline underline-offset-2 ${
+                    link.url === "#"
+                      ? "text-neutral-500 cursor-default"
+                      : "text-blue-400 hover:text-blue-300"
+                  }`}
+                  {...(link.url === "#" ? { "aria-disabled": "true", tabindex: "-1" } : {})}
                 >
                   {link.label}
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
-                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                    stroke-linejoin="round" aria-hidden="true">
-                    <path d="M7 17L17 7m0 0H7m10 0v10" />
-                  </svg>
+                  {link.url !== "#" && (
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"
+                      fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                      stroke-linejoin="round" aria-hidden="true">
+                      <path d="M7 17L17 7m0 0H7m10 0v10" />
+                    </svg>
+                  )}
                 </a>
               </li>
             ))}

@@ -33,7 +33,7 @@ export const notes: NoteEntry[] = [
     date: "2025 Q1",
     slug: "#",
     summary:
-      "The terminal is an underrated medium for AI interfaces. This note covers the design decisions behind Synax's TUI — how to render real-time agent state without overwhelming the developer and why transparency beats magic.",
+      "The terminal is an underrated medium for AI interfaces. This note covers the design decisions behind Synax's TUI — how to render real-time agent state without overwhelming the developer — and why transparency matters more than magic when models are local and imperfect.",
     published: false,
   },
   {

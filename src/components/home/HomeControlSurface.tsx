@@ -33,10 +33,10 @@ const modules: Module[] = [
     id: "synax",
     title: "Synax",
     label: "CODING AGENT",
-    detail: "Terminal-native agent loop for quantized local and cloud models.",
+    detail: "Experimental terminal agent for quantized local/open models. Closed alpha.",
     href: "/work/synax",
     layer: "AGENT TRACE",
-    metric: "observable loop",
+    metric: "closed alpha",
     nodeClass: "node-synax",
   },
   {
@@ -64,7 +64,7 @@ const modules: Module[] = [
 const statusByState: Record<CoreState, string[]> = {
   default: ["LOCAL RUNTIME", "MODEL IO", "CORE TEMP 37C"],
   relay: ["MODEL GATEWAY", "OPENAI/ANTHROPIC", "ROUTE STABLE"],
-  synax: ["AGENT TRACE", "TERMINAL NATIVE", "LOOP VISIBLE"],
+  synax: ["AGENT TRACE", "CLOSED ALPHA", "LOCAL RESEARCH"],
   wytos: ["MEMORY GRAPH", "CONTEXT WINDOW", "RETRIEVAL HOT"],
   watchyourtemper: ["AUDIO WORLD", "FEED THE MACHINE", "STREAMING EVERYWHERE"],
 };
