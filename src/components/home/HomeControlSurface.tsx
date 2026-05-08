@@ -66,7 +66,7 @@ const statusByState: Record<CoreState, string[]> = {
   relay: ["MODEL GATEWAY", "OPENAI/ANTHROPIC", "ROUTE STABLE"],
   synax: ["AGENT TRACE", "TERMINAL NATIVE", "LOOP VISIBLE"],
   wytos: ["MEMORY GRAPH", "CONTEXT WINDOW", "RETRIEVAL HOT"],
-  watchyourtemper: ["AUDIO WORLD", "PRESSURE SIGNAL", "TOXIC ACCENT"],
+  watchyourtemper: ["AUDIO WORLD", "FEED THE MACHINE", "STREAMING EVERYWHERE"],
 };
 
 const phraseState: Array<{ state: CoreState; text: string }> = [
@@ -101,7 +101,6 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
 
       <div className="relative mx-auto grid min-h-[calc(100vh-4rem)] max-w-7xl grid-cols-1 items-center gap-10 px-5 py-10 sm:px-6 lg:grid-cols-[0.86fr_1.14fr] lg:px-8 lg:py-14">
         <div className="z-10 max-w-2xl">
-
           <h1 className="font-display text-[clamp(4.2rem,14vw,10rem)] font-semibold uppercase leading-[0.78] tracking-normal text-white">
             achu
           </h1>
@@ -114,7 +113,9 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
                   type="button"
                   onMouseEnter={() => setActiveState(phrase.state)}
                   onFocus={() => setActiveState(phrase.state)}
-                  onMouseLeave={() => setActiveState(selectedModule?.id ?? "default")}
+                  onMouseLeave={() =>
+                    setActiveState(selectedModule?.id ?? "default")
+                  }
                   onBlur={() => setActiveState(selectedModule?.id ?? "default")}
                 >
                   {phrase.text}
@@ -124,18 +125,33 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
             ))}
           </p>
 
-
-          <nav className="mt-8 flex flex-wrap items-center gap-3" aria-label="Primary links">
-            <a className="interface-button interface-button-primary" href="/work">
+          <nav
+            className="mt-8 flex flex-wrap items-center gap-3"
+            aria-label="Primary links"
+          >
+            <a
+              className="interface-button interface-button-primary"
+              href="/work"
+            >
               Work
             </a>
             <a className="interface-button" href="/resume">
               Resume
             </a>
-            <a className="interface-button" href={links.github} target="_blank" rel="noopener noreferrer me">
+            <a
+              className="interface-button"
+              href={links.github}
+              target="_blank"
+              rel="noopener noreferrer me"
+            >
               GitHub
             </a>
-            <a className="interface-button" href={links.linkedin} target="_blank" rel="noopener noreferrer me">
+            <a
+              className="interface-button"
+              href={links.linkedin}
+              target="_blank"
+              rel="noopener noreferrer me"
+            >
               LinkedIn
             </a>
             <a
@@ -145,7 +161,9 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
               rel="noopener noreferrer"
               onMouseEnter={() => setActiveState("watchyourtemper")}
               onFocus={() => setActiveState("watchyourtemper")}
-              onMouseLeave={() => setActiveState(selectedModule?.id ?? "default")}
+              onMouseLeave={() =>
+                setActiveState(selectedModule?.id ?? "default")
+              }
               onBlur={() => setActiveState(selectedModule?.id ?? "default")}
             >
               watchyourtemper.com
@@ -163,12 +181,22 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
 
         <div className="relative z-10 min-h-[600px] lg:min-h-[720px]">
           <div className="core-stage">
-            <AchuCore state={activeState} className="h-full min-h-[520px] lg:min-h-[680px]" />
+            <AchuCore
+              state={activeState}
+              className="h-full min-h-[520px] lg:min-h-[680px]"
+            />
             <div className="core-reticle" aria-hidden="true" />
-            <div className="core-microtext core-microtext-top">LOCAL RUNTIME / INFERENCE CORE</div>
-            <div className="core-microtext core-microtext-bottom">CONTEXT WINDOW / AGENT TRACE / MEMORY GRAPH</div>
+            <div className="core-microtext core-microtext-top">
+              LOCAL RUNTIME / INFERENCE CORE
+            </div>
+            <div className="core-microtext core-microtext-bottom">
+              CONTEXT WINDOW / AGENT TRACE / MEMORY GRAPH
+            </div>
 
-            <div className="runtime-node-layer" aria-label="Interactive runtime modules">
+            <div
+              className="runtime-node-layer"
+              aria-label="Interactive runtime modules"
+            >
               {modules.map((module, index) => {
                 const selected = selectedModule?.id === module.id;
                 const active = activeState === module.id || selected;
@@ -182,8 +210,12 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
                     onClick={() => activate(module)}
                     onMouseEnter={() => setActiveState(module.id)}
                     onFocus={() => setActiveState(module.id)}
-                    onMouseLeave={() => setActiveState(selectedModule?.id ?? "default")}
-                    onBlur={() => setActiveState(selectedModule?.id ?? "default")}
+                    onMouseLeave={() =>
+                      setActiveState(selectedModule?.id ?? "default")
+                    }
+                    onBlur={() =>
+                      setActiveState(selectedModule?.id ?? "default")
+                    }
                   >
                     <span className="runtime-node-index">0{index + 1}</span>
                     <span className="runtime-node-pip" />
@@ -198,8 +230,14 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
                   <span>{selectedModule.layer}</span>
                   <a
                     href={selectedModule.href}
-                    target={isExternal(selectedModule.href) ? "_blank" : undefined}
-                    rel={isExternal(selectedModule.href) ? "noopener noreferrer" : undefined}
+                    target={
+                      isExternal(selectedModule.href) ? "_blank" : undefined
+                    }
+                    rel={
+                      isExternal(selectedModule.href)
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
                   >
                     open
                   </a>
@@ -215,7 +253,9 @@ export default function HomeControlSurface({ links }: { links: HomeLinks }) {
 
             <div className="core-label">
               <span>active layer</span>
-              <strong>{activeModule ? activeModule.layer : "idle / composed"}</strong>
+              <strong>
+                {activeModule ? activeModule.layer : "idle / composed"}
+              </strong>
             </div>
           </div>
         </div>
