@@ -1,0 +1,21 @@
+{
+  "task": "",
+  "inspectedFiles": [
+    "src/pages/work/[slug].astro",
+    "src/data/projects.ts",
+    "src/layouts/CaseStudyLayout.astro"
+  ],
+  "orientation": "WORKING CONTEXT:\n  Inspected files:\n    src/pages/work/[slug].astro  lines 1-21 (read 22x)\n    src/data/projects.ts  lines 1-198 (read 199x)\n    src/layouts/CaseStudyLayout.astro  lines 1-270 (read 329x)\n  Editable from memory (exact text currently visible to model):\n    src/pages/work/[slug].astro\n    src/data/projects.ts\n    src/layouts/CaseStudyLayout.astro",
+  "gitStatus": false,
+  "gitDiff": false,
+  "tokenEstimate": 30235,
+  "assembly": {
+    "totalMessagesIn": 26,
+    "totalMessagesOut": 27,
+    "estimatedTokensIn": 30113,
+    "estimatedTokensOut": 30235,
+    "compactedToolResults": 0,
+    "keptRecentTurns": 0
+  },
+  "compaction": null
+}

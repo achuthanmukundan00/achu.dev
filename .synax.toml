@@ -1,0 +1,119 @@
+[active]
+provider = "deepseek"
+model = "deepseek-v4-pro"
+thinking = "high"
+
+[providers.relay]
+enabled = true
+name = "Relay"
+compatibility = "openai-compatible"
+base_url = "https://ai.watchyourtemper.com/v1"
+
+[providers.relay.headers]
+"CF-Access-Client-Id" = "$CF_ACCESS_CLIENT_ID"
+"CF-Access-Client-Secret" = "$CF_ACCESS_CLIENT_SECRET"
+
+[[providers.relay.models]]
+id = "Qwen3.6-35B-A3B-UD-IQ3_XXS.gguf"
+display_name = "Qwen3.6 35B"
+context_window = 131072
+supports_thinking = false
+
+[providers.deepseek]
+enabled = false
+name = "DeepSeek"
+compatibility = "openai-compatible"
+base_url = "https://api.deepseek.com/v1"
+api_key_env = "DEEPSEEK_API_KEY"
+
+[[providers.deepseek.models]]
+id = "deepseek-v4-pro"
+display_name = "DeepSeek V4 Pro"
+context_window = 1000000
+supports_thinking = true
+thinking_levels = ["off", "high", "xhigh"]
+default_thinking = "high"
+
+[[providers.deepseek.models]]
+id = "deepseek-chat"
+display_name = "DeepSeek Chat (V3)"
+context_window = 1000000
+supports_thinking = false
+
+[[providers.deepseek.models]]
+id = "deepseek-reasoner"
+display_name = "DeepSeek Reasoner (R1)"
+context_window = 1000000
+supports_thinking = true
+thinking_levels = ["off", "high", "xhigh"]
+default_thinking = "high"
+
+[providers.openai]
+enabled = false
+name = "OpenAI"
+compatibility = "openai-compatible"
+base_url = "https://api.openai.com/v1"
+api_key_env = "OPENAI_API_KEY"
+
+[[providers.openai.models]]
+id = "gpt-4o"
+display_name = "GPT-4o"
+context_window = 128000
+supports_thinking = false
+
+[[providers.openai.models]]
+id = "o3-mini"
+display_name = "o3-mini"
+context_window = 200000
+supports_thinking = true
+thinking_levels = ["off", "low", "medium", "high"]
+default_thinking = "medium"
+
+[providers.anthropic]
+enabled = false
+name = "Anthropic"
+compatibility = "anthropic-compatible"
+base_url = "https://api.anthropic.com/v1"
+api_key_env = "ANTHROPIC_API_KEY"
+
+[[providers.anthropic.models]]
+id = "claude-sonnet-4-20250514"
+display_name = "Claude Sonnet 4"
+context_window = 200000
+supports_thinking = true
+thinking_levels = ["off", "low", "medium", "high"]
+default_thinking = "off"
+
+[[providers.anthropic.models]]
+id = "claude-3-5-haiku-20241022"
+display_name = "Claude 3.5 Haiku"
+context_window = 200000
+supports_thinking = false
+
+[providers.openrouter]
+enabled = true
+name = "OpenRouter"
+compatibility = "openai-compatible"
+base_url = "https://openrouter.ai/api/v1"
+api_key_env = "OPENROUTER_API_KEY"
+
+[providers.openrouter.headers]
+"HTTP-Referer" = "https://github.com/achuthanmukundan00/synax"
+"X-Title" = "Synax"
+
+[[providers.openrouter.models]]
+id = "openrouter/auto"
+display_name = "OpenRouter (auto)"
+context_window = 64000
+supports_thinking = false
+
+[[providers.openrouter.models]]
+id = "baidu/cobuddy:free"
+display_name = "Baidu Cobuddy (Free)"
+context_window = 128000
+supports_thinking = false
+
+[tui]
+mouse = false
+alternate_screen = true
+
