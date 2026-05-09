@@ -83,8 +83,7 @@ export const projects: Project[] = [
   {
     slug: "watchyourtemper",
     title: "watchyourtemper",
-    tagline:
-      "Electronic music, events, merch, and visual world",
+    tagline: "Electronic music, events, merch, and visual world",
     category: "Creative",
     accent: "green",
     description:
@@ -101,24 +100,34 @@ export const projects: Project[] = [
       "Edge-deployed fullstack SPA on Cloudflare Workers and Pages. Durable Objects for serverless state. React + Vite + TypeScript frontend. Optimized bundle and critical payload sizes. Load testing under concurrency. Request observability and automated tests. Custom visual identity and dark editorial styling.",
     links: [
       { label: "watchyourtemper.com", url: "https://watchyourtemper.com" },
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/watchyourtemper" },
+      {
+        label: "GitHub",
+        url: "https://github.com/achuthanmukundan00/watchyourtemper",
+      },
     ],
     nextSteps:
       "Phase 2 visual core: integrate Pretext for long-form editorial pages and WebGL for an interactive hero scene. Expand merch surface with real inventory. Build content pipelines for release launches and event promotion.",
     featured: true,
     extended: {
-      world: "watchyourtemper is my proof that I can build more than software. It is an artist project, event platform, release system, visual identity, merch surface, and creative world — built end-to-end across music production, web, commerce, content, and live events.",
-      releases: "The release system connects music distribution across streaming platforms with a custom web surface that presents each release as a designed artifact — not just a link to Spotify. Cover art, visual direction, and release context are treated as first-class parts of the product.",
-      pressureTest: "PRESSURE TEST is the event series at the center of watchyourtemper. Each event is produced end-to-end: booking, promotion, visual identity, ticketing, venue coordination, and live content capture. The events feed directly into the content system and merch cycles.",
-      commerce: "The merch surface is designed as a product experience, not an afterthought. Limited drops, visual cohesion with releases and events, and a checkout flow that feels like part of the brand rather than a generic storefront.",
-      contentSystem: "Content flows through the entire ecosystem: event footage becomes release teasers, release visuals become merch designs, and community moments feed the visual identity. The system is designed so every output can become an input for something else.",
-      technicalSurface: "Built as an edge-deployed Cloudflare Workers SPA with React, Vite, and TypeScript. Custom dark editorial design system with distinctive typography. Performance-optimized with fast LCP and near-zero CLS. Designed to layer in Pretext editorial components and WebGL ambient visuals without compromising the baseline experience.",
+      world:
+        "watchyourtemper is an electronic music project, visual identity, merch surface, and creative world — built end-to-end across music production, web, commerce, content, and live events.",
+      releases:
+        "The release system connects music distribution across streaming platforms with a custom web surface that presents each release as a designed artifact — not just a link to Spotify. Cover art, visual direction, and release context are treated as first-class parts of the product.",
+      pressureTest:
+        "PRESSURE TEST is the event series at the center of watchyourtemper. Each event is produced end-to-end: booking, promotion, visual identity, ticketing, venue coordination, and live content capture. The events feed directly into the content system and merch cycles.",
+      commerce:
+        "The merch surface is designed as a product experience, not an afterthought. Limited drops, visual cohesion with releases and events, and a checkout flow that feels like part of the brand rather than a generic storefront.",
+      contentSystem:
+        "Content flows through the entire ecosystem: event footage becomes release teasers, release visuals become merch designs, and community moments feed the visual identity. The system is designed so every output can become an input for something else.",
+      technicalSurface:
+        "Built as an edge-deployed Cloudflare Workers SPA with React, Vite, and TypeScript. Custom dark editorial design system with distinctive typography. Performance-optimized with fast LCP and near-zero CLS. Designed to layer in Pretext editorial components and WebGL ambient visuals without compromising the baseline experience.",
     },
   },
   {
     slug: "wytos",
     title: "wytOS",
-    tagline: "A local-first creative OS for structured memory and AI-assisted workflows",
+    tagline:
+      "A local-first creative OS for structured memory and AI-assisted workflows",
     category: "AI / Developer Tools",
     accent: "magenta",
     description:
@@ -159,7 +168,10 @@ export const projects: Project[] = [
     techFocus:
       "Docker-based distributed storage with RAID (3.9TB usable). Cloudflare Tunnel, Access, and Zero Trust private networking. Caddy as stateless API gateway. Observability with Netdata, Dozzle, cAdvisor, and custom FastAPI status endpoints. Concurrent metadata and embedding pipelines. Linux systemd deployment patterns. 99%+ availability target.",
     links: [
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/temper-cloud" },
+      {
+        label: "GitHub",
+        url: "https://github.com/achuthanmukundan00/temper-cloud",
+      },
     ],
     nextSteps:
       "Expand storage capacity and redundancy. Add automated backup verification. Build a lightweight dashboard for service health and pipeline status. Document the Zero Trust access patterns as a reusable template for other self-hosted environments.",
@@ -184,7 +196,10 @@ export const projects: Project[] = [
     techFocus:
       "React SPA frontend. Flask REST API backend. PostgreSQL with optimized schemas and indexing. Docker containerization. JWT authentication. CI/CD pipelines. Automated testing. Multi-language codebase (TypeScript, Python, CSS). 300+ commit iteration history.",
     links: [
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/Secondhand-Hub" },
+      {
+        label: "GitHub",
+        url: "https://github.com/achuthanmukundan00/Secondhand-Hub",
+      },
     ],
     nextSteps:
       "This was an academic fullstack project that demonstrated end-to-end ownership. The architecture patterns and multi-service design inform later work on Temper Cloud and wytOS.",
