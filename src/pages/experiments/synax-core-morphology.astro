@@ -1,0 +1,182 @@
+---
+// synax-core-morphology.astro — Interactive Synax AI core morphology viewer.
+// Shows model-aware core morphologies per the canonical Synax spec.
+import BaseLayout from "@layouts/BaseLayout.astro";
+import SynaxCoreMorphology from "@components/experiments/SynaxCoreMorphology";
+---
+
+<BaseLayout
+  title="Experiment: Synax Core Morphology Viewer"
+  description="Interactive viewer for Synax AI core model-aware morphologies. Select a model to see how the containment chamber adapts its inner intelligence morphology."
+  fullWidth
+>
+  <div class="mx-auto max-w-3xl px-6 py-12 lg:py-16 space-y-10">
+    <!-- Header -->
+    <header class="space-y-3">
+      <a
+        href="/lab"
+        class="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-white transition-colors"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+          viewBox="0 0 24 24" fill="none" stroke="currentColor"
+          stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+          aria-hidden="true">
+          <path d="M19 12H5m7-7-7 7 7 7" />
+        </svg>
+        Lab
+      </a>
+      <h1 class="text-3xl lg:text-4xl font-bold tracking-tight">
+        Synax · Core Morphology Viewer
+      </h1>
+      <p class="text-neutral-400 leading-relaxed max-w-xl">
+        Interactive model-aware AI core viewer. Select a model to see how the Synax
+        containment chamber adapts its inner intelligence morphology. Based on the
+        canonical{" "}
+        <a
+          href="https://github.com/achuthanmukundan00/synax/blob/main/specs/synax-ai-core-morphology-spec.md"
+          class="text-blue-400 hover:text-blue-300 underline underline-offset-2"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Synax AI Core Morphology Spec
+        </a>.
+      </p>
+    </header>
+
+    <!-- Interactive Viewer -->
+    <SynaxCoreMorphology client:load />
+
+    <!-- Documentation -->
+    <div class="space-y-6 pt-8 border-t border-[#1e1e2e]">
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          Design System
+        </h2>
+        <div class="prose max-w-xl space-y-3">
+          <p>
+            Synax is the <strong>containment chamber</strong> — the outer shell,
+            rings, scan line, and vertical bars stay consistent regardless of the
+            loaded model. This is the Synax visual identity.
+          </p>
+          <p>
+            The <strong>model</strong> is the intelligence morphology inside the
+            chamber. The nucleus shape, ring density, particle distribution,
+            breathing rate, phase style, and color role all shift to reflect the
+            loaded model's "personality" — without Synax losing its identity.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          Canonical Model Profiles
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-400 border-collapse">
+            <thead>
+              <tr class="border-b border-[#1e1e2e] text-left">
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Model</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Geometry</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Phase</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Hover</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Scan</th>
+                <th class="py-2 font-mono text-xs text-neutral-500">Nucleus</th>
+              </tr>
+            </thead>
+            <tbody class="font-mono text-xs">
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-purple-300">Qwen</td>
+                <td class="py-2 pr-4">lattice</td>
+                <td class="py-2 pr-4">snap</td>
+                <td class="py-2 pr-4">magnetic</td>
+                <td class="py-2 pr-4">precise</td>
+                <td class="py-2">icosahedron</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-green-300">OpenAI / GPT</td>
+                <td class="py-2 pr-4">lens</td>
+                <td class="py-2 pr-4">smooth</td>
+                <td class="py-2 pr-4">focus</td>
+                <td class="py-2 pr-4">soft</td>
+                <td class="py-2">octahedron</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-amber-300">Claude</td>
+                <td class="py-2 pr-4">organic</td>
+                <td class="py-2 pr-4">elastic</td>
+                <td class="py-2 pr-4">elastic</td>
+                <td class="py-2 pr-4">soft</td>
+                <td class="py-2">dodecahedron</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-red-300">DeepSeek</td>
+                <td class="py-2 pr-4">furnace</td>
+                <td class="py-2 pr-4">compressed</td>
+                <td class="py-2 pr-4">minimal</td>
+                <td class="py-2 pr-4">beam</td>
+                <td class="py-2">box</td>
+              </tr>
+              <tr>
+                <td class="py-2 pr-4 text-cyan-300">Gemini</td>
+                <td class="py-2 pr-4">twin</td>
+                <td class="py-2 pr-4">mirrored</td>
+                <td class="py-2 pr-4">split</td>
+                <td class="py-2 pr-4">split</td>
+                <td class="py-2">twin sphere</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          Profile Resolver
+        </h2>
+        <div class="prose max-w-xl">
+          <p>
+            The viewer uses a <code>resolveCoreVisualProfile(modelId)</code> function
+            that matches model IDs case-insensitively against regex patterns. Provider
+            doesn't matter — a Qwen model through Relay still resolves to the Qwen
+            lattice profile.
+          </p>
+          <p>
+            Unknown or local models default to the Synax Default profile: a clean
+            contained lens with balanced breathing and neutral teal/cyan accent.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          Accessibility
+        </h2>
+        <div class="prose max-w-xl">
+          <p>
+            A semantic HTML fallback is rendered behind the canvas. All model profile
+            information is available as real text. The visualization respects{" "}
+            <code>prefers-reduced-motion</code> — when active, the core renders as a
+            static SVG representation of the current model profile.
+          </p>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          Synax Project
+        </h2>
+        <div class="prose max-w-xl">
+          <p>
+            This morphology viewer is part of{" "}
+            <a href="/work/synax" class="text-purple-400 hover:text-purple-300 underline underline-offset-2">
+              Synax
+            </a>, an experimental local-first coding agent for quantized
+            and open models. The visual core system is designed to make the agent
+            feel like a controlled local intelligence runtime — alive, restrained,
+            and model-aware.
+          </p>
+        </div>
+      </section>
+    </div>
+  </div>
+</BaseLayout>

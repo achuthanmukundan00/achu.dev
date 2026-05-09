@@ -12,7 +12,7 @@
     --color-surface-400: #2a2a3c;
     --color-accent-blue: #60a5fa;
     --color-accent-magenta: #c084fc;
-    --color-accent-green: #4ade80;
+    --color-accent-green: #b0c8ff;
   }
 
   html {
@@ -23,7 +23,7 @@
   body {
     @apply min-h-screen font-sans leading-relaxed;
     background:
-      radial-gradient(circle at 72% 0%, rgba(71, 216, 255, 0.07), transparent 28rem),
+      radial-gradient(circle at 72% 0%, rgba(176, 200, 255, 0.03), transparent 28rem),
       #020307;
   }
 
@@ -91,10 +91,10 @@
     inset: 0;
     background:
       linear-gradient(to bottom, rgba(255, 255, 255, 0.035), transparent 1px),
-      linear-gradient(120deg, transparent 0%, rgba(151, 204, 255, 0.08) 44%, transparent 46%);
+      linear-gradient(120deg, transparent 0%, rgba(176, 200, 255, 0.05) 44%, transparent 46%);
     background-size: 100% 4px, 260% 100%;
     mix-blend-mode: screen;
-    opacity: 0.32;
+    opacity: 0.28;
     animation: scan-sweep 9s linear infinite;
   }
 
@@ -105,7 +105,7 @@
     border: 1px solid rgba(226, 241, 255, 0.14);
     background:
       linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
-      radial-gradient(circle at 50% 42%, rgba(71, 216, 255, 0.13), transparent 44%),
+      radial-gradient(circle at 50% 42%, rgba(176, 200, 255, 0.06), transparent 44%),
       repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 42px);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.15),
@@ -211,7 +211,7 @@
 
   .hero-phrase {
     display: inline;
-    border-bottom: 1px solid rgba(125, 231, 255, 0.28);
+    border-bottom: 1px solid rgba(176, 200, 255, 0.18);
     color: inherit;
     transition:
       border-color 160ms ease,
@@ -221,9 +221,9 @@
 
   .hero-phrase:hover,
   .hero-phrase:focus-visible {
-    border-color: rgba(125, 231, 255, 0.72);
-    color: #eaffff;
-    text-shadow: 0 0 24px rgba(125, 231, 255, 0.22);
+    border-color: rgba(176, 200, 255, 0.5);
+    color: #e8f0ff;
+    text-shadow: 0 0 24px rgba(176, 200, 255, 0.12);
   }
 
   .runtime-node-layer {
@@ -245,7 +245,7 @@
     color: rgba(232, 246, 255, 0.78);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 28px rgba(71, 216, 255, 0.08);
+      0 0 28px rgba(176, 200, 255, 0.05);
     clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
     transition:
       border-color 180ms ease,
@@ -260,7 +260,7 @@
     top: 50%;
     width: clamp(3rem, 8vw, 5.5rem);
     height: 1px;
-    background: linear-gradient(90deg, rgba(125, 231, 255, 0.42), transparent);
+    background: linear-gradient(90deg, rgba(176, 200, 255, 0.25), transparent);
     transform-origin: left center;
     opacity: 0.5;
   }
@@ -268,8 +268,8 @@
   .runtime-node-pip {
     height: 0.44rem;
     width: 0.44rem;
-    background: #77e7ff;
-    box-shadow: 0 0 18px rgba(119, 231, 255, 0.72);
+    background: #b0c8ff;
+    box-shadow: 0 0 18px rgba(176, 200, 255, 0.4);
     transform: rotate(45deg);
   }
 
@@ -288,7 +288,7 @@
   .runtime-node:focus-visible,
   .runtime-node.is-active {
     border-color: rgba(190, 242, 255, 0.72);
-    background: rgba(71, 216, 255, 0.11);
+    background: rgba(176, 200, 255, 0.07);
     transform: scale(1.08);
   }
 
@@ -330,15 +330,15 @@
 
   .node-watchyourtemper .runtime-node-pip,
   .node-watchyourtemper.is-active .runtime-node-pip {
-    background: #9cff4f;
-    box-shadow: 0 0 18px rgba(156, 255, 79, 0.72);
+    background: #b0c8ff;
+    box-shadow: 0 0 18px rgba(176, 200, 255, 0.5);
   }
 
   .node-watchyourtemper:hover,
   .node-watchyourtemper:focus-visible,
   .node-watchyourtemper.is-active {
-    border-color: rgba(156, 255, 79, 0.72);
-    background: rgba(156, 255, 79, 0.1);
+    border-color: rgba(176, 200, 255, 0.6);
+    background: rgba(176, 200, 255, 0.08);
   }
 
   .runtime-panel {
@@ -425,7 +425,7 @@
 
   .surface-section {
     background:
-      radial-gradient(circle at 80% 10%, rgba(71, 216, 255, 0.055), transparent 27rem),
+      radial-gradient(circle at 80% 10%, rgba(176, 200, 255, 0.03), transparent 27rem),
       linear-gradient(180deg, #020407, #05080d 52%, #020407);
   }
 

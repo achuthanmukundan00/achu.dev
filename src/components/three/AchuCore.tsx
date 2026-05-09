@@ -9,34 +9,34 @@ const stateColors: Record<
   { primary: string; accent: string; secondary: string; haze: string }
 > = {
   default: {
-    primary: "#f5f8ff",
-    accent: "#77e7ff",
-    secondary: "#284255",
+    primary: "#e8edf2",
+    accent: "#4ade80",
+    secondary: "#1a2a20",
     haze: "#03070c",
   },
   relay: {
-    primary: "#e8f7ff",
-    accent: "#55d6ff",
-    secondary: "#173d50",
-    haze: "#031019",
+    primary: "#e8f0f7",
+    accent: "#93c5fd",
+    secondary: "#142438",
+    haze: "#030a13",
   },
   synax: {
-    primary: "#f4fbff",
-    accent: "#7fffd1",
-    secondary: "#174c45",
-    haze: "#031311",
+    primary: "#e8f2eb",
+    accent: "#4ade80",
+    secondary: "#12261e",
+    haze: "#030c08",
   },
   wytos: {
-    primary: "#f2f6ff",
-    accent: "#a9c6ff",
-    secondary: "#2a3555",
-    haze: "#050914",
+    primary: "#eef0f7",
+    accent: "#93c5fd",
+    secondary: "#1a2040",
+    haze: "#050810",
   },
   watchyourtemper: {
-    primary: "#f2ffe9",
-    accent: "#9cff4f",
-    secondary: "#244a1f",
-    haze: "#061006",
+    primary: "#eaf5e4",
+    accent: "#4ade80",
+    secondary: "#1a2e16",
+    haze: "#040a04",
   },
 };
 
@@ -53,6 +53,190 @@ function usePrefersReducedMotion(): boolean {
   }, []);
 
   return reduced;
+}
+
+// ── Fibonacci sphere: uniform point distribution on sphere surface ─────
+function fibonacciSphere(n: number, radius: number): Float32Array {
+  const out = new Float32Array(n * 3);
+  const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle
+  for (let i = 0; i < n; i++) {
+    const y = 1 - (i / (n - 1)) * 2;
+    const radiusAtY = Math.sqrt(1 - y * y);
+    const theta = phi * i;
+    out[i * 3] = Math.cos(theta) * radiusAtY * radius;
+    out[i * 3 + 1] = y * radius;
+    out[i * 3 + 2] = Math.sin(theta) * radiusAtY * radius;
+  }
+  return out;
+}
+
+// ── DotMatrixOrb ────────────────────────────────────────────────────────
+// Reactive particle-sphere replacing the solid octahedron.
+// Reads isSynaxHover from a shared ref so the parent scene can drive reactivity.
+
+const DOT_COUNT = 480;
+const ORB_RADIUS = 0.52;
+const FLASH_ORANGE = new THREE.Color("#ff8c42");
+const FLASH_DURATION = 180; // ms
+
+interface DotMatrixOrbProps {
+  accent: THREE.Color;
+  primary: THREE.Color;
+  isSynaxHover: React.MutableRefObject<boolean>;
+  reducedMotion: boolean;
+}
+
+function DotMatrixOrb({ accent, isSynaxHover, reducedMotion }: DotMatrixOrbProps) {
+  const pointsRef = useRef<THREE.Points>(null);
+  const flashTimerRef = useRef<number>(0);
+  const flashEndRef = useRef<number>(0);
+  const flashIndicesRef = useRef<Set<number>>(new Set());
+
+  const { positions, colors, sizes } = useMemo(() => {
+    const basePositions = fibonacciSphere(DOT_COUNT, ORB_RADIUS);
+    const pos = new Float32Array(DOT_COUNT * 3);
+    const col = new Float32Array(DOT_COUNT * 3);
+    const siz = new Float32Array(DOT_COUNT);
+
+    for (let i = 0; i < DOT_COUNT; i++) {
+      // Slight radial jitter for volumetric feel
+      const jitter = 0.88 + Math.random() * 0.24;
+      pos[i * 3] = basePositions[i * 3] * jitter;
+      pos[i * 3 + 1] = basePositions[i * 3 + 1] * jitter;
+      pos[i * 3 + 2] = basePositions[i * 3 + 2] * jitter;
+
+      siz[i] = 0.018 + Math.random() * 0.04;
+
+      const c = accent.clone();
+      c.offsetHSL(0, 0, (Math.random() - 0.5) * 0.08);
+      col[i * 3] = c.r;
+      col[i * 3 + 1] = c.g;
+      col[i * 3 + 2] = c.b;
+    }
+
+    return { positions: pos, colors: col, sizes: siz };
+  }, [accent]);
+
+  const positionAttr = useMemo(() => new THREE.BufferAttribute(positions, 3), [positions]);
+  const colorAttr = useMemo(() => new THREE.BufferAttribute(colors, 3), [colors]);
+  const sizeAttr = useMemo(() => new THREE.BufferAttribute(sizes, 1), [sizes]);
+
+  const geo = useMemo(() => {
+    const g = new THREE.BufferGeometry();
+    g.setAttribute("position", positionAttr);
+    g.setAttribute("color", colorAttr);
+    g.setAttribute("size", sizeAttr);
+    return g;
+  }, [positionAttr, colorAttr, sizeAttr]);
+
+  const basePositions = useMemo(() => new Float32Array(positions), [positions]);
+  const baseColors = useMemo(() => new Float32Array(colors), [colors]);
+
+  useFrame(({ clock }, delta) => {
+    if (!pointsRef.current) return;
+    const t = clock.getElapsedTime();
+    const geo = pointsRef.current.geometry;
+    const posArr = geo.attributes.position.array as Float32Array;
+    const colArr = geo.attributes.color?.array as Float32Array | undefined;
+    const hovering = isSynaxHover.current;
+
+    // ── Schedule rare orange flash ──
+    const now = performance.now();
+    if (hovering && flashTimerRef.current === 0) {
+      if (Math.random() < delta * 0.08) {
+        flashTimerRef.current = now;
+        flashEndRef.current = now + FLASH_DURATION + Math.random() * 200;
+        const count = Math.floor(DOT_COUNT * (0.18 + Math.random() * 0.18));
+        const indices = new Set<number>();
+        while (indices.size < count) {
+          indices.add(Math.floor(Math.random() * DOT_COUNT));
+        }
+        flashIndicesRef.current = indices;
+      }
+    }
+    const inFlash = now < flashEndRef.current;
+    if (!inFlash) {
+      flashTimerRef.current = 0;
+      flashIndicesRef.current = new Set();
+    }
+    const flashProgress = inFlash
+      ? 1 - (flashEndRef.current - now) / (flashEndRef.current - flashTimerRef.current)
+      : 0;
+
+    const breathAmp = hovering ? 0.06 : 0.025;
+    const breathSpeed = hovering ? 1.4 : 0.9;
+
+    if (!reducedMotion) {
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const baseX = basePositions[i * 3];
+        const baseY = basePositions[i * 3 + 1];
+        const baseZ = basePositions[i * 3 + 2];
+        const dist = Math.sqrt(baseX * baseX + baseY * baseY + baseZ * baseZ) || 0.01;
+        const nx = baseX / dist;
+        const ny = baseY / dist;
+        const nz = baseZ / dist;
+
+        const phase = i * 0.027;
+        const wave = Math.sin(t * breathSpeed + phase) * breathAmp;
+        const hoverPush = hovering ? 0.015 + Math.sin(t * 3.1 + phase) * 0.01 : 0;
+        const displacement = wave + hoverPush;
+
+        posArr[i * 3] = baseX + nx * displacement;
+        posArr[i * 3 + 1] = baseY + ny * displacement;
+        posArr[i * 3 + 2] = baseZ + nz * displacement;
+
+        if (colArr) {
+          if (inFlash && flashIndicesRef.current.has(i) && flashProgress < 0.5) {
+            const f = flashProgress < 0.25 ? flashProgress * 4 : (0.5 - flashProgress) * 4;
+            const orange = FLASH_ORANGE;
+            colArr[i * 3] = baseColors[i * 3] + (orange.r - baseColors[i * 3]) * f;
+            colArr[i * 3 + 1] = baseColors[i * 3 + 1] + (orange.g - baseColors[i * 3 + 1]) * f;
+            colArr[i * 3 + 2] = baseColors[i * 3 + 2] + (orange.b - baseColors[i * 3 + 2]) * f;
+          } else {
+            const brightnessMod = hovering ? 0.85 + Math.sin(t * 2.5 + phase) * 0.15 : 0.7 + Math.sin(t * 0.8 + phase) * 0.08;
+            colArr[i * 3] = baseColors[i * 3] * brightnessMod;
+            colArr[i * 3 + 1] = baseColors[i * 3 + 1] * brightnessMod;
+            colArr[i * 3 + 2] = baseColors[i * 3 + 2] * brightnessMod;
+          }
+        }
+      }
+    } else {
+      // Reduced motion: subtle shimmer only
+      for (let i = 0; i < DOT_COUNT; i++) {
+        const baseX = basePositions[i * 3];
+        const baseY = basePositions[i * 3 + 1];
+        const baseZ = basePositions[i * 3 + 2];
+        const dist = Math.sqrt(baseX * baseX + baseY * baseY + baseZ * baseZ) || 0.01;
+        const shimmer = Math.sin(t * 0.3 + i * 0.01) * 0.008;
+        posArr[i * 3] = baseX + (baseX / dist) * shimmer;
+        posArr[i * 3 + 1] = baseY + (baseY / dist) * shimmer;
+        posArr[i * 3 + 2] = baseZ + (baseZ / dist) * shimmer;
+        if (colArr) {
+          const bm = 0.75 + Math.sin(t * 0.4 + i * 0.01) * 0.05;
+          colArr[i * 3] = baseColors[i * 3] * bm;
+          colArr[i * 3 + 1] = baseColors[i * 3 + 1] * bm;
+          colArr[i * 3 + 2] = baseColors[i * 3 + 2] * bm;
+        }
+      }
+    }
+
+    geo.attributes.position.needsUpdate = true;
+    if (geo.attributes.color) geo.attributes.color.needsUpdate = true;
+  });
+
+  return (
+    <points ref={pointsRef} geometry={geo}>
+      <pointsMaterial
+        size={0.035}
+        vertexColors
+        transparent
+        opacity={0.75}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        sizeAttenuation
+      />
+    </points>
+  );
 }
 
 function RailSegment({
@@ -123,7 +307,15 @@ function AchuScene({ state }: { state: CoreState }) {
   const reducedMotion = usePrefersReducedMotion();
   const colors = stateColors[state];
 
+  // Shared hover ref for DotMatrixOrb reactivity — drives orange flash
+  const isSynaxHover = useRef(false);
+  useEffect(() => {
+    isSynaxHover.current = state === "synax";
+  }, [state]);
+
   const energy = state === "watchyourtemper" ? 1.35 : state === "relay" ? 1.18 : state === "synax" ? 1.08 : 0.92;
+  const accentColor = useMemo(() => new THREE.Color(colors.accent), [colors.accent]);
+  const primaryColor = useMemo(() => new THREE.Color(colors.primary), [colors.primary]);
 
   const paths = useMemo(() => {
     const routeCount = state === "relay" ? 7 : state === "wytos" ? 8 : 6;
@@ -265,17 +457,12 @@ function AchuScene({ state }: { state: CoreState }) {
         <ScanBars color={colors.accent} />
 
         <group ref={coreRef}>
-          <mesh rotation={[0.6, 0.35, 0.78]}>
-            <octahedronGeometry args={[0.52, 1]} />
-            <meshStandardMaterial
-              color="#111923"
-              emissive={colors.accent}
-              emissiveIntensity={0.52}
-              roughness={0.22}
-              metalness={0.84}
-              flatShading
-            />
-          </mesh>
+          <DotMatrixOrb
+            accent={accentColor}
+            primary={primaryColor}
+            isSynaxHover={isSynaxHover}
+            reducedMotion={reducedMotion}
+          />
           <mesh rotation={[0, 0, Math.PI / 4]}>
             <boxGeometry args={[1.05, 1.05, 0.04]} />
             <meshBasicMaterial color={colors.accent} transparent opacity={0.08} />
@@ -308,7 +495,23 @@ function StaticCore({ state }: { state: CoreState }) {
         <rect x="88" y="88" width="84" height="84" transform="rotate(45 130 130)" fill="none" stroke={colors.accent} strokeWidth="2" opacity="0.44" />
         <path d="M130 42 212 82 218 178 130 218 42 178 48 82Z" fill="none" stroke={colors.primary} strokeWidth="1.5" opacity="0.58" />
         <path d="M130 72 182 130 130 188 78 130Z" fill="none" stroke={colors.secondary} strokeWidth="5" opacity="0.7" />
-        <rect x="111" y="111" width="38" height="38" transform="rotate(45 130 130)" fill={colors.primary} opacity="0.9" />
+        <circle cx="130" cy="130" r="32" fill="none" stroke={colors.accent} strokeWidth="1" opacity="0.3" strokeDasharray="3 5" />
+        <circle cx="130" cy="130" r="24" fill="none" stroke={colors.accent} strokeWidth="0.5" opacity="0.2" strokeDasharray="2 6" />
+        {Array.from({ length: 32 }, (_, i) => {
+          const a = (i / 32) * Math.PI * 2;
+          const r = 26 + (i % 3) * 6;
+          return (
+            <circle
+              key={i}
+              cx={130 + Math.cos(a) * r}
+              cy={130 + Math.sin(a) * r}
+              r={i % 5 === 0 ? 2 : 1.2}
+              fill={colors.accent}
+              opacity={0.3 + (i % 4) * 0.12}
+            />
+          );
+        })}
+        <rect x="111" y="111" width="38" height="38" transform="rotate(45 130 130)" fill={colors.primary} opacity="0.7" />
         {[0, 45, 90, 135, 180, 225, 270, 315].map((angle) => (
           <rect
             key={angle}
