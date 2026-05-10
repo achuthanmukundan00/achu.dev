@@ -51,16 +51,16 @@ import SynaxCoreMorphologyV2 from "@components/experiments/SynaxCoreMorphologyV2
     <section class="pt-12 mt-12 border-t-2 border-[#1e1e2e]">
       <div class="mb-6 space-y-2">
         <span class="inline-block px-2 py-0.5 text-[0.6rem] font-mono rounded bg-purple-400/10 text-purple-400 border border-purple-400/20 uppercase tracking-[0.15em]">
-          V3 · Wiregraph
+          V4 · Transformer
         </span>
         <h2 class="text-2xl lg:text-3xl font-bold tracking-tight">
-          Wiregraph Brain Morphology
+          Transformer Architecture Morphology
         </h2>
         <p class="text-neutral-400 leading-relaxed max-w-xl">
-          A dark sci-fi wiregraph core — 5–9 asymmetric macro lobes forming a
-          brain/core silhouette, each containing dense micro-gate arrays (small
-          rects + angular traces). Transistor flip cascades ripple through the
-          substrate while traveling pulses trace trunk edges and local pathways.
+          Architecture-faithful Transformer visualization: a central residual
+          stream spine, repeated layer rings/wafers stacked along the spine,
+          attention-head fiber bundles, MLP/FFN slabs, a KV cache lattice, and
+          token pulses traveling the residual stream.
         </p>
         <p class="text-xs text-neutral-600 max-w-xl">
           Adapted from the{" "}
@@ -72,8 +72,8 @@ import SynaxCoreMorphologyV2 from "@components/experiments/SynaxCoreMorphologyV2
           >
             Shoggoth Observer
           </a>{" "}
-          experiment. Dark palette, depth fog, ice-blue/grey lines, cold-white
-          junction sparks, and phase-reactive behavior. No particle soup.
+          experiment. Bloom, chromatic aberration, film grain, and vignette
+          post-processing for a dark sci-fi optical-instrument feel.
         </p>
       </div>
       <SynaxCoreMorphologyV2 client:load />
@@ -164,60 +164,54 @@ import SynaxCoreMorphologyV2 from "@components/experiments/SynaxCoreMorphologyV2
 
       <section>
         <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
-          V3 · Wiregraph Profiles
+          V4 · Transformer Profiles
         </h2>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-neutral-400 border-collapse">
             <thead>
               <tr class="border-b border-[#1e1e2e] text-left">
                 <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Model</th>
-                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Lobes</th>
-                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Gates/Lobe</th>
-                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Total Gates</th>
-                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Cascade</th>
-                <th class="py-2 font-mono text-xs text-neutral-500">Pulses</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Layers</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Heads</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">MLP Width</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Pulses</th>
               </tr>
             </thead>
             <tbody class="font-mono text-xs">
               <tr class="border-b border-[#1e1e2e]/50">
                 <td class="py-2 pr-4 text-purple-300">Qwen</td>
-                <td class="py-2 pr-4">8</td>
-                <td class="py-2 pr-4">140</td>
-                <td class="py-2 pr-4">~1,120</td>
-                <td class="py-2 pr-4">2.0x</td>
-                <td class="py-2">120</td>
+                <td class="py-2 pr-4">40</td>
+                <td class="py-2 pr-4">12</td>
+                <td class="py-2 pr-4">1.15x</td>
+                <td class="py-2">30</td>
               </tr>
               <tr class="border-b border-[#1e1e2e]/50">
                 <td class="py-2 pr-4 text-green-300">OpenAI / GPT</td>
-                <td class="py-2 pr-4">6</td>
-                <td class="py-2 pr-4">85</td>
-                <td class="py-2 pr-4">~510</td>
-                <td class="py-2 pr-4">1.0x</td>
-                <td class="py-2">60</td>
+                <td class="py-2 pr-4">24</td>
+                <td class="py-2 pr-4">8</td>
+                <td class="py-2 pr-4">0.90x</td>
+                <td class="py-2">20</td>
               </tr>
               <tr class="border-b border-[#1e1e2e]/50">
                 <td class="py-2 pr-4 text-amber-300">Claude</td>
-                <td class="py-2 pr-4">7</td>
-                <td class="py-2 pr-4">95</td>
-                <td class="py-2 pr-4">~665</td>
-                <td class="py-2 pr-4">0.9x</td>
-                <td class="py-2">70</td>
+                <td class="py-2 pr-4">32</td>
+                <td class="py-2 pr-4">8</td>
+                <td class="py-2 pr-4">1.00x</td>
+                <td class="py-2">22</td>
               </tr>
               <tr class="border-b border-[#1e1e2e]/50">
                 <td class="py-2 pr-4 text-red-300">DeepSeek</td>
-                <td class="py-2 pr-4">9</td>
-                <td class="py-2 pr-4">170</td>
-                <td class="py-2 pr-4">~1,530</td>
-                <td class="py-2 pr-4">2.8x</td>
-                <td class="py-2">140</td>
+                <td class="py-2 pr-4">48</td>
+                <td class="py-2 pr-4">16</td>
+                <td class="py-2 pr-4">1.30x</td>
+                <td class="py-2">35</td>
               </tr>
               <tr>
                 <td class="py-2 pr-4 text-cyan-300">Gemini</td>
-                <td class="py-2 pr-4">7</td>
-                <td class="py-2 pr-4">105</td>
-                <td class="py-2 pr-4">~735</td>
-                <td class="py-2 pr-4">1.6x</td>
-                <td class="py-2">90</td>
+                <td class="py-2 pr-4">32</td>
+                <td class="py-2 pr-4">12</td>
+                <td class="py-2 pr-4">1.05x</td>
+                <td class="py-2">28</td>
               </tr>
             </tbody>
           </table>
