@@ -3,6 +3,7 @@
 // Shows model-aware core morphologies per the canonical Synax spec.
 import BaseLayout from "@layouts/BaseLayout.astro";
 import SynaxCoreMorphology from "@components/experiments/SynaxCoreMorphology";
+import SynaxCoreMorphologyV2 from "@components/experiments/SynaxCoreMorphologyV2";
 ---
 
 <BaseLayout
@@ -43,8 +44,40 @@ import SynaxCoreMorphology from "@components/experiments/SynaxCoreMorphology";
       </p>
     </header>
 
-    <!-- Interactive Viewer -->
+    <!-- V1: Original containment chamber viewer -->
     <SynaxCoreMorphology client:load />
+
+    <!-- ── V2: Neural Network Core Morphology ── -->
+    <section class="pt-12 mt-12 border-t-2 border-[#1e1e2e]">
+      <div class="mb-6 space-y-2">
+        <span class="inline-block px-2 py-0.5 text-[0.6rem] font-mono rounded bg-purple-400/10 text-purple-400 border border-purple-400/20 uppercase tracking-[0.15em]">
+          V3 · Wiregraph
+        </span>
+        <h2 class="text-2xl lg:text-3xl font-bold tracking-tight">
+          Wiregraph Brain Morphology
+        </h2>
+        <p class="text-neutral-400 leading-relaxed max-w-xl">
+          A dark sci-fi wiregraph core — 5–9 asymmetric macro lobes forming a
+          brain/core silhouette, each containing dense micro-gate arrays (small
+          rects + angular traces). Transistor flip cascades ripple through the
+          substrate while traveling pulses trace trunk edges and local pathways.
+        </p>
+        <p class="text-xs text-neutral-600 max-w-xl">
+          Adapted from the{" "}
+          <a
+            href="https://github.com/achuthanmukundan00/synax/tree/experiment/web-shoggoth-observer-neural-redesign/experiments/web-shoggoth-observer"
+            class="text-purple-400 hover:text-purple-300 underline underline-offset-2"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Shoggoth Observer
+          </a>{" "}
+          experiment. Dark palette, depth fog, ice-blue/grey lines, cold-white
+          junction sparks, and phase-reactive behavior. No particle soup.
+        </p>
+      </div>
+      <SynaxCoreMorphologyV2 client:load />
+    </section>
 
     <!-- Documentation -->
     <div class="space-y-6 pt-8 border-t border-[#1e1e2e]">
@@ -69,7 +102,7 @@ import SynaxCoreMorphology from "@components/experiments/SynaxCoreMorphology";
 
       <section>
         <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
-          Canonical Model Profiles
+          V1 · Canonical Model Profiles
         </h2>
         <div class="overflow-x-auto">
           <table class="w-full text-sm text-neutral-400 border-collapse">
@@ -123,6 +156,68 @@ import SynaxCoreMorphology from "@components/experiments/SynaxCoreMorphology";
                 <td class="py-2 pr-4">split</td>
                 <td class="py-2 pr-4">split</td>
                 <td class="py-2">twin sphere</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-3">
+          V3 · Wiregraph Profiles
+        </h2>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm text-neutral-400 border-collapse">
+            <thead>
+              <tr class="border-b border-[#1e1e2e] text-left">
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Model</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Lobes</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Gates/Lobe</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Total Gates</th>
+                <th class="py-2 pr-4 font-mono text-xs text-neutral-500">Cascade</th>
+                <th class="py-2 font-mono text-xs text-neutral-500">Pulses</th>
+              </tr>
+            </thead>
+            <tbody class="font-mono text-xs">
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-purple-300">Qwen</td>
+                <td class="py-2 pr-4">8</td>
+                <td class="py-2 pr-4">140</td>
+                <td class="py-2 pr-4">~1,120</td>
+                <td class="py-2 pr-4">2.0x</td>
+                <td class="py-2">120</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-green-300">OpenAI / GPT</td>
+                <td class="py-2 pr-4">6</td>
+                <td class="py-2 pr-4">85</td>
+                <td class="py-2 pr-4">~510</td>
+                <td class="py-2 pr-4">1.0x</td>
+                <td class="py-2">60</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-amber-300">Claude</td>
+                <td class="py-2 pr-4">7</td>
+                <td class="py-2 pr-4">95</td>
+                <td class="py-2 pr-4">~665</td>
+                <td class="py-2 pr-4">0.9x</td>
+                <td class="py-2">70</td>
+              </tr>
+              <tr class="border-b border-[#1e1e2e]/50">
+                <td class="py-2 pr-4 text-red-300">DeepSeek</td>
+                <td class="py-2 pr-4">9</td>
+                <td class="py-2 pr-4">170</td>
+                <td class="py-2 pr-4">~1,530</td>
+                <td class="py-2 pr-4">2.8x</td>
+                <td class="py-2">140</td>
+              </tr>
+              <tr>
+                <td class="py-2 pr-4 text-cyan-300">Gemini</td>
+                <td class="py-2 pr-4">7</td>
+                <td class="py-2 pr-4">105</td>
+                <td class="py-2 pr-4">~735</td>
+                <td class="py-2 pr-4">1.6x</td>
+                <td class="py-2">90</td>
               </tr>
             </tbody>
           </table>
