@@ -12,12 +12,14 @@ export interface Props {
 
 const { project } = Astro.props;
 
-const accent = project.accent as "blue" | "magenta" | "green";
+const accent = project.accent as "blue" | "magenta" | "green" | "brown" | "red";
 
 const accentBorder: Record<string, string> = {
   blue: "border-blue-400",
   magenta: "border-purple-400",
   green: "border-green-400",
+  brown: "border-l-amber-600",
+  red: "border-l-red-500",
 };
 
 // Pull quotes per project
@@ -45,6 +47,10 @@ const quotes: Record<string, { text: string; attribution: string }> = {
   "secondhand-hub": {
     text: "Fullstack ownership means every layer, from database to UI.",
     attribution: "Secondhand Hub thesis",
+  },
+  suitcase: {
+    text: "Your career evidence should live on your machine, organized by an agent you control.",
+    attribution: "Suitcase design principle",
   },
 };
 

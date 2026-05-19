@@ -4,7 +4,7 @@
 export interface Props {
   quote: string;
   attribution?: string;
-  accent?: "blue" | "magenta" | "green" | "neutral";
+  accent?: "blue" | "magenta" | "green" | "brown" | "red" | "neutral";
 }
 
 const { quote, attribution, accent = "neutral" } = Astro.props;
@@ -13,6 +13,8 @@ const colors: Record<string, string> = {
   blue: "border-blue-400/30 text-blue-200",
   magenta: "border-purple-400/30 text-purple-200",
   green: "border-green-400/30 text-green-200",
+  brown: "border-amber-600/30 text-amber-200",
+  red: "border-red-500/30 text-red-200",
   neutral: "border-neutral-500/30 text-neutral-200",
 };
 ---
@@ -31,6 +33,6 @@ const colors: Record<string, string> = {
     class="block mt-3 font-mono text-xs opacity-15 select-none"
     aria-hidden="true"
   >
-    {accent === "blue" ? "─ ─ ─" : accent === "magenta" ? "· · ·" : accent === "green" ? "▌▌▌" : "─ · ─"}
+    {accent === "blue" ? "─ ─ ─" : accent === "magenta" ? "· · ·" : accent === "green" ? "▌▌▌" : accent === "brown" ? "─ ═ ─" : accent === "red" ? "▓ ▓ ▓" : "─ · ─"}
   </span>
 </figure>

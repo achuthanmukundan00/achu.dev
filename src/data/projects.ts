@@ -29,6 +29,32 @@ export interface Project {
 
 export const projects: Project[] = [
   {
+    slug: "suitcase",
+    title: "Suitcase",
+    tagline: "A private career agent that lives on your machine.",
+    category: "AI / Fullstack",
+    accent: "brown",
+    description:
+      "A local-first career copilot with web chat, Discord bot, and an agent that organizes career evidence inside suitcase_world/.",
+    summary:
+      "Suitcase is a local-first career agent. It runs a FastAPI + React app connected to your LLM, with a wizard-led setup, Discord DM integration, and a review-gated file sandbox that writes artifacts and reflections into suitcase_world/.",
+    problem:
+      "Career management is scattered across platforms: resumes on Google Drive, DMs on Discord, job applications in browser tabs, and career thinking lost in random notes. None of these systems talk to each other, and none of them are private or local-first.",
+    solution:
+      "Suitcase puts a career agent on your machine. It connects to your LLM (Relay, llama.cpp, OpenAI, Anthropic, DeepSeek — any compatible endpoint), reads your career evidence from a local sandbox, and writes drafts, reflections, and artifacts that stay review-gated inside suitcase_world/. A Discord bot extends the same agent runtime into DMs and mentions.",
+    whatIBuilt:
+      "I built Suitcase as a FastAPI + React application with a wizard-led setup flow. The setup walks through profile creation, GitHub evidence, LinkedIn, Discord bot token, resume uploads, LLM configuration, autonomous pulse schedule, and a readiness check. The web chat and Discord bot share the same agent backend, self-model, and career context. All writes stay inside suitcase_world/ — a review-gated sandbox where the agent can draft but not destroy.",
+    techFocus:
+      "FastAPI + React local-first app. LLM inference bridge supporting Relay, llama.cpp, OpenAI, Anthropic, DeepSeek, and compatible endpoints. Discord bot integration sharing the same agent runtime. Review-gated file sandbox (suitcase_world/). Wizard-led setup with profile, resume, GitHub, and LLM configuration. Autonomous pulse scheduling.",
+    links: [
+      { label: "Documentation", url: "https://suitcase-docs.pages.dev" },
+      { label: "GitHub", url: "https://github.com/achuthanmukundan00/Suitcase" },
+    ],
+    nextSteps:
+      "Ship the autonomous pulse feature for scheduled career check-ins. Add multi-resume merging and tailored application drafting. Expand the Discord bot with slash commands and thread-aware conversations.",
+    featured: true,
+  },
+  {
     slug: "relay",
     title: "Relay",
     tagline: "Protocol infrastructure for local AI models",
@@ -81,55 +107,12 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "watchyourtemper",
-    title: "watchyourtemper",
-    tagline: "Electronic music, events, merch, and visual world",
-    category: "Creative",
-    accent: "green",
-    description:
-      "An electronic music world spanning releases, events, merch, visual systems, and community experiments.",
-    summary:
-      "watchyourtemper is an electronic music, event, merch, and visual world. It connects releases, PRESSURE TEST events, content systems, visual identity, and commerce experiments into one creative ecosystem.",
-    problem:
-      "Independent electronic artists operate across fragmented platforms: music on streaming services, events on ticketing platforms, merch on separate storefronts, and visual identity scattered across social media. There is no unified surface that connects the music, the events, the commerce, and the world-building into a coherent creative ecosystem controlled by the artist.",
-    solution:
-      "watchyourtemper is a unified brand platform that brings releases, events, merch, content, and visual identity together under one domain. It treats the project as an inhabitable creative world rather than a collection of disjointed links — giving fans a cohesive experience and giving the artist full creative and commercial control.",
-    whatIBuilt:
-      "I built watchyourtemper.com as a Cloudflare Workers-based edge-deployed fullstack SPA. The site implements multiple client routes and API endpoints, uses Durable Objects for serverless-backed behaviour, and delivers a media-heavy UX with low-latency edge delivery. I optimized the frontend bundle and critical payload sizes for fast load times using Vite, load-tested API and homepage paths under concurrency, and implemented request observability with automated tests. Every page reflects the project's visual identity — dark, textural, high-contrast — and is built to feel alive.",
-    techFocus:
-      "Edge-deployed fullstack SPA on Cloudflare Workers and Pages. Durable Objects for serverless state. React + Vite + TypeScript frontend. Optimized bundle and critical payload sizes. Load testing under concurrency. Request observability and automated tests. Custom visual identity and dark editorial styling.",
-    links: [
-      { label: "watchyourtemper.com", url: "https://watchyourtemper.com" },
-      {
-        label: "GitHub",
-        url: "https://github.com/achuthanmukundan00/watchyourtemper",
-      },
-    ],
-    nextSteps:
-      "Phase 2 visual core: integrate Pretext for long-form editorial pages and WebGL for an interactive hero scene. Expand merch surface with real inventory. Build content pipelines for release launches and event promotion.",
-    featured: true,
-    extended: {
-      world:
-        "watchyourtemper is an electronic music project, visual identity, merch surface, and creative world — built end-to-end across music production, web, commerce, content, and live events.",
-      releases:
-        "The release system connects music distribution across streaming platforms with a custom web surface that presents each release as a designed artifact — not just a link to Spotify. Cover art, visual direction, and release context are treated as first-class parts of the product.",
-      pressureTest:
-        "PRESSURE TEST is the event series at the center of watchyourtemper. Each event is produced end-to-end: booking, promotion, visual identity, ticketing, venue coordination, and live content capture. The events feed directly into the content system and merch cycles.",
-      commerce:
-        "The merch surface is designed as a product experience, not an afterthought. Limited drops, visual cohesion with releases and events, and a checkout flow that feels like part of the brand rather than a generic storefront.",
-      contentSystem:
-        "Content flows through the entire ecosystem: event footage becomes release teasers, release visuals become merch designs, and community moments feed the visual identity. The system is designed so every output can become an input for something else.",
-      technicalSurface:
-        "Built as an edge-deployed Cloudflare Workers SPA with React, Vite, and TypeScript. Custom dark editorial design system with distinctive typography. Performance-optimized with fast LCP and near-zero CLS. Designed to layer in Pretext editorial components and WebGL ambient visuals without compromising the baseline experience.",
-    },
-  },
-  {
     slug: "wytos",
     title: "wytOS",
     tagline:
       "A local-first creative OS for structured memory and AI-assisted workflows",
     category: "AI / Developer Tools",
-    accent: "magenta",
+    accent: "red",
     description:
       "A local-first creative operating system with SQLite FTS5 search, local LLM summarization, and structured retrieval workflows.",
     summary:
@@ -206,29 +189,47 @@ export const projects: Project[] = [
     featured: false,
   },
   {
-    slug: "suitcase",
-    title: "Suitcase",
-    tagline: "Portable local development environments",
-    category: "Developer Tools",
-    accent: "blue",
+    slug: "watchyourtemper",
+    title: "watchyourtemper",
+    tagline: "Electronic music, events, merch, and visual world",
+    category: "Creative",
+    accent: "green",
     description:
-      "A tool for creating portable, reproducible local development environments. Documentation and guides at suitcase-docs.pages.dev.",
+      "An electronic music world spanning releases, events, merch, visual systems, and community experiments.",
     summary:
-      "Suitcase helps developers spin up consistent, portable local environments. Think of it as lightweight, shareable dev container blueprints that travel with your project.",
+      "watchyourtemper is an electronic music, event, merch, and visual world. It connects releases, PRESSURE TEST events, content systems, visual identity, and commerce experiments into one creative ecosystem.",
     problem:
-      "Setting up consistent development environments across machines and teammates is painful. Docker images are heavy, dotfiles scatter config, and onboarding new contributors takes hours of environment debugging.",
+      "Independent electronic artists operate across fragmented platforms: music on streaming services, events on ticketing platforms, merch on separate storefronts, and visual identity scattered across social media. There is no unified surface that connects the music, the events, the commerce, and the world-building into a coherent creative ecosystem controlled by the artist.",
     solution:
-      "Suitcase provides a lightweight, declarative way to define and share local dev environments. Each environment is a self-contained, reproducible configuration that boots quickly and runs anywhere.",
+      "watchyourtemper is a unified brand platform that brings releases, events, merch, content, and visual identity together under one domain. It treats the project as an inhabitable creative world rather than a collection of disjointed links — giving fans a cohesive experience and giving the artist full creative and commercial control.",
     whatIBuilt:
-      "I built Suitcase as a portable environment definition and provisioning tool. It supports declarative configuration, fast boot times, and clean teardown. The documentation site covers setup guides, common recipes, and integration patterns.",
+      "I built watchyourtemper.com as a Cloudflare Workers-based edge-deployed fullstack SPA. The site implements multiple client routes and API endpoints, uses Durable Objects for serverless-backed behaviour, and delivers a media-heavy UX with low-latency edge delivery. I optimized the frontend bundle and critical payload sizes for fast load times using Vite, load-tested API and homepage paths under concurrency, and implemented request observability with automated tests. Every page reflects the project's visual identity — dark, textural, high-contrast — and is built to feel alive.",
     techFocus:
-      "Portable development environment provisioning. Declarative configuration. Fast boot and teardown. Documentation-driven development with comprehensive usage guides.",
+      "Edge-deployed fullstack SPA on Cloudflare Workers and Pages. Durable Objects for serverless state. React + Vite + TypeScript frontend. Optimized bundle and critical payload sizes. Load testing under concurrency. Request observability and automated tests. Custom visual identity and dark editorial styling.",
     links: [
-      { label: "Documentation", url: "https://suitcase-docs.pages.dev" },
+      { label: "watchyourtemper.com", url: "https://watchyourtemper.com" },
+      {
+        label: "GitHub",
+        url: "https://github.com/achuthanmukundan00/watchyourtemper",
+      },
     ],
     nextSteps:
-      "Expand environment templates. Add community-contributed recipes. Integrate with common CI/CD pipelines for consistent dev/test parity.",
-    featured: false,
+      "Phase 2 visual core: integrate Pretext for long-form editorial pages and WebGL for an interactive hero scene. Expand merch surface with real inventory. Build content pipelines for release launches and event promotion.",
+    featured: true,
+    extended: {
+      world:
+        "watchyourtemper is an electronic music project, visual identity, merch surface, and creative world — built end-to-end across music production, web, commerce, content, and live events.",
+      releases:
+        "The release system connects music distribution across streaming platforms with a custom web surface that presents each release as a designed artifact — not just a link to Spotify. Cover art, visual direction, and release context are treated as first-class parts of the product.",
+      pressureTest:
+        "PRESSURE TEST is the event series at the center of watchyourtemper. Each event is produced end-to-end: booking, promotion, visual identity, ticketing, venue coordination, and live content capture. The events feed directly into the content system and merch cycles.",
+      commerce:
+        "The merch surface is designed as a product experience, not an afterthought. Limited drops, visual cohesion with releases and events, and a checkout flow that feels like part of the brand rather than a generic storefront.",
+      contentSystem:
+        "Content flows through the entire ecosystem: event footage becomes release teasers, release visuals become merch designs, and community moments feed the visual identity. The system is designed so every output can become an input for something else.",
+      technicalSurface:
+        "Built as an edge-deployed Cloudflare Workers SPA with React, Vite, and TypeScript. Custom dark editorial design system with distinctive typography. Performance-optimized with fast LCP and near-zero CLS. Designed to layer in Pretext editorial components and WebGL ambient visuals without compromising the baseline experience.",
+    },
   },
 ];
 

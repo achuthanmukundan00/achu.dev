@@ -5,7 +5,7 @@ import { projects } from "@data/projects";
 import ProjectCard from "@components/project/ProjectCard.astro";
 import { site } from "@data/site";
 
-const highlighted = ["relay", "synax", "suitcase", "watchyourtemper", "wytos", "temper-cloud"];
+const highlighted = ["suitcase", "relay", "synax", "wytos", "temper-cloud"];
 const highlightedProjects = projects.filter(p => highlighted.includes(p.slug));
 const otherProjects = projects.filter(p => !highlighted.includes(p.slug));
 ---
