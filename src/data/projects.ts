@@ -205,6 +205,31 @@ export const projects: Project[] = [
       "This was an academic fullstack project that demonstrated end-to-end ownership. The architecture patterns and multi-service design inform later work on Temper Cloud and wytOS.",
     featured: false,
   },
+  {
+    slug: "suitcase",
+    title: "Suitcase",
+    tagline: "Portable local development environments",
+    category: "Developer Tools",
+    accent: "blue",
+    description:
+      "A tool for creating portable, reproducible local development environments. Documentation and guides at suitcase-docs.pages.dev.",
+    summary:
+      "Suitcase helps developers spin up consistent, portable local environments. Think of it as lightweight, shareable dev container blueprints that travel with your project.",
+    problem:
+      "Setting up consistent development environments across machines and teammates is painful. Docker images are heavy, dotfiles scatter config, and onboarding new contributors takes hours of environment debugging.",
+    solution:
+      "Suitcase provides a lightweight, declarative way to define and share local dev environments. Each environment is a self-contained, reproducible configuration that boots quickly and runs anywhere.",
+    whatIBuilt:
+      "I built Suitcase as a portable environment definition and provisioning tool. It supports declarative configuration, fast boot times, and clean teardown. The documentation site covers setup guides, common recipes, and integration patterns.",
+    techFocus:
+      "Portable development environment provisioning. Declarative configuration. Fast boot and teardown. Documentation-driven development with comprehensive usage guides.",
+    links: [
+      { label: "Documentation", url: "https://suitcase-docs.pages.dev" },
+    ],
+    nextSteps:
+      "Expand environment templates. Add community-contributed recipes. Integrate with common CI/CD pipelines for consistent dev/test parity.",
+    featured: false,
+  },
 ];
 
 /** Look up a project by slug */

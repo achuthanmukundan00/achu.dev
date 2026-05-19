@@ -54,17 +54,17 @@ const experience = [
       <div class="flex flex-wrap gap-4 pt-2 text-sm">
         <a href={links.github} target="_blank" rel="noopener noreferrer me"
           class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">GitHub</a>
-        <span class="text-[#2a2a3c]" aria-hidden="true">·</span>
+        <span class="text-neutral-700" aria-hidden="true">·</span>
         <a href={links.linkedin} target="_blank" rel="noopener noreferrer me"
           class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">LinkedIn</a>
-        <span class="text-[#2a2a3c]" aria-hidden="true">·</span>
+        <span class="text-neutral-700" aria-hidden="true">·</span>
         <a href={`mailto:${links.email}`}
           class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">{links.email}</a>
       </div>
 
       <!-- PDF placeholder -->
       <div>
-        <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-[#2a2a3c] text-sm text-neutral-500 opacity-50 cursor-not-allowed"
+        <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-neutral-700 text-sm text-neutral-500 opacity-50 cursor-not-allowed"
           aria-disabled="true">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -82,7 +82,7 @@ const experience = [
       <h2 class="section-label">Experience</h2>
       <div class="space-y-8">
         {experience.map((exp) => (
-          <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-2">
+          <div class="border-l-2 border-neutral-800 pl-5 space-y-2">
             <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
               <h3 class="text-lg font-semibold text-white">{exp.role}</h3>
               <span class="text-sm text-neutral-500 shrink-0">{exp.period}</span>
@@ -105,7 +105,7 @@ const experience = [
     <!-- Education -->
     <section>
       <h2 class="section-label">Education</h2>
-      <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-2">
+      <div class="border-l-2 border-neutral-800 pl-5 space-y-2">
         <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
           <h3 class="text-lg font-semibold text-white">University of Toronto</h3>
           <span class="text-sm text-neutral-500 shrink-0">Graduated 2025</span>
@@ -123,7 +123,7 @@ const experience = [
       <h2 class="section-label">Featured Projects</h2>
       <div class="space-y-4">
         {featuredProjects.map((project) => (
-          <div class="border-l-2 border-[#1e1e2e] pl-5 space-y-1">
+          <div class="border-l-2 border-neutral-800 pl-5 space-y-1">
             <div class="flex flex-col sm:flex-row sm:items-center gap-1">
               <a href={`/work/${project.slug}`}
                 class="text-lg font-semibold text-white hover:text-blue-400 transition-colors">
@@ -142,7 +142,7 @@ const experience = [
       <h2 class="section-label">Skills</h2>
       <div class="flex flex-wrap gap-2">
         {skills.map((skill) => (
-          <span class="px-3 py-1.5 text-xs rounded-full border border-[#1e1e2e] text-neutral-400 bg-[#0c0c14]">
+          <span class="px-3 py-1.5 text-xs rounded-full border border-neutral-800 text-neutral-400 bg-[#111114]">
             {skill}
           </span>
         ))}

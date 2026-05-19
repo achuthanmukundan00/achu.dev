@@ -14,7 +14,7 @@ export const links = {
   relayRepo: "https://achuthanmukundan00.github.io/relay",
   relayDocs: "#",
   relayLive: "#",
-  synaxRepo: "#",
+  synaxRepo: "https://github.com/achuthanmukundan00/synax",
   synaxDocs: "#",
   synaxLive: "#",
   wytosRepo: "https://github.com/achuthanmukundan00/wytOS",
@@ -23,6 +23,7 @@ export const links = {
   packageNameGenRepo: "https://github.com/achuthanmukundan00/package-name-gen",
   autoCareerRepo: "https://github.com/achuthanmukundan00/AutoCareer",
   resampleLabRepo: "https://github.com/achuthanmukundan00/Resample-Lab",
+  suitcaseDocs: "https://suitcase-docs.pages.dev",
 } as const;
 
 export type LinkKey = keyof typeof links;

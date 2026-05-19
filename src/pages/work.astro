@@ -1,136 +1,20 @@
 ---
-// work.astro — Work index featuring Relay and Synax with animated
-// Three.js backgrounds, plus a grid of all projects below.
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ProjectCard from "@components/project/ProjectCard.astro";
-import RelayTransmissionCore from "@components/three/RelayTransmissionCore";
-import SynaxAICore from "@components/three/SynaxAICore";
 import { projects } from "@data/projects";
-
-const relay = projects.find((p) => p.slug === "relay");
-const synax = projects.find((p) => p.slug === "synax");
-const otherProjects = projects.filter(
-  (p) => p.slug !== "relay" && p.slug !== "synax"
-);
 ---
 
 <BaseLayout title="Work" description="Projects by Achu Mukundan.">
   <header class="space-y-3 mb-10">
     <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">Work</h1>
     <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
-      A few things I've built.
+      Projects I've built — open source tools, infrastructure, and experiments.
     </p>
   </header>
 
-  <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- Featured: Relay + Synax with animated Three.js backgrounds          -->
-  <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <div class="grid gap-6 mb-14 lg:grid-cols-2">
-    <!-- Relay featured card -->
-    {relay && (
-      <a
-        href={`/work/${relay.slug}`}
-        class="group relative block overflow-hidden rounded-xl border border-[#1e1e2e] bg-[#03050a] min-h-[380px] lg:min-h-[440px] transition-all duration-300 hover:border-blue-400/30 hover:-translate-y-0.5"
-      >
-        <!-- Three.js transmission background -->
-        <RelayTransmissionCore client:load />
-
-        <!-- Dark gradient overlay for text legibility -->
-        <div
-          class="absolute inset-0 pointer-events-none"
-          style="background: linear-gradient(135deg, rgba(3,5,10,0.85) 0%, rgba(3,5,10,0.35) 40%, rgba(3,5,10,0.15) 65%, rgba(3,5,10,0.6) 100%);"
-          aria-hidden="true"
-        ></div>
-
-        <!-- Card content -->
-        <div class="relative z-10 flex flex-col justify-end h-full p-6 lg:p-8">
-          <div class="border-l-2 border-blue-400 pl-4 mb-3">
-            <p class="text-xs font-mono uppercase tracking-[0.15em] text-blue-400/70 mb-1">
-              {relay.category}
-            </p>
-            <h2 class="text-2xl lg:text-3xl font-bold text-white group-hover:text-blue-300 transition-colors">
-              {relay.title}
-            </h2>
-          </div>
-          <p class="text-sm text-blue-100/60 font-mono max-w-sm">{relay.tagline}</p>
-          <p class="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed line-clamp-2">
-            {relay.description}
-          </p>
-          <div class="mt-4 flex flex-wrap gap-1.5">
-            <span class="px-2 py-0.5 text-xs rounded border border-blue-400/15 text-blue-300/60 bg-blue-400/[0.04]">TypeScript</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-blue-400/15 text-blue-300/60 bg-blue-400/[0.04]">SSE Streaming</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-blue-400/15 text-blue-300/60 bg-blue-400/[0.04]">llama.cpp</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-blue-400/15 text-blue-300/60 bg-blue-400/[0.04]">API Gateway</span>
-          </div>
-          <span class="mt-5 inline-flex text-xs uppercase tracking-[0.2em] text-blue-300/50 group-hover:text-blue-200/70 transition-colors">
-            View project →
-          </span>
-        </div>
-      </a>
-    )}
-
-    <!-- Synax featured card -->
-    {synax && (
-      <a
-        href={`/work/${synax.slug}`}
-        class="group relative block overflow-hidden rounded-xl border border-[#1e1e2e] bg-[#03080f] min-h-[380px] lg:min-h-[440px] transition-all duration-300 hover:border-purple-400/30 hover:-translate-y-0.5"
-      >
-        <!-- Three.js AI core background -->
-        <SynaxAICore client:load />
-
-        <!-- Dark gradient overlay for text legibility -->
-        <div
-          class="absolute inset-0 pointer-events-none"
-          style="background: linear-gradient(135deg, rgba(3,8,15,0.85) 0%, rgba(3,8,15,0.3) 40%, rgba(3,8,15,0.1) 65%, rgba(3,8,15,0.6) 100%);"
-          aria-hidden="true"
-        ></div>
-
-        <!-- Status badge -->
-        <div class="absolute top-4 right-4 z-20">
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded border border-purple-400/30 bg-purple-400/10 text-[0.62rem] font-mono uppercase tracking-[0.15em] text-purple-300/80 backdrop-blur-sm">
-            <span class="w-1.5 h-1.5 rounded-full bg-purple-400" aria-hidden="true"></span>
-            Closed Alpha
-          </span>
-        </div>
-
-        <!-- Card content -->
-        <div class="relative z-10 flex flex-col justify-end h-full p-6 lg:p-8">
-          <div class="border-l-2 border-purple-400 pl-4 mb-3">
-            <p class="text-xs font-mono uppercase tracking-[0.15em] text-purple-400/70 mb-1">
-              {synax.category}
-            </p>
-            <h2 class="text-2xl lg:text-3xl font-bold text-white group-hover:text-purple-300 transition-colors">
-              {synax.title}
-            </h2>
-          </div>
-          <p class="text-sm text-purple-100/60 font-mono max-w-sm">{synax.tagline}</p>
-          <p class="mt-3 text-sm text-neutral-400 max-w-md leading-relaxed line-clamp-2">
-            {synax.description}
-          </p>
-          <div class="mt-4 flex flex-wrap gap-1.5">
-            <span class="px-2 py-0.5 text-xs rounded border border-purple-400/15 text-purple-300/60 bg-purple-400/[0.04]">Agent Loop</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-purple-400/15 text-purple-300/60 bg-purple-400/[0.04]">TUI</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-purple-400/15 text-purple-300/60 bg-purple-400/[0.04]">Local LLM</span>
-            <span class="px-2 py-0.5 text-xs rounded border border-purple-400/15 text-purple-300/60 bg-purple-400/[0.04]">Closed Alpha</span>
-          </div>
-          <span class="mt-5 inline-flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-purple-300/50 group-hover:text-purple-200/70 transition-colors">
-            <span class="w-1.5 h-1.5 rounded-full bg-purple-400" aria-hidden="true"></span>
-            View project →
-          </span>
-        </div>
-      </a>
-    )}
-  </div>
-
-  <!-- ═══════════════════════════════════════════════════════════════════ -->
-  <!-- Other projects                                                      -->
-  <!-- ═══════════════════════════════════════════════════════════════════ -->
   <section>
-    <h2 class="text-sm font-mono uppercase tracking-[0.18em] text-neutral-500 mb-5">
-      More projects
-    </h2>
-    <div class="grid gap-5 sm:grid-cols-2">
-      {otherProjects.map((project) => (
+    <div class="project-grid">
+      {projects.map((project) => (
         <ProjectCard project={project} />
       ))}
     </div>

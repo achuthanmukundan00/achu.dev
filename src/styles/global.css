@@ -5,26 +5,15 @@
 @layer base {
   :root {
     color-scheme: dark;
-    --color-surface: #06060a;
-    --color-surface-100: #0c0c14;
-    --color-surface-200: #14141f;
-    --color-surface-300: #1e1e2e;
-    --color-surface-400: #2a2a3c;
-    --color-accent-blue: #60a5fa;
-    --color-accent-magenta: #c084fc;
-    --color-accent-green: #b0c8ff;
   }
 
   html {
-    @apply bg-[#06060a] text-white antialiased;
+    @apply bg-[#0a0a0b] text-white antialiased;
     scroll-behavior: smooth;
   }
 
   body {
     @apply min-h-screen font-sans leading-relaxed;
-    background:
-      radial-gradient(circle at 72% 0%, rgba(176, 200, 255, 0.03), transparent 28rem),
-      #020307;
   }
 
   ::selection {
@@ -37,18 +26,13 @@
 }
 
 @layer components {
-  /* Prose for case studies and notes */
+  /* Prose */
   .prose {
     @apply max-w-none text-neutral-400 leading-relaxed;
   }
-
-  .prose h1,
-  .prose h2,
-  .prose h3,
-  .prose h4 {
+  .prose h1, .prose h2, .prose h3, .prose h4 {
     @apply text-white font-semibold;
   }
-
   .prose h1 { @apply text-3xl lg:text-4xl mt-12 mb-6; }
   .prose h2 { @apply text-2xl lg:text-3xl mt-10 mb-4; }
   .prose h3 { @apply text-xl lg:text-2xl mt-8 mb-3; }
@@ -58,539 +42,37 @@
   .prose ol { @apply list-decimal list-inside mb-4 space-y-1; }
   .prose li { @apply text-neutral-400; }
   .prose strong { @apply text-white font-semibold; }
-  .prose code { @apply text-sm bg-surface-200 px-1.5 py-0.5 rounded font-mono text-neutral-300; }
-
-  /* Accent lines for project cards */
-  .accent-blue { @apply border-l-blue-400; }
-  .accent-magenta { @apply border-l-purple-400; }
-  .accent-green { @apply border-l-green-400; }
+  .prose code { @apply text-sm bg-neutral-800 px-1.5 py-0.5 rounded font-mono text-neutral-300; }
 
   /* Section label */
   .section-label {
-    @apply text-xs font-mono uppercase tracking-[0.2em] text-blue-100/45 mb-4;
+    @apply text-xs font-mono uppercase tracking-[0.15em] text-neutral-500 mb-4;
   }
 
-  .home-surface {
-    isolation: isolate;
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-md border border-neutral-700 text-neutral-300 hover:text-white hover:border-neutral-500 transition-colors;
   }
-
-  .surface-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
-    background-size: 64px 64px;
-    mask-image: radial-gradient(circle at 68% 34%, black 0%, transparent 66%);
-    opacity: 0.22;
-  }
-
-  .scanline-overlay {
-    pointer-events: none;
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.035), transparent 1px),
-      linear-gradient(120deg, transparent 0%, rgba(176, 200, 255, 0.05) 44%, transparent 46%);
-    background-size: 100% 4px, 260% 100%;
-    mix-blend-mode: screen;
-    opacity: 0.28;
-    animation: scan-sweep 9s linear infinite;
-  }
-
-  .core-stage {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    border: 1px solid rgba(226, 241, 255, 0.14);
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.075), rgba(255, 255, 255, 0.018)),
-      radial-gradient(circle at 50% 42%, rgba(176, 200, 255, 0.06), transparent 44%),
-      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.03) 0 1px, transparent 1px 42px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.15),
-      inset 0 -26px 60px rgba(0, 0, 0, 0.55),
-      0 28px 90px rgba(0, 0, 0, 0.62);
-    clip-path: polygon(0 20px, 20px 0, 100% 0, 100% calc(100% - 28px), calc(100% - 28px) 100%, 0 100%);
-  }
-
-  .core-reticle {
-    pointer-events: none;
-    position: absolute;
-    inset: 7%;
-    border: 1px solid rgba(201, 228, 255, 0.16);
-    clip-path: polygon(0 0, 28% 0, 28% 1px, 0 1px, 0 100%, 1px 100%, 1px 72%, 0 72%, 0 0, 100% 0, 100% 28%, calc(100% - 1px) 28%, calc(100% - 1px) 1px, 72% 1px, 72% 0);
-  }
-
-  .core-microtext {
-    pointer-events: none;
-    position: absolute;
-    left: 1.2rem;
-    z-index: 2;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.64rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    color: rgba(214, 232, 255, 0.46);
-  }
-
-  .core-microtext-top {
-    top: 1.15rem;
-  }
-
-  .core-microtext-bottom {
-    bottom: 1.2rem;
-    max-width: 18rem;
-  }
-
-  .core-label {
-    position: absolute;
-    right: 1rem;
-    bottom: 1rem;
-    max-width: min(20rem, calc(100% - 2rem));
-    border: 1px solid rgba(210, 235, 255, 0.16);
-    background: rgba(2, 3, 7, 0.72);
-    padding: 0.9rem 1rem;
-    font-family: "JetBrains Mono", monospace;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
-    backdrop-filter: blur(18px);
-    z-index: 18;
-  }
-
-  .core-label span {
-    display: block;
-    color: rgba(214, 232, 255, 0.48);
-    font-size: 0.63rem;
-  }
-
-  .core-label strong {
-    display: block;
-    margin-top: 0.35rem;
-    color: rgba(255, 255, 255, 0.88);
-    font-size: 0.76rem;
-  }
-
-  .interface-button {
-    @apply inline-flex items-center justify-center border border-white/15 bg-white/[0.045] px-5 py-3 font-mono text-xs font-medium uppercase tracking-[0.16em] text-blue-50/80 transition-colors;
-    min-height: 2.85rem;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.11),
-      inset 0 -12px 28px rgba(0, 0, 0, 0.28);
-    clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 10px 100%, 0 calc(100% - 10px));
-  }
-
-  .interface-button:hover,
-  .interface-button:focus-visible {
-    @apply border-blue-200/60 bg-blue-100/10 text-white;
-    transform: translateY(-1px);
-  }
-
-  .interface-button-primary {
-    @apply border-blue-100/70 bg-blue-50 text-black;
-  }
-
-  .interface-button-primary:hover,
-  .interface-button-primary:focus-visible {
-    @apply bg-blue-200 text-black;
-  }
-
-  .interface-button-green {
-    @apply border-lime-300/30 text-lime-200/85;
-  }
-
-  .interface-button-green:hover,
-  .interface-button-green:focus-visible {
-    @apply border-lime-300/70 bg-lime-300/10 text-lime-100;
-  }
-
-  .glass-readout {
-    @apply border border-white/10 bg-black/35 px-3 py-3 font-mono text-[0.68rem] uppercase tracking-[0.13em] text-blue-100/60;
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-  }
-
-  .hero-phrase {
-    display: inline;
-    border-bottom: 1px solid rgba(176, 200, 255, 0.18);
-    color: inherit;
-    transition:
-      border-color 160ms ease,
-      color 160ms ease,
-      text-shadow 160ms ease;
-  }
-
-  .hero-phrase:hover,
-  .hero-phrase:focus-visible {
-    border-color: rgba(176, 200, 255, 0.5);
-    color: #e8f0ff;
-    text-shadow: 0 0 24px rgba(176, 200, 255, 0.12);
-  }
-
-  .runtime-node-layer {
-    position: absolute;
-    inset: 0;
-    z-index: 12;
-    pointer-events: none;
-  }
-
-  .runtime-node {
-    pointer-events: auto;
-    position: absolute;
-    display: grid;
-    height: 2.85rem;
-    width: 2.85rem;
-    place-items: center;
-    border: 1px solid rgba(215, 237, 255, 0.26);
-    background: rgba(2, 4, 7, 0.68);
-    color: rgba(232, 246, 255, 0.78);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 0 28px rgba(176, 200, 255, 0.05);
-    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%);
-    transition:
-      border-color 180ms ease,
-      background 180ms ease,
-      transform 180ms ease;
-  }
-
-  .runtime-node::before {
-    content: "";
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    width: clamp(3rem, 8vw, 5.5rem);
-    height: 1px;
-    background: linear-gradient(90deg, rgba(176, 200, 255, 0.25), transparent);
-    transform-origin: left center;
-    opacity: 0.5;
-  }
-
-  .runtime-node-pip {
-    height: 0.44rem;
-    width: 0.44rem;
-    background: #b0c8ff;
-    box-shadow: 0 0 18px rgba(176, 200, 255, 0.4);
-    transform: rotate(45deg);
-  }
-
-  .runtime-node-index {
-    position: absolute;
-    top: -1.05rem;
-    left: 50%;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.16em;
-    color: rgba(214, 232, 255, 0.48);
-    transform: translateX(-50%);
-  }
-
-  .runtime-node:hover,
-  .runtime-node:focus-visible,
-  .runtime-node.is-active {
-    border-color: rgba(190, 242, 255, 0.72);
-    background: rgba(176, 200, 255, 0.07);
-    transform: scale(1.08);
-  }
-
-  .node-relay {
-    right: 22%;
-    top: 20%;
-  }
-
-  .node-relay::before {
-    transform: rotate(146deg);
-  }
-
-  .node-synax {
-    left: 21%;
-    top: 36%;
-  }
-
-  .node-synax::before {
-    transform: rotate(-24deg);
-  }
-
-  .node-wytos {
-    right: 18%;
-    bottom: 30%;
-  }
-
-  .node-wytos::before {
-    transform: rotate(206deg);
-  }
-
-  .node-watchyourtemper {
-    left: 26%;
-    bottom: 17%;
+  .btn-primary {
+    @apply bg-white text-black border-white hover:bg-neutral-200 hover:border-neutral-200;
   }
 
-  .node-watchyourtemper::before {
-    transform: rotate(-38deg);
+  /* Project cards */
+  .project-grid {
+    @apply grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
   }
-
-  .node-watchyourtemper .runtime-node-pip,
-  .node-watchyourtemper.is-active .runtime-node-pip {
-    background: #b0c8ff;
-    box-shadow: 0 0 18px rgba(176, 200, 255, 0.5);
-  }
-
-  .node-watchyourtemper:hover,
-  .node-watchyourtemper:focus-visible,
-  .node-watchyourtemper.is-active {
-    border-color: rgba(176, 200, 255, 0.6);
-    background: rgba(176, 200, 255, 0.08);
-  }
-
-  .runtime-panel {
-    position: absolute;
-    z-index: 20;
-    width: min(20rem, calc(100% - 2rem));
-    border: 1px solid rgba(210, 235, 255, 0.18);
-    background:
-      linear-gradient(135deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.035)),
-      rgba(2, 4, 7, 0.9);
-    padding: 1rem;
-    color: white;
-    backdrop-filter: blur(18px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      0 18px 50px rgba(0, 0, 0, 0.36);
-    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
-    animation: panel-wake 220ms ease-out;
-  }
-
-  .runtime-panel-header,
-  .runtime-panel-footer {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.63rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
-    color: rgba(214, 232, 255, 0.52);
-  }
-
-  .runtime-panel-header a {
-    color: rgba(255, 255, 255, 0.72);
-    transition: color 160ms ease;
-  }
-
-  .runtime-panel-header a:hover,
-  .runtime-panel-header a:focus-visible {
-    color: white;
-  }
-
-  .runtime-panel h2 {
-    margin-top: 0.8rem;
-    font-family: "JetBrains Mono", monospace;
-    font-size: 0.86rem;
-    letter-spacing: 0.17em;
-    text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.92);
-  }
-
-  .runtime-panel p {
-    margin-top: 0.7rem;
-    color: rgba(203, 213, 225, 0.86);
-    font-size: 0.9rem;
-    line-height: 1.55;
-  }
-
-  .runtime-panel-footer {
-    margin-top: 1rem;
-    color: rgba(255, 255, 255, 0.4);
-  }
-
-  .panel-relay {
-    right: 1rem;
-    top: 5.2rem;
-  }
-
-  .panel-synax {
-    left: 1rem;
-    top: 11.5rem;
-  }
-
-  .panel-wytos {
-    right: 1rem;
-    bottom: 7.6rem;
-  }
-
-  .panel-watchyourtemper {
-    left: 1rem;
-    bottom: 5rem;
-    border-color: rgba(156, 255, 79, 0.22);
-  }
-
-  .surface-section {
-    background:
-      radial-gradient(circle at 80% 10%, rgba(176, 200, 255, 0.03), transparent 27rem),
-      linear-gradient(180deg, #020407, #05080d 52%, #020407);
-  }
-
-  .interface-panel {
-    @apply border border-white/10 bg-white/[0.035] p-6;
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.09),
-      0 20px 60px rgba(0, 0, 0, 0.22);
-    clip-path: polygon(0 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 16px 100%, 0 calc(100% - 16px));
-  }
-
-  .panel-index {
-    @apply font-mono text-xs uppercase tracking-[0.18em] text-blue-100/35;
+  .project-card {
+    @apply block rounded-lg border border-neutral-800 bg-[#111114] p-5 transition-colors hover:border-neutral-600;
   }
-
-  .module-grid {
-    display: grid;
-    grid-template-columns: repeat(1, minmax(0, 1fr));
-    gap: 0.75rem;
-  }
-
-  .module-card {
-    @apply border border-white/10 bg-white/[0.035] p-6 transition-colors;
-    position: relative;
-    min-height: 15rem;
-    background:
-      linear-gradient(180deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.02)),
-      repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 38px);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.08),
-      inset 0 -18px 40px rgba(0, 0, 0, 0.24);
-    clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
-  }
-
-  .module-card::after {
-    content: "";
-    position: absolute;
-    left: 1.5rem;
-    right: 1.5rem;
-    bottom: 1.25rem;
-    height: 1px;
-    background: linear-gradient(90deg, rgba(119, 231, 255, 0.48), transparent);
-    opacity: 0.45;
-  }
-
-  .module-card:hover,
-  .module-card:focus-visible {
-    @apply border-blue-200/45 bg-blue-100/[0.055];
-  }
-
-  .module-card-green:hover,
-  .module-card-green:focus-visible {
-    @apply border-lime-300/45 bg-lime-300/[0.05];
-  }
-
-  .role-chip {
-    @apply border border-blue-100/15 bg-blue-100/[0.045] px-3 py-2 font-mono text-xs uppercase tracking-[0.15em] text-blue-50/70;
-  }
-
-  .build-log-panel {
-    display: grid;
-    gap: 2rem;
-  }
-
-  @media (min-width: 768px) {
-    .module-grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .module-card {
-      min-height: 17rem;
-    }
-
-    .build-log-panel {
-      grid-template-columns: 0.9fr 1.1fr;
-      align-items: end;
-    }
-  }
-
-  @media (min-width: 1180px) {
-    .module-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-    }
-  }
-
-  @media (max-width: 1023px) {
-    .core-stage {
-      position: relative;
-      inset: auto;
-      min-height: 520px;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .core-stage {
-      min-height: 560px;
-    }
-
-    .runtime-node {
-      height: 2.4rem;
-      width: 2.4rem;
-    }
-
-    .runtime-node::before {
-      width: 2.8rem;
-    }
-
-    .runtime-panel {
-      left: 1rem;
-      right: 1rem;
-      width: auto;
-      bottom: 4.25rem;
-      top: auto;
-    }
-
-    .panel-relay,
-    .panel-synax,
-    .panel-wytos,
-    .panel-watchyourtemper {
-      left: 1rem;
-      right: 1rem;
-      top: auto;
-      bottom: 4.25rem;
-    }
-
-    .core-label {
-      left: 1rem;
-      right: 1rem;
-      bottom: 1rem;
-      max-width: none;
-    }
-
-    .core-microtext-bottom {
-      display: none;
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      scroll-behavior: auto !important;
-      animation-duration: 0.001ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.001ms !important;
-    }
+  .project-card:hover h3 {
+    @apply text-blue-400;
   }
-
-  @keyframes scan-sweep {
-    0% {
-      background-position: 0 0, 180% 0;
-    }
-    100% {
-      background-position: 0 0, -80% 0;
-    }
+  .project-card h3 {
+    @apply text-lg font-semibold text-white transition-colors;
   }
 
-  @keyframes panel-wake {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Tech tag pill */
+  .tag {
+    @apply inline-block px-2.5 py-0.5 text-[0.68rem] font-mono rounded border border-neutral-700 text-neutral-400;
   }
 }

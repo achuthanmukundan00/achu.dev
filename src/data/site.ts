@@ -16,7 +16,7 @@ export const site = {
 
 export const seo = {
   home: {
-    title: `${site.name} — projects, writing, and experiments`,
+    title: `${site.name} — open source projects and writing`,
     description: `${site.fullName} — building local-first AI tools, developer systems, and creative worlds.`,
   },
 } as const;
