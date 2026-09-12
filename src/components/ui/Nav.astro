@@ -1,57 +1,24 @@
 ---
-// Nav.astro — accessible sticky nav with active-state detection.
-import { site } from "@data/site";
-
 const navItems = [
   { href: "/work", label: "Work" },
-  { href: "/lab", label: "Lab" },
   { href: "/notes", label: "Notes" },
+  { href: "/resume", label: "Resume" },
   { href: "/contact", label: "Contact" },
 ];
 
-const currentPath = Astro.url.pathname;
+const pathname = Astro.url.pathname;
+const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 ---
 
-<nav
-  class="sticky top-0 z-50 border-b border-neutral-800 bg-[#0a0a0b]/80 backdrop-blur-xl"
-  aria-label="Main navigation"
->
-  <div class="mx-auto max-w-7xl px-5 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-    <a
-      href="/"
-      class="text-xl font-semibold tracking-normal text-white hover:text-neutral-300 transition-colors"
-      aria-label={`${site.name} home`}
-    >
-      {site.name}
-    </a>
-
-    <!-- Desktop nav -->
-    <ul class="hidden md:flex items-center gap-8">
-      {navItems.map((item) => {
-        const isActive =
-          item.href === "/"
-            ? currentPath === "/"
-            : currentPath.startsWith(item.href);
-        return (
-          <li>
-            <a
-              href={item.href}
-              class={`font-mono text-[0.72rem] uppercase tracking-[0.18em] transition-colors ${
-                isActive
-                  ? "text-white font-medium"
-                  : "text-neutral-400 hover:text-white"
-              }`}
-              aria-current={isActive ? "page" : undefined}
-            >
-              {item.label}
-            </a>
-          </li>
-        );
-      })}
-    </ul>
-
-    <a class="md:hidden font-mono text-xs uppercase tracking-[0.18em] text-neutral-400" href="/work">
-      Menu
-    </a>
+<header class="site-header">
+  <div class="site-shell header-inner">
+    <a href="/" class="wordmark" aria-label="Achu Mukundan, home">Achu Mukundan</a>
+    <nav class="primary-nav" aria-label="Primary navigation">
+      {navItems.map((item) => (
+        <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
   </div>
-</nav>
+</header>

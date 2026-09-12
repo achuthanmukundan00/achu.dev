@@ -1,0 +1,380 @@
+{
+  "schema_version": 3,
+  "decision": "keep_mtp_disabled",
+  "scope": {
+    "device": "one Intel Arc Pro B70",
+    "runtime": "patched vLLM XPU",
+    "claim": "Observed on this stack and these checkpoints; not a general claim about MTP or future XPU graph implementations."
+  },
+  "graph_replay_safety": {
+    "finding": "Speculative decoding produced incoherent output when the XPU target graph was replayed.",
+    "safe_test_mode": "Compilation enabled, XPU graph replay disabled",
+    "coherence_suite_cases": 6,
+    "trials": [
+      {
+        "draft_path": "BF16 MTP 1",
+        "graph_mode": "full-decode target graph",
+        "coherence_passed": 2,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 7,
+        "draft_tokens": 563,
+        "result": "rejected"
+      },
+      {
+        "draft_path": "corrected INT4 MTP 1",
+        "graph_mode": "full-decode target graph",
+        "coherence_passed": 2,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 0,
+        "draft_tokens": 570,
+        "result": "rejected"
+      },
+      {
+        "draft_path": "eager BF16 MTP 1 draft",
+        "graph_mode": "full-decode target graph",
+        "coherence_passed": 2,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 7,
+        "draft_tokens": 563,
+        "result": "rejected"
+      },
+      {
+        "draft_path": "eager BF16 MTP 1 draft",
+        "graph_mode": "piecewise target graph",
+        "coherence_passed": 2,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 7,
+        "draft_tokens": 563,
+        "result": "rejected"
+      },
+      {
+        "draft_path": "BF16 MTP 1 with alternate attention",
+        "graph_mode": "full-decode target graph",
+        "coherence_passed": 2,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 3,
+        "draft_tokens": 567,
+        "result": "rejected"
+      },
+      {
+        "draft_path": "n-gram speculation",
+        "graph_mode": "full-decode target graph",
+        "coherence_passed": 4,
+        "coherence_total": 6,
+        "accepted_draft_tokens": 90,
+        "draft_tokens": 98,
+        "result": "rejected; arithmetic and code cases were corrupted"
+      },
+      {
+        "draft_path": "BF16 MTP 1 with input copying",
+        "graph_mode": "full-decode target graph",
+        "result": "startup failed"
+      }
+    ]
+  },
+  "qwen36_35b_a3b": {
+    "checkpoint_work": {
+      "initial_problem": "The external AutoRound metadata described target layers but omitted mtp.layers.",
+      "controls_built": [
+        "INT4 target with a BF16 MTP overlay",
+        "INT4 target with corrected INT4 MTP metadata"
+      ],
+      "safe_mode_result": "Both MTP variants passed 6/6 deterministic coherence cases with XPU graph replay disabled."
+    },
+    "teacher_forced_check": {
+      "checkpoint": "corrected INT4 MTP derivative",
+      "profiles": [
+        "MTP off",
+        "MTP 1"
+      ],
+      "tokens": 209,
+      "mean_nll_both_profiles": 2.1005490111474936,
+      "perplexity_both_profiles": 8.170654461803096,
+      "scope": "A narrow matched likelihood check, not a broad quality result."
+    },
+    "matched_workload": {
+      "xpu_graph_replay": false,
+      "compilation": true,
+      "native_kv": true,
+      "prefix_caching": false,
+      "concurrency": 1,
+      "new_prompt_tokens": 2048,
+      "completion_tokens": 512,
+      "scheduler_token_ceiling": 8192,
+      "warmups_per_depth": 1,
+      "measured_runs_per_depth": 3,
+      "aggregation": "median generation tokens per second",
+      "sampling": "matched greedy controls"
+    },
+    "throughput": [
+      {
+        "configured_prior_token_target": 4096,
+        "actual_prompt_tokens": 6146,
+        "filled_tokens_after_completion": 6658,
+        "mtp_off_generation_tokens_per_second_median": 26.962062814401513,
+        "mtp_off_range": [
+          26.875412761175074,
+          26.971182081130873
+        ],
+        "mtp1_generation_tokens_per_second_median": 34.77372787669477,
+        "mtp1_range": [
+          32.973771615091756,
+          36.30583707056487
+        ],
+        "mtp1_ratio_to_off": 1.2897280195534866,
+        "draft_acceptance_rate": 0.6336528221512248
+      },
+      {
+        "configured_prior_token_target": 32768,
+        "actual_prompt_tokens": 34819,
+        "filled_tokens_after_completion": 35331,
+        "mtp_off_generation_tokens_per_second_median": 27.188133149320137,
+        "mtp_off_range": [
+          27.15550524623149,
+          27.20866717462963
+        ],
+        "mtp1_generation_tokens_per_second_median": 25.11968060198046,
+        "mtp1_range": [
+          25.11847885704816,
+          25.1442095951317
+        ],
+        "mtp1_ratio_to_off": 0.9239207585169782,
+        "draft_acceptance_rate": 0.7239057239057239
+      },
+      {
+        "configured_prior_token_target": 65536,
+        "actual_prompt_tokens": 67587,
+        "filled_tokens_after_completion": 68099,
+        "mtp_off_generation_tokens_per_second_median": 27.280992833573602,
+        "mtp_off_range": [
+          27.150606319534322,
+          27.29087160555832
+        ],
+        "mtp1_generation_tokens_per_second_median": 15.472591884315493,
+        "mtp1_range": [
+          15.465658672135346,
+          15.47535500920471
+        ],
+        "mtp1_ratio_to_off": 0.567156480656892,
+        "draft_acceptance_rate": 0.6537216828478964
+      },
+      {
+        "configured_prior_token_target": 81920,
+        "actual_prompt_tokens": 83969,
+        "filled_tokens_after_completion": 84481,
+        "mtp_off_generation_tokens_per_second_median": 27.21461881375239,
+        "mtp_off_range": [
+          27.13807540577634,
+          27.259643958355262
+        ],
+        "mtp1_generation_tokens_per_second_median": 13.038563171188107,
+        "mtp1_range": [
+          13.035490308390271,
+          13.040897533156672
+        ],
+        "mtp1_ratio_to_off": 0.479101443985661,
+        "draft_acceptance_rate": 0.6430868167202572
+      },
+      {
+        "configured_prior_token_target": 115404,
+        "actual_prompt_tokens": 117455,
+        "filled_tokens_after_completion": 117967,
+        "mtp_off_generation_tokens_per_second_median": 27.07655779334613,
+        "mtp_off_range": [
+          27.01050600721254,
+          27.08568948743991
+        ],
+        "mtp1_generation_tokens_per_second_median": 11.500749584839756,
+        "mtp1_range": [
+          11.500036276909544,
+          11.502016081661845
+        ],
+        "mtp1_ratio_to_off": 0.4247493227394652,
+        "draft_acceptance_rate": 0.8996282527881041
+      }
+    ],
+    "llama_cpp_sycl_check": {
+      "weight_format": "Q4_K_S GGUF",
+      "kv": "F16",
+      "prior_tokens": 115404,
+      "new_prompt_tokens": 2048,
+      "completion_tokens": 512,
+      "concurrency": 1,
+      "measured_runs": 1,
+      "mtp_off_generation_tokens_per_second": 42.634127448022554,
+      "mtp1_generation_tokens_per_second": 38.245465256325936,
+      "result": "MTP 1 was slower in this separate backend check."
+    },
+    "comparison_note": "The matched graph-disabled control is not interchangeable with the separate 47.03 tok/s graph-enabled non-speculative serving row."
+  },
+  "qwen36_27b_dense": {
+    "checkpoint": "lyf/Qwen3.6-27B-heretic-v2-mtp-int4-AutoRound",
+    "checkpoint_source": "https://huggingface.co/lyf/Qwen3.6-27B-heretic-v2-mtp-int4-AutoRound",
+    "metadata": "Embedded AutoRound metadata covers target layers and mtp.layers; mtp.fc remains at higher precision.",
+    "matched_workload": {
+      "xpu_graph_replay": false,
+      "compilation": true,
+      "native_kv": true,
+      "prefix_caching": false,
+      "gpu_memory_utilization": 0.9,
+      "max_model_len": 40000,
+      "scheduler_token_ceiling": 8192,
+      "concurrency": 1,
+      "new_prompt_tokens": 2048,
+      "completion_tokens": 512,
+      "warmups_per_depth": 1,
+      "measured_runs_per_depth": 3,
+      "aggregation": "median generation tokens per second",
+      "sampling": "matched greedy controls"
+    },
+    "quality_checks": {
+      "profiles": [
+        "MTP off",
+        "MTP 1",
+        "MTP 2",
+        "MTP 3",
+        "MTP 4"
+      ],
+      "coherence": "Every profile passed 6/6 cases and produced byte-identical short suite outputs.",
+      "teacher_forced_tokens_per_run": 209,
+      "repeats_per_profile": 3,
+      "mtp_off_mean_nll_spread": 0.0033222087073032647,
+      "median_mean_nll_delta_from_mtp_off": {
+        "mtp1": -0.00042248521351462287,
+        "mtp2": 0.0006006766711466049,
+        "mtp3": -0.001102734937141303,
+        "mtp4": 0.0007830769562779949
+      },
+      "long_generation_identity": "Not established. Full 512-token hashes differed across profiles, while MTP off itself produced three unique hashes at each measured depth.",
+      "scope": "These checks compare MTP profiles on the same altered checkpoint. They do not establish parity with the upstream model or broad generation quality."
+    },
+    "throughput": [
+      {
+        "configured_prior_token_target": 4096,
+        "actual_prompt_tokens": 6146,
+        "filled_tokens_after_completion": 6658,
+        "profiles": [
+          {
+            "speculative_tokens": 0,
+            "generation_tokens_per_second_median": 27.00599804897194,
+            "ratio_to_mtp_off": 1.0,
+            "draft_acceptance_rate": null
+          },
+          {
+            "speculative_tokens": 1,
+            "generation_tokens_per_second_median": 7.17734366063463,
+            "ratio_to_mtp_off": 0.2657685025237516,
+            "draft_acceptance_rate": 0.6961325966850829
+          },
+          {
+            "speculative_tokens": 2,
+            "generation_tokens_per_second_median": 8.51049384477459,
+            "ratio_to_mtp_off": 0.3151334688442876,
+            "draft_acceptance_rate": 0.5267379679144385
+          },
+          {
+            "speculative_tokens": 3,
+            "generation_tokens_per_second_median": 9.341375340255487,
+            "ratio_to_mtp_off": 0.3459000227770176,
+            "draft_acceptance_rate": 0.43543543543543545
+          },
+          {
+            "speculative_tokens": 4,
+            "generation_tokens_per_second_median": 9.206059321585027,
+            "ratio_to_mtp_off": 0.34088943148448025,
+            "draft_acceptance_rate": 0.3324468085106383
+          }
+        ]
+      },
+      {
+        "configured_prior_token_target": 32768,
+        "actual_prompt_tokens": 34819,
+        "filled_tokens_after_completion": 35331,
+        "profiles": [
+          {
+            "speculative_tokens": 0,
+            "generation_tokens_per_second_median": 24.838281660483997,
+            "ratio_to_mtp_off": 1.0,
+            "draft_acceptance_rate": null
+          },
+          {
+            "speculative_tokens": 1,
+            "generation_tokens_per_second_median": 5.726185669461575,
+            "ratio_to_mtp_off": 0.23053872034036654,
+            "draft_acceptance_rate": 0.6619718309859155
+          },
+          {
+            "speculative_tokens": 2,
+            "generation_tokens_per_second_median": 6.660781264212167,
+            "ratio_to_mtp_off": 0.2681659446196318,
+            "draft_acceptance_rate": 0.48525641025641025
+          },
+          {
+            "speculative_tokens": 3,
+            "generation_tokens_per_second_median": 7.880310909332618,
+            "ratio_to_mtp_off": 0.31726473743429895,
+            "draft_acceptance_rate": 0.43609022556390975
+          },
+          {
+            "speculative_tokens": 4,
+            "generation_tokens_per_second_median": 7.226709854443083,
+            "ratio_to_mtp_off": 0.2909504752875189,
+            "draft_acceptance_rate": 0.32084569732937684
+          }
+        ]
+      }
+    ],
+    "round_economics_at_4k": {
+      "baseline_step_milliseconds": 37.0,
+      "mtp1": {
+        "round_milliseconds": 236.4,
+        "average_output_tokens_per_round": 1.7,
+        "cost_in_baseline_steps": 6.39
+      },
+      "mtp3": {
+        "round_milliseconds": 247.6,
+        "average_output_tokens_per_round": 2.31,
+        "maximum_output_tokens_per_round": 4,
+        "cost_in_baseline_steps": 6.69
+      },
+      "mtp4": {
+        "round_milliseconds": 253.4,
+        "average_output_tokens_per_round": 2.33
+      },
+      "finding": "Measured MTP-3 round cost exceeded its maximum possible token return relative to the baseline step."
+    },
+    "cold_native_kv_capacity": [
+      {
+        "gpu_memory_utilization": 0.8,
+        "available_kv_cache_gib": 4.43,
+        "kv_cache_tokens": 26869,
+        "speculative_tokens": 4,
+        "coherence_passed": 6,
+        "coherence_total": 6
+      },
+      {
+        "gpu_memory_utilization": 0.85,
+        "available_kv_cache_gib": 6.02,
+        "kv_cache_tokens": 36372,
+        "speculative_tokens": 4,
+        "coherence_passed": 6,
+        "coherence_total": 6
+      },
+      {
+        "gpu_memory_utilization": 0.9,
+        "available_kv_cache_gib": 7.62,
+        "kv_cache_tokens": 46202,
+        "speculative_tokens": 4,
+        "coherence_passed": 6,
+        "coherence_total": 6
+      }
+    ]
+  },
+  "decision_reasons": [
+    "Target graph replay was unsafe with the speculative methods tested on this stack.",
+    "Correct graph-disabled Qwen3.6-35B-A3B MTP 1 lost throughput from 32K onward.",
+    "Every tested dense 27B MTP depth was materially slower than MTP off at both measured depths.",
+    "Dense 27B MTP-4 native-KV capacity at the 90% allocation ceiling could not support the intended 115K workload.",
+    "Short coherence and likelihood checks did not establish full long-generation identity or broad quality parity."
+  ]
+}

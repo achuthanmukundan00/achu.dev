@@ -1,0 +1,38 @@
+Qwen3.6-35B-A3B AutoRound runtime check
+Observed July 2026
+
+Server configuration
+  runtime: patched vLLM on XPU
+  dtype: torch.bfloat16
+  max_seq_len: 131072
+  tensor_parallel_size: 1
+  quantization: inc
+  kv_cache_dtype: auto
+  device_config: xpu
+  compilation mode: VLLM_COMPILE
+  graph mode: FULL_DECODE_ONLY
+  graph capture sizes: [1, 2]
+  max_num_batched_tokens: 8192
+  max_num_seqs: 1
+  gpu_memory_utilization: 0.9
+
+Observed startup
+  attention backend: XPU Flash Attention
+  model allocation: 19.60 GiB
+  available KV cache: 5.69 GiB
+  KV cache capacity: 289626 tokens
+
+Measured workload
+  context: 131072
+  prior tokens: 115404
+  prompt tokens: 2048
+  generated tokens: 512
+  concurrency: 1
+  measured runs: 1
+  prompt processing: 3377.133868 tokens/second
+  generation: 47.030922 tokens/second
+  first response: 34.905 seconds
+  timed benchmark phase: 50.784 seconds
+  coherence gate: passed
+
+The device check identifies the physical B70. This record shows that vLLM selected XPU, initialized the XPU attention backend, allocated the model and KV cache there, and completed the measured request.

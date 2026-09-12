@@ -1,0 +1,95 @@
+{
+  "schema_version": 2,
+  "published_at": "2026-07-25",
+  "device": {
+    "gpu": "Intel Arc Pro B70 (Battlemage G31)",
+    "reported_memory_mib": 32656,
+    "kernel_driver": "xe",
+    "xpu_runtime": "Level Zero",
+    "xpu_device_count": 1,
+    "xpu_compute_units": 256
+  },
+  "methodology": {
+    "long_context": {
+      "context": 131072,
+      "depth": 115404,
+      "prompt_tokens": 2048,
+      "generated_tokens": 512,
+      "target_fill_percent": 90,
+      "concurrency": 1,
+      "measured_runs": 1,
+      "full_workload_warmup_runs": 0,
+      "pre_measurement_checks": [
+        "user-only warmup",
+        "system-and-probe warmup",
+        "fixed coherence check",
+        "generation latency probe"
+      ],
+      "cache_reuse_between_cells": false,
+      "notes": "Each reported cell is one measured run after the listed checks. These are observations, not estimates of a population mean."
+    },
+    "throughput_units": "tokens per second",
+    "engine_tuning": "vLLM and llama.cpp used their own tested scheduler and batch settings. The comparison covers complete engine and weight-format paths."
+  },
+  "quantization": [
+    {
+      "family": "AutoRound INT4",
+      "weight_bits": 4,
+      "symmetric": true,
+      "group_size": 128,
+      "packing_format": "auto_round:auto_gptq",
+      "notes": "Selected layers and gates remain at higher precision where listed by each checkpoint's quantization metadata."
+    },
+    {
+      "family": "Gemma 4 QAT W4A16",
+      "weight_bits": 4,
+      "activation_bits": 16,
+      "symmetric": true,
+      "group_size": 32,
+      "packing_format": "compressed-tensors pack-quantized"
+    },
+    {
+      "family": "GGUF Q4_K_S",
+      "weight_bits": 4,
+      "packing_format": "GGUF K-quant",
+      "notes": "The published quality suite does not compare this format with BF16 or AutoRound."
+    }
+  ],
+  "startup_memory": [
+    {
+      "label": "Qwen3.6 27B AutoRound",
+      "model_load_gib": 17.75,
+      "available_kv_gib": 9.04,
+      "kv_tokens": 144079,
+      "gpu_memory_utilization": 0.9
+    },
+    {
+      "label": "Qwen3.6 35B-A3B AutoRound",
+      "model_load_gib": 19.6,
+      "available_kv_gib": 5.69,
+      "kv_tokens": 289626,
+      "gpu_memory_utilization": 0.9
+    },
+    {
+      "label": "Ornith 35B AutoRound",
+      "model_load_gib": 19.06,
+      "available_kv_gib": 6.23,
+      "kv_tokens": 317109,
+      "gpu_memory_utilization": 0.9
+    },
+    {
+      "label": "Gemma 4 12B AutoRound",
+      "model_load_gib": 7.63,
+      "available_kv_gib": 19.13,
+      "kv_tokens": 700098,
+      "gpu_memory_utilization": 0.9
+    },
+    {
+      "label": "Gemma 4 12B BF16",
+      "model_load_gib": 22.73,
+      "available_kv_gib": 7.58,
+      "kv_tokens": 205455,
+      "gpu_memory_utilization": 0.98
+    }
+  ]
+}

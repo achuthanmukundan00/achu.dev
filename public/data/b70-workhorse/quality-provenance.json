@@ -1,0 +1,70 @@
+{
+  "schema_version": 2,
+  "evaluated_at": "2026-07-24",
+  "models": {
+    "teacher_reference": "gemma-4-12B-it BF16",
+    "candidate": "gemma-4-12B-it AutoRound INT4"
+  },
+  "shared_controls": {
+    "tokenizer": "same tokenizer for both runs",
+    "chat_template": "same explicit Jinja template for both runs",
+    "datasets": [
+      "WikiText-2 test split",
+      "HumanEval canonical solutions"
+    ],
+    "checkpoint_tokenizer_configs_differed": true,
+    "template_note": "The checkpoint tokenizer configurations differed, so both runs used the same explicit chat template."
+  },
+  "runtime": {
+    "max_model_len": 131072,
+    "max_num_seqs": 4,
+    "max_num_batched_tokens": 8192,
+    "gpu_memory_utilization": 0.98,
+    "kv_cache": "native BF16",
+    "prefix_caching": true,
+    "language_model_only": true,
+    "graph_mode": "FULL_DECODE_ONLY",
+    "graph_capture_sizes": [1, 2, 4],
+    "server_template_kwargs": {
+      "enable_thinking": true,
+      "preserve_thinking": true
+    },
+    "generation_controls": {
+      "temperature": 1.0,
+      "top_p": 0.95,
+      "top_k": 64,
+      "min_p": 0.0,
+      "presence_penalty": 0.0,
+      "repetition_penalty": 1.0
+    }
+  },
+  "evaluation": {
+    "fixed_target": {
+      "metric": "conditional assistant-target perplexity",
+      "wikitext_2_cases": 16,
+      "humaneval_canonical_code_cases": 64,
+      "executes_code": false
+    },
+    "monte_carlo_kl": {
+      "prompt_classes": 6,
+      "samples_per_prompt": 4,
+      "sequences_per_direction": 24,
+      "scored_tokens_per_sequence_when_capped": 192,
+      "thinking_enabled": false,
+      "confidence_interval": "95% bootstrap",
+      "rendered_text_retokenized": true,
+      "stop_token_probability_included": false
+    },
+    "needle_matrix": {
+      "deterministic": true,
+      "contexts": [4096, 16384, 32768, 65536, 98304, 126000],
+      "depth_fractions": [0.1, 0.5, 0.9],
+      "cases_per_model": 18
+    }
+  },
+  "limitations": [
+    "The evaluator source revision was not recorded.",
+    "The Monte Carlo KL values come from finite rendered-and-retokenized sequence samples rather than aligned full-vocabulary logits.",
+    "The 18 deterministic needle cases do not set an upper bound on retrieval failures."
+  ]
+}

@@ -1,0 +1,16 @@
+Intel Arc Pro B70 device check
+Observed July 2026
+
+Device
+  GPU: Intel Arc Pro B70 (Battlemage G31)
+  Kernel driver: xe
+  Runtime: Level Zero
+
+PyTorch XPU
+  available: true
+  device_count: 1
+  type: gpu
+  total_memory: 32656 MiB
+  compute_units: 256
+
+This reduced record contains the fields used to confirm that the benchmark ran on the B70 through PyTorch XPU. Hostnames, PCI bus topology, exact host and driver patch versions, container identifiers, and command lines are omitted.

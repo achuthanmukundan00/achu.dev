@@ -1,0 +1,94 @@
+{
+  "bf16": {
+    "humaneval_code": {
+      "cases": 64,
+      "mean_nll": 1.3218365923534376,
+      "nll": 5245.047598458441,
+      "perplexity": 3.750302833618795,
+      "tokens": 3968
+    },
+    "wikitext2": {
+      "cases": 16,
+      "mean_nll": 4.193145701772864,
+      "nll": 46434.89550143269,
+      "perplexity": 66.23080597605195,
+      "tokens": 11074
+    }
+  },
+  "autoround_int4": {
+    "humaneval_code": {
+      "cases": 64,
+      "mean_nll": 1.2493521001157946,
+      "nll": 4957.429133259473,
+      "perplexity": 3.4880822970837437,
+      "tokens": 3968
+    },
+    "wikitext2": {
+      "cases": 16,
+      "mean_nll": 4.2956534416102965,
+      "nll": 47570.06621239242,
+      "perplexity": 73.38014842464042,
+      "tokens": 11074
+    }
+  },
+  "fixed_delta": {
+    "humaneval_code": {
+      "quant_minus_bf16_nats_per_token": -0.07248449223764308,
+      "quant_perplexity_ratio": 0.9300801700106907
+    },
+    "wikitext2": {
+      "quant_minus_bf16_nats_per_token": 0.10250773983743233,
+      "quant_perplexity_ratio": 1.1079458771975923
+    }
+  },
+  "monte_carlo_kl": {
+    "bf16_to_quant_forward": {
+      "bits_per_token": 0.17184209623498348,
+      "ci95_nats_per_token": [
+        0.0995153767582599,
+        0.14005144747343193
+      ],
+      "nats_per_token": 0.11911186450678958,
+      "sample_sequences": 24,
+      "tokens": 4608
+    },
+    "quant_to_bf16_reverse": {
+      "bits_per_token": 0.1711363146320614,
+      "ci95_nats_per_token": [
+        0.089667035950078,
+        0.14863649386879818
+      ],
+      "nats_per_token": 0.11862265397863306,
+      "sample_sequences": 24,
+      "tokens": 4608
+    }
+  },
+  "needle_matrix": {
+    "contexts": [
+      4096,
+      16384,
+      32768,
+      65536,
+      98304,
+      126000
+    ],
+    "depth_fractions": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "bf16": {
+      "passed": 18,
+      "total": 18
+    },
+    "autoround_int4": {
+      "passed": 18,
+      "total": 18
+    }
+  },
+  "caveats": [
+    "Perplexity is conditional assistant-target perplexity, not raw base-model perplexity.",
+    "Monte Carlo KL excludes stop-token probability and uses rendered text retokenization.",
+    "A finite-sample KL estimate can be slightly negative even though true KL is non-negative."
+  ]
+}

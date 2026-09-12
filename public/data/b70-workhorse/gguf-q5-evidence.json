@@ -1,0 +1,30 @@
+{
+  "schema_version": 2,
+  "model": "Qwen3.6-27B-UD-Q5_K_XL.gguf",
+  "fit_estimate": {
+    "context": 131072,
+    "kv_cache": "Q8",
+    "batch_tokens": 2048,
+    "microbatch_tokens": 512,
+    "model_vram_mib": 18563,
+    "context_vram_mib": 4501,
+    "compute_vram_mib": 505,
+    "total_vram_mib": 23569
+  },
+  "shallow_gate": {
+    "configured_context": 262144,
+    "prompt_tokens": 1101,
+    "generated_tokens": 64,
+    "passes": [
+      {
+        "prompt_tokens_per_second": 351.58,
+        "generation_tokens_per_second": 8.6
+      },
+      {
+        "prompt_tokens_per_second": 351.32,
+        "generation_tokens_per_second": 8.53
+      }
+    ]
+  },
+  "caveat": "The fit estimate and shallow gate are separate checks. There is no matching 115404-token Q5_K_XL throughput and quality run in this evidence set."
+}

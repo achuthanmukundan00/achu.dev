@@ -1,152 +1,104 @@
 ---
-// resume.astro — Recruiter-readable resume page.
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { links } from "@data/links";
-import { site } from "@data/site";
-import { projects } from "@data/projects";
-
-const featuredProjects = projects.filter((p) => p.featured);
-
-const skills = [
-  "TypeScript", "JavaScript", "Node.js", "React", "Vite", "Next.js",
-  "Python", "FastAPI", "Flask", "SQL", "REST APIs", "WebSocket / SSE",
-  "PostgreSQL", "SQLite", "SQLite FTS5", "Docker", "Linux", "CI/CD",
-  "OpenAI-compatible APIs", "Anthropic-compatible APIs", "llama.cpp", "GGUF",
-  "Agent Architecture", "Tool Calling", "Streaming/SSE", "TUI Development",
-  "Cloudflare Workers", "Cloudflare Pages", "Cloudflare Tunnel", "Zero Trust",
-  "Three.js / WebGL", "Terminal UI Design", "Observability", "Jest", "pytest",
-  "Caddy", "systemd", "Music Production", "Creative Direction",
-];
-
-const experience = [
-  {
-    role: "Junior Developer",
-    company: "Replicant AI",
-    period: "May 2023 — May 2024",
-    description:
-      "Worked on production conversational AI systems, internal LLM tooling, and NLP testing infrastructure for a platform serving 10K+ daily users.",
-    highlights: [
-      "Built and shipped production conversational AI bots in TypeScript/Node.js serving 10K+ daily users",
-      "Implemented low-latency conversation-state handlers processing 500K+ bot events/day with approximately 150ms median latency",
-      "Developed the company's first ever internal LLM chat interface used by 200+ company employees",
-      "Migrated legacy workflows to LLM-based data collection, improving bot/data accuracy by approximately 30%",
-      "Designed timezone-aware scheduling/detection modules that reduced bot misfires by approximately 15% and improved CSAT",
-      "Built an automated NLP intent-recognition testing suite with Jest, reaching 90%+ test coverage and reducing regressions",
-      "Introduced structured logging and health endpoints, improving debugging under elevated load",
-    ],
-  },
-];
+import { seo } from "@data/site";
 ---
 
-<BaseLayout
-  title="Resume"
-  description={`Resume of ${site.fullName} — ${site.title} building local-first AI tools, developer infrastructure, and product systems.`}
->
-  <article class="space-y-16">
-    <!-- Header -->
-    <header class="space-y-4">
-      <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">{site.fullName}</h1>
-      <p class="text-xl text-blue-400 font-medium">{site.title}</p>
-      <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
-        Building local-first AI tools, developer systems, and production-grade infrastructure.
+<BaseLayout title="Resume" description={seo.resume.description}>
+  <div class="site-shell">
+    <header class="page-header">
+      <h1>Resume</h1>
+      <p class="lead">
+        Software engineer working on developer tools, AI systems, and audio software.
       </p>
-
-      <div class="flex flex-wrap gap-4 pt-2 text-sm">
-        <a href={links.github} target="_blank" rel="noopener noreferrer me"
-          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">GitHub</a>
-        <span class="text-neutral-700" aria-hidden="true">·</span>
-        <a href={links.linkedin} target="_blank" rel="noopener noreferrer me"
-          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">LinkedIn</a>
-        <span class="text-neutral-700" aria-hidden="true">·</span>
-        <a href={`mailto:${links.email}`}
-          class="text-neutral-400 hover:text-white transition-colors underline underline-offset-2">{links.email}</a>
-      </div>
-
-      <!-- PDF placeholder -->
-      <div>
-        <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg border border-neutral-700 text-sm text-neutral-500 opacity-50 cursor-not-allowed"
-          aria-disabled="true">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round" aria-hidden="true">
-            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
-            <path d="M14 2v6h6" /><path d="M12 18v-6" /><path d="m9 15 3 3 3-3" />
-          </svg>
-          Download PDF — coming soon
-        </span>
+      <p class="body-copy">
+        I have experience with conversational AI in production and currently build an
+        open-source coding agent in Rust. I'm looking for early-career software engineering
+        roles where I can contribute across the stack and keep learning.
+      </p>
+      <div class="link-row">
+        <a class="action" href={`mailto:${links.email}`}>Email me</a>
+        <a href={links.github} target="_blank" rel="noopener noreferrer me">GitHub</a>
+        <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">LinkedIn</a>
       </div>
     </header>
 
-    <!-- Experience -->
-    <section>
-      <h2 class="section-label">Experience</h2>
-      <div class="space-y-8">
-        {experience.map((exp) => (
-          <div class="border-l-2 border-neutral-800 pl-5 space-y-2">
-            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-              <h3 class="text-lg font-semibold text-white">{exp.role}</h3>
-              <span class="text-sm text-neutral-500 shrink-0">{exp.period}</span>
+    <section class="section" aria-labelledby="experience-heading">
+      <div class="section-heading">
+        <h2 id="experience-heading">Experience</h2>
+      </div>
+      <div class="resume-list">
+        <article class="resume-item">
+          <div class="resume-topline">
+            <div>
+              <h3>Independent Engineering</h3>
+              <p>Skaft · Toronto, Canada</p>
             </div>
-            <p class="text-sm text-blue-400 font-medium">{exp.company}</p>
-            <p class="text-sm text-neutral-400 leading-relaxed">{exp.description}</p>
-            <ul class="space-y-1 pt-1">
-              {exp.highlights.map((h) => (
-                <li class="text-sm text-neutral-400 flex gap-2">
-                  <span class="text-neutral-600 shrink-0 mt-0.5" aria-hidden="true">—</span>
-                  {h}
-                </li>
-              ))}
-            </ul>
+            <p class="project-meta">2026 to present</p>
           </div>
-        ))}
+          <p>
+            Building octet, an open-source terminal coding agent in Rust for cloud and local models.
+          </p>
+          <ul>
+            <li>Built an event-driven runtime with typed tool execution, session persistence, approval controls, and a terminal interface.</li>
+            <li>Maintained the multi-crate workspace, regression suite, releases, documentation, and compatibility across model APIs.</li>
+            <li>Ran local inference experiments on Intel GPU hardware while separating working APIs from verified accelerator execution.</li>
+          </ul>
+        </article>
+
+        <article class="resume-item">
+          <div class="resume-topline">
+            <div>
+              <h3>Junior Developer</h3>
+              <p>Replicant AI · Toronto, Canada</p>
+            </div>
+            <p class="project-meta">May 2023 to May 2024</p>
+          </div>
+          <p>
+            Worked on conversational AI flows and supporting services used in production customer interactions.
+          </p>
+          <ul>
+            <li>Built TypeScript and Python tools to validate prompts and conversation behavior in CI.</li>
+            <li>Refactored Jest integration tests for conversational AI services.</li>
+            <li>Developed migration tooling for conversation configuration stored in MongoDB.</li>
+          </ul>
+        </article>
       </div>
     </section>
 
-    <!-- Education -->
-    <section>
-      <h2 class="section-label">Education</h2>
-      <div class="border-l-2 border-neutral-800 pl-5 space-y-2">
-        <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-          <h3 class="text-lg font-semibold text-white">University of Toronto</h3>
-          <span class="text-sm text-neutral-500 shrink-0">Graduated 2025</span>
+    <section class="section" aria-labelledby="education-heading">
+      <div class="section-heading">
+        <h2 id="education-heading">Education</h2>
+      </div>
+      <article class="resume-item">
+        <div class="resume-topline">
+          <div>
+            <h3>BASc, Computer Engineering</h3>
+            <p>University of Toronto</p>
+          </div>
+          <p class="project-meta">2021 to 2025</p>
         </div>
-        <p class="text-sm text-blue-400 font-medium">BASc, Computer Engineering</p>
-        <p class="text-sm text-neutral-400 leading-relaxed">
-          Relevant coursework: Algorithms and Data Structures, Machine Learning, Software Engineering,
-          Databases, Computer Networks, Computer Security, Operating Systems.
-        </p>
-      </div>
+      </article>
     </section>
 
-    <!-- Featured Projects -->
-    <section>
-      <h2 class="section-label">Featured Projects</h2>
-      <div class="space-y-4">
-        {featuredProjects.map((project) => (
-          <div class="border-l-2 border-neutral-800 pl-5 space-y-1">
-            <div class="flex flex-col sm:flex-row sm:items-center gap-1">
-              <a href={`/work/${project.slug}`}
-                class="text-lg font-semibold text-white hover:text-blue-400 transition-colors">
-                {project.title}
-              </a>
-              <span class="text-xs text-neutral-500 font-mono hidden sm:inline">— {project.tagline}</span>
-            </div>
-            <p class="text-sm text-neutral-400 leading-relaxed">{project.description}</p>
-          </div>
-        ))}
+    <section class="section" aria-labelledby="skills-heading">
+      <div class="section-heading">
+        <h2 id="skills-heading">Technical work</h2>
+      </div>
+      <div class="detail-grid">
+        <div>
+          <h3>Languages</h3>
+          <p>Rust, TypeScript, JavaScript, Python, Swift, Zig, C, C++, SQL</p>
+        </div>
+        <div>
+          <h3>Systems</h3>
+          <p>Agent runtimes, model APIs, terminal interfaces, local inference, audio DSP, test infrastructure</p>
+        </div>
+        <div>
+          <h3>Tools</h3>
+          <p>Git, Docker, SQLite, PostgreSQL, MongoDB, React, Next.js, Astro, PyTorch</p>
+        </div>
       </div>
     </section>
-
-    <!-- Skills -->
-    <section>
-      <h2 class="section-label">Skills</h2>
-      <div class="flex flex-wrap gap-2">
-        {skills.map((skill) => (
-          <span class="px-3 py-1.5 text-xs rounded-full border border-neutral-800 text-neutral-400 bg-[#111114]">
-            {skill}
-          </span>
-        ))}
-      </div>
-    </section>
-  </article>
+  </div>
 </BaseLayout>

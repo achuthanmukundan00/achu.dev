@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">Gemma 8K aggregate decode throughput</title>
+  <desc id="chart-description">At 4,812 prior tokens, Gemma AutoRound produced 45.43 aggregate generation tokens per second at concurrency one, 73.46 at concurrency two, and 109.56 at concurrency four. BF16 produced 20.08 at concurrency one and 64.85 at concurrency four.</desc>
+  <rect width="1200" height="720" fill="#111313" />
+  <text x="56" y="62" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="650">Gemma 8K aggregate decode throughput</text>
+  <text x="56" y="102" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Depth 4,812 · PP2048 + TG512 per request</text>
+  <text x="350" y="138" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Aggregate generation tok/s</text>
+<line x1="350" y1="152" x2="1070" y2="152" stroke="#343837" stroke-width="2" />
+<text x="56" y="201" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">AutoRound · c1</text>
+<rect x="350" y="170" width="284.44149556905444" height="40" fill="#e5e7e4" />
+<text x="646.4414955690545" y="201" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">45.43</text>
+<text x="56" y="293" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">AutoRound · c2</text>
+<rect x="350" y="262" width="459.93032526602474" height="40" fill="#e5e7e4" />
+<text x="821.9303252660247" y="293" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">73.46</text>
+<text x="56" y="385" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">AutoRound · c4</text>
+<rect x="350" y="354" width="685.9561097621207" height="40" fill="#e5e7e4" />
+<text x="1023.9561097621207" y="385" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">109.56</text>
+<text x="56" y="477" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">BF16 · c1</text>
+<rect x="350" y="446" width="125.71781368926321" height="40" fill="#858c88" />
+<text x="487.7178136892632" y="477" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">20.08</text>
+<text x="56" y="569" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">BF16 · c4</text>
+<rect x="350" y="538" width="406.02683106004406" height="40" fill="#858c88" />
+<text x="768.0268310600441" y="569" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">64.85</text>
+</svg>

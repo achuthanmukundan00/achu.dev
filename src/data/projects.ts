@@ -1,7 +1,5 @@
-/**
- * Project data for achu.dev.
- * Each project includes card copy AND full case-study content.
- */
+/** Project descriptions and implementation notes. Keep claims concrete and source-backed. */
+import { links } from "./links";
 
 export interface ProjectLink {
   label: string;
@@ -13,8 +11,10 @@ export interface Project {
   title: string;
   tagline: string;
   category: string;
-  accent: string; // Tailwind color class: "blue", "magenta", "green"
-  description: string; // Card copy
+  status: string;
+  year: string;
+  stack: string[];
+  description: string;
   summary: string;
   problem: string;
   solution: string;
@@ -23,217 +23,178 @@ export interface Project {
   links: ProjectLink[];
   nextSteps: string;
   featured: boolean;
-  // Extended case-study sections (watchyourtemper)
-  extended?: Record<string, string>;
 }
 
 export const projects: Project[] = [
   {
-    slug: "suitcase",
-    title: "Suitcase",
-    tagline: "A private career agent that lives on your machine.",
-    category: "AI / Fullstack",
-    accent: "brown",
+    slug: "ygg", // Keep the existing public project URL.
+    title: "octet",
+    tagline: "A Rust terminal coding agent for cloud and local models.",
+    category: "Developer tools",
+    status: "v0.7.6 · open source",
+    year: "2026",
+    stack: ["Rust", "TUI", "LLM protocols"],
     description:
-      "A local-first career copilot with web chat, Discord bot, and an agent that organizes career evidence inside suitcase_world/.",
+      "A Rust terminal coding agent for cloud and local models, with disk-backed sessions and subprocess extensions.",
     summary:
-      "Suitcase is a local-first career agent. It runs a FastAPI + React app connected to your LLM, with a wizard-led setup, Discord DM integration, and a review-gated file sandbox that writes artifacts and reflections into suitcase_world/.",
+      "octet is the terminal coding agent I'm building at Skaft. It connects to cloud and local models and saves resumable sessions on disk.",
     problem:
-      "Career management is scattered across platforms: resumes on Google Drive, DMs on Discord, job applications in browser tabs, and career thinking lost in random notes. None of these systems talk to each other, and none of them are private or local-first.",
+      "I started the project because I wanted to use local models on real repositories. The agents I tried often sent large hidden prompts, assumed reliable cloud-grade tool calls, and made it difficult to see the model's context and permissions.",
     solution:
-      "Suitcase puts a career agent on your machine. It connects to your LLM (Relay, llama.cpp, OpenAI, Anthropic, DeepSeek — any compatible endpoint), reads your career evidence from a local sandbox, and writes drafts, reflections, and artifacts that stay review-gated inside suitcase_world/. A Discord bot extends the same agent runtime into DMs and mentions.",
+      "octet uses a small, explicit agent loop. Model traffic goes directly to the selected endpoint, and users choose which tools are available. Project instructions load only from trusted workspaces. Conversations are stored as append-only, branchable JSONL on disk.",
     whatIBuilt:
-      "I built Suitcase as a FastAPI + React application with a wizard-led setup flow. The setup walks through profile creation, GitHub evidence, LinkedIn, Discord bot token, resume uploads, LLM configuration, autonomous pulse schedule, and a readiness check. The web chat and Discord bot share the same agent backend, self-model, and career context. All writes stay inside suitcase_world/ — a review-gated sandbox where the agent can draft but not destroy.",
+      "The Rust workspace separates model clients, the agent runtime, coding tools, and terminal rendering. Extensions run as subprocesses.",
     techFocus:
-      "FastAPI + React local-first app. LLM inference bridge supporting Relay, llama.cpp, OpenAI, Anthropic, DeepSeek, and compatible endpoints. Discord bot integration sharing the same agent runtime. Review-gated file sandbox (suitcase_world/). Wizard-led setup with profile, resume, GitHub, and LLM configuration. Autonomous pulse scheduling.",
+      "The implementation work covers provider request types, tool approvals, crash-safe disk sessions, and terminal rendering. The linked ygg v0.3.0-alpha release and prompt-budget test are historical references, not current feature or prompt-size claims.",
     links: [
-      { label: "Documentation", url: "https://suitcase-docs.pages.dev" },
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/Suitcase" },
-    ],
-    nextSteps:
-      "Ship the autonomous pulse feature for scheduled career check-ins. Add multi-resume merging and tailored application drafting. Expand the Discord bot with slash commands and thread-aware conversations.",
-    featured: true,
-  },
-  {
-    slug: "relay",
-    title: "Relay",
-    tagline: "Protocol infrastructure for local AI models",
-    category: "Infrastructure",
-    accent: "blue",
-    description:
-      "A lightweight compatibility gateway for running local models through OpenAI- and Anthropic-style APIs.",
-    summary:
-      "Relay is protocol infrastructure for local AI models. It helps OpenAI- and Anthropic-style agents communicate with local llama.cpp-style inference servers while preserving streaming behavior, tool-call semantics, and predictable response shapes.",
-    problem:
-      "Local AI inference servers expose APIs that differ from the OpenAI and Anthropic standards most agent frameworks expect. Developers who want to run agents against local models face broken streaming, missing tool calls, and unpredictable response formats — a compatibility fragmentation problem that makes local-first AI infrastructure harder to adopt.",
-    solution:
-      "Relay sits between agent frameworks and local inference servers as a protocol translation layer. It accepts standard OpenAI/Anthropic-shaped requests and translates them into the native formats expected by servers like llama.cpp, Ollama, and other local backends. Streaming SSE chunks, tool-call deltas, and structured output modes are mapped with high fidelity so the agent never knows it is talking to a local model.",
-    whatIBuilt:
-      "I designed Relay as a modular Node.js gateway with separate translation layers per backend. It supports SSE streaming passthrough, function-call serialization that matches both OpenAI tool_call and Anthropic tool_use conventions, and a unified request pipeline that normalises errors and timeouts across servers. The architecture prioritises low latency and minimal overhead so local inference speed is preserved. The gateway includes SDK smoke tests, deployment docs, and a clean configuration surface for developers who want to switch between local and cloud models without changing their agent code.",
-    techFocus:
-      "Protocol translation between OpenAI/Anthropic schemas and local inference backends. Streaming SSE relay with buffered tool-call accumulation. Modular backend adapters. Node.js, TypeScript, Express-style middleware pipeline. SDK smoke tests and deployment documentation.",
-    links: [
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/relay" },
-      { label: "Docs (coming soon)", url: "#" },
-    ],
-    nextSteps:
-      "Open-source release with initial Ollama and llama.cpp backend support. Plugin-style backend registration so the community can contribute adapters for new local servers. Lightweight dashboard for observability into translation latency and error rates. Multi-model routing with fallback chains.",
-    featured: true,
-  },
-  {
-    slug: "synax",
-    title: "Synax",
-    tagline: "A local-first coding agent for quantized and open models.",
-    category: "AI / Developer Tools",
-    accent: "magenta",
-    description:
-      "An experimental terminal coding agent built around local inference, OpenAI-compatible model gateways, and small/quantized model workflows. Currently in closed alpha.",
-    summary:
-      "Synax is an experimental terminal coding agent built around local inference, OpenAI-compatible model gateways, and small/quantized model workflows. It is currently in closed alpha while the agent loop, TUI, configuration system, and model compatibility layers stabilize.",
-    problem:
-      "Most coding agents are built and tested against large cloud models with generous latency budgets and near-perfect instruction following. When those same agent architectures are run against quantized local models, the assumptions break: smaller models need different prompting strategies, produce different failure modes, and don't benefit from the latency headroom that hides cloud-agent slowness. The tooling gap between cloud-first agents and local-first development remains wide.",
-    solution:
-      "Synax is an experiment in making local models useful in real development loops. Instead of treating local inference as a degraded version of cloud inference, it builds the agent architecture around local-model constraints from the start: constrained output grammars, explicit verification steps, patient retry strategies, and a TUI designed for transparency rather than magic. The goal is not to be another cloud-first coding assistant — it is to explore what agent architecture looks like when the model is local, quantized, and imperfect-but-fast.",
-    whatIBuilt:
-      "I built Synax as a TypeScript agent runtime with a first-class TUI. The interface shows the current reasoning step, active tool calls, model response streaming, and execution logs — all organised in collapsible panels. A control surface lets developers pause, step through, or redirect the agent mid-loop. The backend uses a provider abstraction that normalises local model APIs and handles the quirks of quantized inference. The system is actively dogfooded in my own development workflow but is not yet ready for general use.",
-    techFocus:
-      "Experimental agent loop architecture with structured logging at every step. Terminal UI (TUI) with real-time streaming panels. Provider abstraction for local model APIs. TypeScript, Node.js. Quantified output grammars for reliable structured generation from quantized models. Active research into local-first agent UX patterns.",
-    links: [
-      { label: "Closed alpha notes", url: "#" },
-      { label: "Development ongoing", url: "#" },
-    ],
-    nextSteps:
-      "Stabilize the agent loop and configuration system. Expand provider support for additional local model servers. Add agent checkpoints for rewind/replay. Continue dogfooding to identify failure modes and UX gaps before considering any broader release.",
-    featured: true,
-  },
-  {
-    slug: "wytos",
-    title: "wytOS",
-    tagline:
-      "A local-first creative OS for structured memory and AI-assisted workflows",
-    category: "AI / Developer Tools",
-    accent: "red",
-    description:
-      "A local-first creative operating system with SQLite FTS5 search, local LLM summarization, and structured retrieval workflows.",
-    summary:
-      "wytOS is a local-first creative operating system for structured memory, retrieval, and AI-assisted creative workflows. It turns notes, chats, files, brand documents, images, audio metadata, and project context into a canonical searchable memory layer with local-LLM assistance.",
-    problem:
-      "Creative professionals and knowledge workers accumulate context across dozens of tools — notes apps, chat logs, file systems, brand documents, and media libraries. None of these tools talk to each other, and important creative context gets lost in the fragmentation. Retrieving the right piece of information at the right creative moment is unreliable and slow.",
-    solution:
-      "wytOS provides a structured creative memory database with SQLite FTS5 full-text search, category-aware entry forms, and local LLM-powered summarization, tagging, and structuring. Instead of scattering context across tools, wytOS keeps creative material available as a unified, searchable, AI-assisted memory layer that lives on your own machine.",
-    whatIBuilt:
-      "I designed wytOS as a local-first system with a FastAPI backend, SQLite FTS5 for efficient full-text search, and a React/Vite frontend for category-aware data entry. The system supports structured fields by content category, CRUD APIs for entries, and a local LLM integration layer for summarization, auto-tagging, and content structuring. The architecture is built for a future RAG/workflow layer and custom LoRA/QLoRA fine-tuning for voice/style adaptation.",
-    techFocus:
-      "Local-first creative memory architecture. FastAPI + Pydantic backend with SQLite FTS5. React + Vite + TypeScript frontend. Structured entry forms by content category. Local LLM summarization, tagging, and structuring pipelines. Future RAG/workflow layer and custom Qwen LoRA/QLoRA for creative voice/style.",
-    links: [
-      { label: "GitHub", url: "https://github.com/achuthanmukundan00/wytOS" },
-    ],
-    nextSteps:
-      "Implement the RAG/workflow layer for context-aware retrieval. Train custom Qwen LoRA/QLoRA for watchyourtemper voice and style. Add audio metadata extraction and image content indexing. Build the creative workflow automation engine.",
-    featured: true,
-  },
-  {
-    slug: "temper-cloud",
-    title: "Temper Cloud",
-    tagline: "Self-hosted distributed storage and compute platform",
-    category: "Infrastructure",
-    accent: "blue",
-    description:
-      "Docker-based distributed storage with Cloudflare Zero Trust access, observability, and concurrent metadata pipelines.",
-    summary:
-      "Temper Cloud is a self-hosted distributed storage and compute platform. It combines Docker-based distributed RAID-backed storage, Cloudflare Zero Trust access patterns, multi-service observability, and high-throughput metadata pipelines into a home-lab infrastructure system targeting 99%+ availability.",
-    problem:
-      "Self-hosted infrastructure is often fragile: services are hard to expose securely, storage redundancy is an afterthought, observability is scattered, and pipelines that touch thousands of files become painfully slow. Most home-lab setups lack the Zero Trust security, monitoring depth, and throughput engineering that production environments demand.",
-    solution:
-      "Temper Cloud treats self-hosted infrastructure with production-grade rigour. RAID-backed distributed storage ensures data durability. Cloudflare Tunnel and mTLS-style private access eliminate exposed ports. A stateless API gateway (Caddy) routes traffic cleanly. Observability tooling (Netdata, Dozzle, cAdvisor, FastAPI status services) provides deep visibility. Metadata and embedding pipelines are engineered for concurrency, processing 10K+ files in under 4 minutes.",
-    whatIBuilt:
-      "I architected a Docker-based distributed storage system with RAID-backed volumes around 3.9TB. I designed isolated service boundaries for each self-hosted component and built a Zero Trust access layer using Cloudflare Tunnel and mTLS-style private access patterns. I deployed a full observability stack with Netdata, Dozzle, and cAdvisor, plus custom FastAPI health/status services. The Caddy API gateway provides clean routing across all internal services. I also built concurrent metadata and embedding pipelines that process 10K+ files in under 4 minutes.",
-    techFocus:
-      "Docker-based distributed storage with RAID (3.9TB usable). Cloudflare Tunnel, Access, and Zero Trust private networking. Caddy as stateless API gateway. Observability with Netdata, Dozzle, cAdvisor, and custom FastAPI status endpoints. Concurrent metadata and embedding pipelines. Linux systemd deployment patterns. 99%+ availability target.",
-    links: [
+      { label: "Product page", url: links.octet },
+      { label: "Source", url: links.octetRepo },
+      { label: "Documentation", url: links.octetDocs },
       {
-        label: "GitHub",
-        url: "https://github.com/achuthanmukundan00/temper-cloud",
+        label: "v0.7.6 release",
+        url: `${links.octetRepo}/releases/tag/v0.7.6`,
+      },
+      {
+        label: "Historical ygg v0.3.0-alpha release",
+        url: "https://github.com/skaft-software/ygg/releases/tag/v0.3.0-alpha",
+      },
+      {
+        label: "Historical ygg prompt-budget test",
+        url: "https://github.com/skaft-software/ygg/blob/v0.3.0-alpha/crates/ygg-coding-agent/src/resources.rs#L1115-L1133",
       },
     ],
     nextSteps:
-      "Expand storage capacity and redundancy. Add automated backup verification. Build a lightweight dashboard for service health and pipeline status. Document the Zero Trust access patterns as a reusable template for other self-hosted environments.",
+      "I'll keep using the pre-1.0 release on repository work, improve local-model support, publish reproducible measurements, and fix rough edges before stabilizing the interfaces.",
     featured: true,
   },
   {
-    slug: "secondhand-hub",
-    title: "Secondhand Hub",
-    tagline: "A fullstack microservices marketplace",
-    category: "Fullstack",
-    accent: "green",
+    slug: "resample-lab",
+    title: "Resample Lab",
+    tagline: "Turn one sound into a sample pack in the browser.",
+    category: "Audio software",
+    status: "live · active development",
+    year: "2026",
+    stack: ["TypeScript", "Web Audio", "Web Workers"],
     description:
-      "A marketplace built with React, Flask, Docker, and PostgreSQL featuring JWT authentication and CI/CD.",
+      "A deterministic DSP tool that stretches, granulates, degrades, loops, and exports audio in the browser.",
     summary:
-      "Secondhand Hub is a fullstack marketplace application built with a multi-language stack: React frontend, Flask backend, Docker containerization, and PostgreSQL. It features JWT authentication, optimized relational schemas with indexing strategies, CI/CD pipelines, and automated tests — developed across 300+ commits.",
+      "Resample Lab takes an audio file and renders eight related sounds across ambiences, one-shots, loops, oddities, and granular textures. Processing stays inside a Web Worker, and the result downloads as a ZIP of WAV files.",
     problem:
-      "Building a production-quality marketplace requires coordinating frontend UX, backend API design, database schema optimization, authentication flows, containerized deployment, and test coverage — all across multiple languages and frameworks. Most student or portfolio projects only tackle one or two of these layers.",
+      "Moving files between plugins and export dialogs slowed down the part of resampling I enjoyed. I wanted one quick place to push a source sound into new material, reproduce the result, and keep the audio on my machine.",
     solution:
-      "Secondhand Hub demonstrates fullstack ownership: a React SPA frontend, a Flask REST API backend, PostgreSQL with optimized schemas and indexes, Docker for reproducible deployment, JWT for authentication, and CI/CD with automated tests. The project spans TypeScript, Python, Dockerfiles, and CSS across a disciplined commit history.",
+      "The app provides a small set of presets, a chaos control, and output-length modes. Every render is deterministic, so the same source and settings follow the same DSP path.",
     whatIBuilt:
-      "I built the marketplace end-to-end: React frontend with SPA routing, Flask REST API with JWT authentication, PostgreSQL with optimized relational schemas and indexing strategies, Docker containerization for all services, and CI/CD pipelines with automated test suites. The codebase spanned TypeScript, Python, Dockerfile, and CSS, developed iteratively across 300+ commits.",
+      "I wrote the TypeScript signal-processing pipeline around Float32Array buffers and moved the expensive work into a browser worker. It includes WSOLA stretching, granular synthesis, filters, tape profiles, delays, reverbs, bit reduction, loop detection, a finishing rack, WAV encoding, and ZIP assembly. I also built a render-audit workflow and browser tests for the full upload and download path.",
     techFocus:
-      "React SPA frontend. Flask REST API backend. PostgreSQL with optimized schemas and indexing. Docker containerization. JWT authentication. CI/CD pipelines. Automated testing. Multi-language codebase (TypeScript, Python, CSS). 300+ commit iteration history.",
+      "The implementation handles long-running DSP away from the UI thread, deterministic parameter mapping, deadline and NaN guards, stereo and mono input, static Next.js export, file decoding, and in-browser packaging.",
     links: [
+      { label: "Try it", url: "https://rlab.watchyourtemper.com" },
       {
-        label: "GitHub",
-        url: "https://github.com/achuthanmukundan00/Secondhand-Hub",
+        label: "Source",
+        url: "https://github.com/achuthanmukundan00/Resample-Lab",
       },
     ],
     nextSteps:
-      "This was an academic fullstack project that demonstrated end-to-end ownership. The architecture patterns and multi-service design inform later work on Temper Cloud and wytOS.",
+      "I'll profile the slowest presets on larger inputs, expand the listening-test set, and improve the transforms based on what I use in music sessions.",
+    featured: true,
+  },
+  {
+    slug: "temper-player",
+    title: "TemperPlayer",
+    tagline: "A native macOS music player with Zig decoding and DSP.",
+    category: "Systems · Audio",
+    status: "v0.1 · downloadable",
+    year: "2026",
+    stack: ["SwiftUI", "Zig", "AVFoundation"],
+    description:
+      "A native macOS player with real-time spectrograms, multiband analysis, and a phase-vocoder pitch engine.",
+    summary:
+      "TemperPlayer is a macOS player I built for listening to and inspecting a local music library. SwiftUI owns the application and workspace. Zig handles FLAC and WAV decoding, mastering analysis, and pitch processing behind a C ABI.",
+    problem:
+      "I wanted signal analysis to be part of listening. That meant useful meters, a compact menu-bar player, and pitch control that preserved transients and stereo placement.",
+    solution:
+      "SwiftUI handles the application and AVFoundation handles playback. A small C ABI connects the app to Zig code for the decoding, analysis, and pitch-processing work where I wanted direct control.",
+    whatIBuilt:
+      "I built the SwiftUI application, SQLite-backed library, queue and playlist flows, menu-bar player, waveform, spectrogram, and multiband goniometer. In Zig, I implemented FLAC and WAV decoding, mastering measurements, and an identity-phase-locked phase vocoder with transient resets and Kaiser-windowed sinc resampling.",
+    techFocus:
+      "The engineering work includes the Swift and Zig C ABI, real-time analysis, bounded visual queues, sample-rate handling, track-switch lifecycle, stereo phase correlation, and native macOS packaging.",
+    links: [
+      {
+        label: "Source and download",
+        url: "https://github.com/achuthanmukundan00/temper-player",
+      },
+      {
+        label: "v0.1 release",
+        url: "https://github.com/achuthanmukundan00/temper-player/releases/tag/v0.1.0",
+      },
+    ],
+    nextSteps:
+      "I'll finish hardening the current library and playback changes, test on more Macs and audio devices, and add formats after their playback paths are measured and reliable.",
+    featured: true,
+  },
+  {
+    slug: "lc-prep-wizard",
+    title: "LeetCode Prep Wizard",
+    tagline: "A local practice queue built around spaced repetition.",
+    category: "Learning tool",
+    status: "in progress",
+    year: "2026",
+    stack: ["Next.js", "SQLite", "Monaco"],
+    description:
+      "A local dashboard for scheduling review, tracking pattern mastery, and running Python solutions against local tests.",
+    summary:
+      "I built this to turn my solved-problem history into a review schedule. The app imports the NeetCode 150, schedules problems by performance, groups progress by pattern, and keeps practice data in a local SQLite database.",
+    problem:
+      "I was inconsistent about returning to old problems after enough time had passed to test my recall. Streak and completion counters did not tell me which problem I should review next.",
+    solution:
+      "The dashboard separates due reviews from new work and updates each problem's interval and mastery after a session. The practice page keeps the prompt, editor, tests, notes, and result together.",
+    whatIBuilt:
+      "I built the Next.js interface, SQLite schema and routes, review scheduler, XP and pattern summaries, NeetCode importer, Monaco editor, and a Python judge with public and hidden local cases. I still use and change the current branch as a local app.",
+    techFocus:
+      "The work covers local persistence, spaced-repetition scheduling, problem metadata normalization, code-execution boundaries, attempt tracking, and a focused practice interface.",
+    links: [
+      {
+        label: "Source",
+        url: "https://github.com/achuthanmukundan00/lc-prep-wizard",
+      },
+    ],
+    nextSteps:
+      "I'll use it through a full interview-prep cycle, tune the scheduler with my recall data, and document the runner and backup model before treating it as finished.",
     featured: false,
   },
   {
     slug: "watchyourtemper",
-    title: "watchyourtemper",
-    tagline: "Electronic music, events, merch, and visual world",
-    category: "Creative",
-    accent: "green",
+    title: "watchyourtemper.com",
+    tagline: "An artist site and merch store running on Cloudflare.",
+    category: "Web · Music",
+    status: "live",
+    year: "2025 to 2026",
+    stack: ["React", "Cloudflare Workers", "Stripe"],
     description:
-      "An electronic music world spanning releases, events, merch, visual systems, and community experiments.",
+      "The web home for my music project, with a custom visual system and a Worker-backed store.",
     summary:
-      "watchyourtemper is an electronic music, event, merch, and visual world. It connects releases, PRESSURE TEST events, content systems, visual identity, and commerce experiments into one creative ecosystem.",
+      "I built watchyourtemper.com for my music project. It publishes releases and visual work, and the same repository includes the merch catalog, checkout, fulfillment, and order-state backend.",
     problem:
-      "Independent electronic artists operate across fragmented platforms: music on streaming services, events on ticketing platforms, merch on separate storefronts, and visual identity scattered across social media. There is no unified surface that connects the music, the events, the commerce, and the world-building into a coherent creative ecosystem controlled by the artist.",
+      "I wanted more control than a link page or stock storefront gave me. The site needed to carry the visual direction of the music, load quickly, and validate commerce data on the server.",
     solution:
-      "watchyourtemper is a unified brand platform that brings releases, events, merch, content, and visual identity together under one domain. It treats the project as an inhabitable creative world rather than a collection of disjointed links — giving fans a cohesive experience and giving the artist full creative and commercial control.",
+      "A React SPA handles the media-heavy interface. A Cloudflare Worker serves the app and API from one deployment, validates products and prices before checkout, and stores order and webhook state in Durable Objects.",
     whatIBuilt:
-      "I built watchyourtemper.com as a Cloudflare Workers-based edge-deployed fullstack SPA. The site implements multiple client routes and API endpoints, uses Durable Objects for serverless-backed behaviour, and delivers a media-heavy UX with low-latency edge delivery. I optimized the frontend bundle and critical payload sizes for fast load times using Vite, load-tested API and homepage paths under concurrency, and implemented request observability with automated tests. Every page reflects the project's visual identity — dark, textural, high-contrast — and is built to feel alive.",
+      "I designed and implemented the frontend, responsive visual system, Worker routes, Printful catalog integration, Stripe checkout lifecycle, webhook handling, order confirmation flow, request logging, and deployment configuration.",
     techFocus:
-      "Edge-deployed fullstack SPA on Cloudflare Workers and Pages. Durable Objects for serverless state. React + Vite + TypeScript frontend. Optimized bundle and critical payload sizes. Load testing under concurrency. Request observability and automated tests. Custom visual identity and dark editorial styling.",
+      "The stack uses React and Vite, Cloudflare Workers and Durable Objects, server-owned pricing, Stripe and Printful webhooks, and media performance work for the visual design.",
     links: [
-      { label: "watchyourtemper.com", url: "https://watchyourtemper.com" },
+      { label: "Visit site", url: "https://watchyourtemper.com" },
       {
-        label: "GitHub",
-        url: "https://github.com/achuthanmukundan00/watchyourtemper",
+        label: "Source",
+        url: "https://github.com/achuthanmukundan00/wyt-SPA",
       },
     ],
     nextSteps:
-      "Phase 2 visual core: integrate Pretext for long-form editorial pages and WebGL for an interactive hero scene. Expand merch surface with real inventory. Build content pipelines for release launches and event promotion.",
-    featured: true,
-    extended: {
-      world:
-        "watchyourtemper is an electronic music project, visual identity, merch surface, and creative world — built end-to-end across music production, web, commerce, content, and live events.",
-      releases:
-        "The release system connects music distribution across streaming platforms with a custom web surface that presents each release as a designed artifact — not just a link to Spotify. Cover art, visual direction, and release context are treated as first-class parts of the product.",
-      pressureTest:
-        "PRESSURE TEST is the event series at the center of watchyourtemper. Each event is produced end-to-end: booking, promotion, visual identity, ticketing, venue coordination, and live content capture. The events feed directly into the content system and merch cycles.",
-      commerce:
-        "The merch surface is designed as a product experience, not an afterthought. Limited drops, visual cohesion with releases and events, and a checkout flow that feels like part of the brand rather than a generic storefront.",
-      contentSystem:
-        "Content flows through the entire ecosystem: event footage becomes release teasers, release visuals become merch designs, and community moments feed the visual identity. The system is designed so every output can become an input for something else.",
-      technicalSurface:
-        "Built as an edge-deployed Cloudflare Workers SPA with React, Vite, and TypeScript. Custom dark editorial design system with distinctive typography. Performance-optimized with fast LCP and near-zero CLS. Designed to layer in Pretext editorial components and WebGL ambient visuals without compromising the baseline experience.",
-    },
+      "I'll keep the site stable while adding pages for releases, events, and occasional merch drops.",
+    featured: false,
   },
 ];
 
-/** Look up a project by slug */
 export function getProject(slug: string): Project | undefined {
-  return projects.find((p) => p.slug === slug);
+  return projects.find((project) => project.slug === slug);
 }

@@ -2,7 +2,18 @@
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Cache-Control: public, max-age=3600
+
+/notes/intel-arc-pro-b70-inference-stack
+  Cache-Control: no-store
+
+/notes/intel-arc-pro-b70-inference-stack/
+  Cache-Control: no-store
+
+/data/b70-workhorse/*
+  Cache-Control: no-store
+
+/data/b70-workhorse/*.jsonl
+  Content-Type: application/x-ndjson; charset=utf-8
 
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable

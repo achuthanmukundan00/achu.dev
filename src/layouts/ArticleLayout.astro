@@ -1,0 +1,98 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import { links } from "@data/links";
+import { site } from "@data/site";
+
+interface ArticleFrontmatter {
+  title: string;
+  description: string;
+  date: string | Date;
+  topic?: string;
+  tags?: string[];
+  ogImage?: string;
+  ogImageAlt?: string;
+}
+
+export interface Props {
+  frontmatter: ArticleFrontmatter;
+}
+
+const { frontmatter } = Astro.props;
+const {
+  title,
+  description,
+  date,
+  topic = "Engineering note",
+  ogImage,
+  ogImageAlt,
+} = frontmatter;
+const publishedDate = new Date(date).toISOString().slice(0, 10);
+const articleUrl = new URL(Astro.url.pathname, site.url).toString();
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  headline: title,
+  description,
+  datePublished: publishedDate,
+  author: {
+    "@type": "Person",
+    name: site.fullName,
+    url: site.url,
+  },
+  mainEntityOfPage: articleUrl,
+  image: ogImage ? new URL(ogImage, site.url).toString() : undefined,
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={articleUrl}
+  ogType="article"
+  publishedTime={publishedDate}
+  ogImage={ogImage}
+  ogImageAlt={ogImageAlt}
+>
+  <div class="article-shell">
+    <article>
+      <header class="article-header">
+        <a class="back-link" href="/notes">Back to notes</a>
+        <p class="meta">
+          {topic} · <time datetime={publishedDate}>{publishedDate}</time>
+        </p>
+        <h1>{title}</h1>
+        <p class="lead">{description}</p>
+      </header>
+
+      <div class="article-prose">
+        <slot />
+      </div>
+
+      <footer class="article-footer">
+        <p>
+          Questions or corrections? <a href={`mailto:${links.email}`}>Email me</a>.
+        </p>
+      </footer>
+    </article>
+  </div>
+
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)}></script>
+  <script is:inline>
+    const updateScrollableRegions = () => {
+      document
+        .querySelectorAll(".article-prose pre, .article-prose table, .article-prose figure")
+        .forEach((region) => {
+          if (region.scrollWidth > region.clientWidth) {
+            region.setAttribute("tabindex", "0");
+          } else {
+            region.removeAttribute("tabindex");
+          }
+        });
+    };
+
+    updateScrollableRegions();
+    window.addEventListener("load", updateScrollableRegions, { once: true });
+    window.addEventListener("resize", updateScrollableRegions);
+  </script>
+</BaseLayout>

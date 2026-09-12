@@ -2,21 +2,23 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import ProjectCard from "@components/project/ProjectCard.astro";
 import { projects } from "@data/projects";
+import { seo } from "@data/site";
 ---
 
-<BaseLayout title="Work" description="Projects by Achu Mukundan.">
-  <header class="space-y-3 mb-10">
-    <h1 class="text-4xl lg:text-5xl font-bold tracking-tight">Work</h1>
-    <p class="text-lg text-neutral-400 max-w-2xl leading-relaxed">
-      Projects I've built — open source tools, infrastructure, and experiments.
-    </p>
-  </header>
+<BaseLayout title="Work" description={seo.work.description}>
+  <div class="site-shell">
+    <header class="page-header">
+      <h1>Work</h1>
+      <p class="lead">
+        A few projects I've built across developer tools, local AI, audio, and web
+        software. Each project includes source and implementation notes.
+      </p>
+    </header>
 
-  <section>
-    <div class="project-grid">
-      {projects.map((project) => (
-        <ProjectCard project={project} />
-      ))}
-    </div>
-  </section>
+    <section class="section" aria-label="Projects">
+      <div class="project-list">
+        {projects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
+  </div>
 </BaseLayout>
