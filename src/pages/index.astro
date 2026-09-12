@@ -2,129 +2,58 @@
 import BaseLayout from "@layouts/BaseLayout.astro";
 import { links } from "@data/links";
 import { projects } from "@data/projects";
+import { notes } from "@data/notes";
 import ProjectCard from "@components/project/ProjectCard.astro";
-import { site } from "@data/site";
+import { seo } from "@data/site";
 
-const highlighted = ["suitcase", "relay", "synax", "wytos", "temper-cloud"];
-const highlightedProjects = projects.filter(p => highlighted.includes(p.slug));
-const otherProjects = projects.filter(p => !highlighted.includes(p.slug));
+const featuredProjects = projects.filter((project) => project.featured);
 ---
 
-<BaseLayout title="Home" description={site.supportingLine} fullWidth>
-  <!-- Hero -->
-  <section class="border-b border-neutral-800">
-    <div class="mx-auto max-w-5xl px-6 py-20 lg:py-28">
-      <h1 class="text-4xl lg:text-6xl font-bold tracking-tight text-white">
-        Achu Mukundan
-      </h1>
-      <p class="mt-4 text-lg lg:text-xl text-neutral-400 max-w-xl leading-relaxed">
-        Fullstack and backend engineer building local-first AI tools, developer systems,
-        and production-grade infrastructure. Based in Toronto.
+<BaseLayout title="Home" description={seo.home.description}>
+  <div class="site-shell">
+    <header class="intro">
+      <h1>Achu Mukundan</h1>
+      <p class="body-copy">
+        I'm a software engineer in Toronto. I build developer tools, local AI software,
+        and audio tools.
       </p>
-      <p class="mt-2 text-sm text-neutral-500 max-w-lg">
-        I'm an enthusiastic open source builder, humbly learning and shipping. Previously at Replicant AI,
-        grad from U of T Computer Engineering.
-      </p>
+    </header>
 
-      <div class="mt-8 flex flex-wrap items-center gap-3">
-        <a href="/work" class="btn btn-primary">View work</a>
-        <a href="/resume" class="btn">Resume</a>
-        <a href={links.github} target="_blank" rel="noopener noreferrer me" class="btn">GitHub</a>
-        <a href={links.linkedin} target="_blank" rel="noopener noreferrer me" class="btn">LinkedIn</a>
+    <section class="section" aria-labelledby="writing-heading">
+      <div class="section-heading">
+        <h2 id="writing-heading">Writing</h2>
+        <a href="/notes">All notes</a>
       </div>
-    </div>
-  </section>
-
-  <!-- Highlighted projects -->
-  <section class="border-b border-neutral-800" aria-labelledby="featured-heading">
-    <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
-      <div class="flex items-end justify-between gap-6 mb-8">
-        <div>
-          <p class="section-label">Open source projects</p>
-          <h2 id="featured-heading" class="text-2xl lg:text-3xl font-semibold text-white">
-            Things I've built
-          </h2>
-        </div>
-        <a href="/work" class="text-sm text-neutral-400 hover:text-white transition-colors">
-          View all &rarr;
-        </a>
-      </div>
-
-      <div class="project-grid">
-        {highlightedProjects.map((project) => (
-          <ProjectCard project={project} />
+      <div class="note-list">
+        {notes.map((note) => (
+          <a class="note-item" href={note.slug}>
+            <article>
+              <div class="project-topline">
+                <h3>{note.title}</h3>
+                <time class="project-meta" datetime={note.date}>{note.date}</time>
+              </div>
+              <p>{note.summary}</p>
+            </article>
+          </a>
         ))}
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- All other projects -->
-  <section class="border-b border-neutral-800" aria-labelledby="more-heading">
-    <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
-      <h2 id="more-heading" class="text-sm font-mono uppercase tracking-[0.15em] text-neutral-500 mb-6">
-        More projects
-      </h2>
-      <div class="project-grid">
-        {otherProjects.map((project) => (
-          <ProjectCard project={project} />
-        ))}
+    <section class="section" aria-labelledby="work-heading">
+      <div class="section-heading">
+        <h2 id="work-heading">Selected projects</h2>
+        <a href="/work">All projects</a>
       </div>
-    </div>
-  </section>
+      <div class="project-list">
+        {featuredProjects.map((project) => <ProjectCard project={project} />)}
+      </div>
+    </section>
 
-  <!-- About -->
-  <section class="border-b border-neutral-800" aria-labelledby="about-heading">
-    <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
-      <div class="grid gap-8 lg:grid-cols-[0.8fr_1.2fr]">
-        <div>
-          <p class="section-label">Background</p>
-          <h2 id="about-heading" class="text-2xl lg:text-3xl font-semibold text-white">
-            Fullstack/backend engineer in Toronto.
-          </h2>
-        </div>
-        <div class="space-y-4 text-neutral-400 text-sm leading-7">
-          <p>
-            I build across model gateways, coding agents, creative operating systems,
-            edge-deployed applications, and self-hosted infrastructure. The throughline is
-            local-first architecture, fast feedback loops, and interfaces that reveal how
-            the system behaves.
-          </p>
-          <p>
-            Outside of code: electronic music production, running a live event series
-            (PRESSURE TEST), creative direction, and worldbuilding through{" "}
-            <a href={links.watchyourtemper} target="_blank" rel="noopener noreferrer"
-              class="text-blue-400 hover:text-blue-300 underline underline-offset-2 transition-colors">
-              watchyourtemper
-            </a>.
-          </p>
-          <div class="flex flex-wrap gap-2 pt-2">
-            {["Fullstack Engineer","Backend Engineer","AI Tools","Local LLM Systems","Edge / Serverless","Creative Tech"].map(tag => (
-              <span class="tag">{tag}</span>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Notes preview -->
-  <section aria-labelledby="notes-heading">
-    <div class="mx-auto max-w-5xl px-6 py-16 lg:py-20">
-      <div class="grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end">
-        <div>
-          <p class="section-label">Writing</p>
-          <h2 id="notes-heading" class="text-2xl lg:text-3xl font-semibold text-white">
-            Notes and devlogs.
-          </h2>
-        </div>
-        <div>
-          <p class="text-sm text-neutral-400 leading-6 max-w-xl">
-            Notes on local inference, agent observability, protocol design, creative
-            tooling, self-hosted infrastructure, and the build process behind this site.
-          </p>
-          <a href="/notes" class="btn mt-5">Notes</a>
-        </div>
-      </div>
-    </div>
-  </section>
+    <nav class="link-row contact-links" aria-label="Contact and resume">
+      <a href={`mailto:${links.email}`}>Email</a>
+      <a href="/resume">Resume</a>
+      <a href={links.github} target="_blank" rel="noopener noreferrer me">GitHub</a>
+      <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">LinkedIn</a>
+    </nav>
+  </div>
 </BaseLayout>

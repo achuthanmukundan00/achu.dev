@@ -1,27 +1,60 @@
 ---
-// BaseLayout.astro — shared shell for every page.
-// Provides: nav, footer, SEO meta, Google Fonts, responsive container.
 import "@/styles/global.css";
 import Nav from "@components/ui/Nav.astro";
 import Footer from "@components/ui/Footer.astro";
+import { links } from "@data/links";
 import { site } from "@data/site";
 
 export interface Props {
   title: string;
   description?: string;
   fullWidth?: boolean;
-  /** Extra content injected into <head> */
-  head?: string;
+  canonical?: string;
+  ogType?: "website" | "article";
+  publishedTime?: string;
+  noindex?: boolean;
+  ogImage?: string;
+  ogImageAlt?: string;
 }
 
 const {
   title,
   description = site.supportingLine,
-  fullWidth = false,
-  head = "",
+  canonical,
+  ogType = "website",
+  publishedTime,
+  noindex = false,
+  ogImage = site.ogImage,
+  ogImageAlt = "Achu Mukundan, software engineer",
 } = Astro.props;
 
-const pageTitle = title === "Home" ? site.name : `${title} | ${site.name}`;
+const pageTitle = title === "Home" ? site.name : `${title} | ${site.fullName}`;
+const canonicalUrl = canonical ?? new URL(Astro.url.pathname, site.url).toString();
+const ogImageUrl = new URL(ogImage, site.url).toString();
+
+const personSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  name: site.fullName,
+  url: site.url,
+  jobTitle: "Software Engineer",
+  homeLocation: {
+    "@type": "Place",
+    name: site.location,
+  },
+  alumniOf: {
+    "@type": "CollegeOrUniversity",
+    name: "University of Toronto",
+  },
+  sameAs: [links.github, links.linkedin],
+  knowsAbout: [
+    "Software engineering",
+    "Developer tools",
+    "AI agents",
+    "Local inference",
+    "Audio software",
+  ],
+};
 ---
 
 <!doctype html>
@@ -29,41 +62,40 @@ const pageTitle = title === "Home" ? site.name : `${title} | ${site.name}`;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0a0b0b" />
+    <meta name="author" content={site.fullName} />
+    <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    {!noindex && <link rel="canonical" href={canonicalUrl} />}
 
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
 
+    <meta property="og:site_name" content={site.fullName} />
+    <meta property="og:locale" content={site.locale} />
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={description} />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content={site.url} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
-      rel="stylesheet"
-    />
-
-    <!-- Fragment: pages can inject extra head content -->
-    {head}
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
   </head>
-  <body class="flex flex-col min-h-screen">
+  <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <Nav />
-    <main class="flex-1">
-      {
-        fullWidth ? (
-          <slot />
-        ) : (
-          <div class="mx-auto max-w-5xl px-6 py-12 lg:py-16">
-            <slot />
-          </div>
-        )
-      }
+    <main id="main-content">
+      <slot />
     </main>
     <Footer />
   </body>

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">Gemma 4 12B at 4K context</title>
+  <desc id="chart-description">In one measured run per cell, BF16 reached 4,420 prompt and 21.26 generation tokens per second. AutoRound reached 3,364 prompt and 51.86 generation. The QAT W4A16 checkpoint reached 628 prompt and 19.27 generation.</desc>
+  <rect width="1200" height="720" fill="#111313" />
+  <text x="56" y="62" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="650">Gemma 4 12B at 4K context</text>
+  <text x="56" y="102" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Depth 1,126 · PP2048 + TG512 · concurrency 1</text>
+  <text x="315" y="170" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Prompt tok/s</text>
+<text x="820" y="170" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Generation tok/s</text>
+<line x1="315" y1="188" x2="705" y2="188" stroke="#343837" stroke-width="2" />
+<line x1="820" y1="188" x2="1110" y2="188" stroke="#343837" stroke-width="2" />
+<text x="56" y="250" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">BF16</text>
+<rect x="315" y="220" width="374.7545130196984" height="40" fill="#858c88" />
+<text x="677.7545130196984" y="251" text-anchor="end" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">4420</text>
+<rect x="820" y="220" width="112.10658443077574" height="40" fill="#858c88" />
+<text x="944.1065844307757" y="251" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">21.26</text>
+<text x="56" y="380" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">AutoRound INT4</text>
+<rect x="315" y="350" width="285.19556610704933" height="40" fill="#e5e7e4" />
+<text x="612.1955661070493" y="381" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">3364</text>
+<rect x="820" y="350" width="273.4173430081551" height="40" fill="#e5e7e4" />
+<text x="1081.417343008155" y="381" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">51.86</text>
+<text x="56" y="510" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">QAT W4A16</text>
+<rect x="315" y="480" width="53.24468744131487" height="40" fill="#555a57" />
+<text x="380.2446874413149" y="511" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">628</text>
+<rect x="820" y="480" width="101.591363536461" height="40" fill="#555a57" />
+<text x="933.591363536461" y="511" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">19.27</text>
+</svg>

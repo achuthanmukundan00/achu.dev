@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">Gemma BF16 and AutoRound quality checks</title>
+  <desc id="chart-description">AutoRound's conditional assistant-target perplexity ratio was 1.108 on WikiText-2 and 0.930 on HumanEval canonical code. Forward KL was 0.119 nats per token with a 95 percent interval from 0.100 to 0.140. Reverse KL was 0.119 with an interval from 0.090 to 0.149.</desc>
+  <rect width="1200" height="720" fill="#111313" />
+  <text x="56" y="62" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="650">Gemma BF16 and AutoRound quality checks</text>
+  <text x="56" y="102" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Paired tokenizer, template, datasets, and runtime</text>
+  <text x="56" y="150" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Conditional perplexity ratio</text>
+<text x="704" y="150" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Monte Carlo KL · nats/token</text>
+<line x1="357.50000000000006" y1="180" x2="357.50000000000006" y2="500" stroke="#858c88" stroke-width="3" />
+<text x="357.50000000000006" y="540" text-anchor="middle" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">BF16 baseline</text>
+<text x="56" y="222" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">WikiText-2</text>
+<line x1="357.50000000000006" y1="250" x2="550.0034810023731" y2="250" stroke="#e5e7e4" stroke-width="8" />
+<circle cx="550.0034810023731" cy="250" r="12" fill="#e5e7e4" />
+<text x="550.0034810023731" y="300" text-anchor="middle" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">1.108×</text>
+<text x="56" y="392" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">HumanEval code</text>
+<line x1="357.50000000000006" y1="420" x2="232.80963651906504" y2="420" stroke="#e5e7e4" stroke-width="8" />
+<circle cx="232.80963651906504" cy="420" r="12" fill="#e5e7e4" />
+<text x="232.80963651906504" y="470" text-anchor="middle" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">0.930×</text>
+<text x="704" y="222" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">BF16 → INT4</text>
+<rect x="765" y="234" width="256.8349578427651" height="32" fill="#858c88" />
+<line x1="979.580031134998" y1="250" x2="1066.9859336145876" y2="250" stroke="#f1f2ef" stroke-width="5" />
+<line x1="979.580031134998" y1="236" x2="979.580031134998" y2="264" stroke="#f1f2ef" stroke-width="4" />
+<line x1="1066.9859336145876" y1="236" x2="1066.9859336145876" y2="264" stroke="#f1f2ef" stroke-width="4" />
+<circle cx="1021.8349578427651" cy="250" r="9" fill="#e5e7e4" />
+<text x="765" y="300" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">0.119 · 95% CI 0.100 to 0.140</text>
+<text x="704" y="392" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">INT4 → BF16</text>
+<rect x="765" y="404" width="255.78009764142757" height="32" fill="#858c88" />
+<line x1="958.3445462673557" y1="420" x2="1085.4974399045961" y2="420" stroke="#f1f2ef" stroke-width="5" />
+<line x1="958.3445462673557" y1="406" x2="958.3445462673557" y2="434" stroke="#f1f2ef" stroke-width="4" />
+<line x1="1085.4974399045961" y1="406" x2="1085.4974399045961" y2="434" stroke="#f1f2ef" stroke-width="4" />
+<circle cx="1020.7800976414276" cy="420" r="9" fill="#e5e7e4" />
+<text x="765" y="470" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">0.119 · 95% CI 0.090 to 0.149</text>
+<text x="56" y="632" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Ratio above 1 means higher AutoRound perplexity</text>
+<text x="704" y="632" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">24 sequences · 4,608 tokens each direction</text>
+</svg>

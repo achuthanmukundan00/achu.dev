@@ -1,0 +1,117 @@
+# Xe2 graph-capture patch
+# Based on vllm-xpu-kernels v0.1.11.
+# Changes paged decode and multi-query chunk prefill to use graph-capturable local memory.
+
+diff --git a/csrc/xpu/attn/xe_2/chunk_prefill.hpp b/csrc/xpu/attn/xe_2/chunk_prefill.hpp
+--- a/csrc/xpu/attn/xe_2/chunk_prefill.hpp
++++ b/csrc/xpu/attn/xe_2/chunk_prefill.hpp
+@@ -23,6 +23,22 @@
+ 
+ using namespace cute;
+ 
++namespace xpu_graph_safe {
++// Graph-capturable kernel entry: receives dynamic shared memory via a SYCL
++// local_accessor (compat::experimental::local_mem_size on the launch_policy)
++// instead of the work_group_scratch_memory extension, which the SYCL Graph
++// extension rejects. With MTP/spec-decode, decode becomes multi-query
++// (query_len = 1 + num_spec_tokens), so the hybrid's full-attention layers
++// route through this chunk_prefill kernel instead of paged_decode; without this
++// it makes MTP UN-capturable under XPU cudagraph. Mirrors the paged_decode.hpp
++// helper; the compat launch functor appends the local-mem ptr as the last arg.
++template <typename Operator>
++void device_kernel(typename Operator::Params const& params, char* smem) {
++  Operator op;
++  op(params, smem);
++}
++}  // namespace xpu_graph_safe
++
+ struct chunk_prefill_args_t {
+   void* query;
+   void* key;
+@@ -218,16 +234,15 @@ struct KernelLauncher {
+     const auto sycl_block = compat::dim3(block.x, block.y, block.z);
+     const auto sycl_grid = compat::dim3(grid.x, grid.y, grid.z);
+ 
+-    // Launch parameters depend on whether SYCL compiler supports work-group
+-    // scratch memory extension
+-    compat::experimental::launch_properties launch_props{
+-        syclex::work_group_scratch_size(smem_size),
+-    };
++    // XPU-MTP FIX: pass dynamic SMEM via local_mem_size + the graph-capturable
++    // xpu_graph_safe::device_kernel entry instead of work_group_scratch_size,
++    // which the SYCL Graph extension rejects (mirrors paged_decode.hpp).
+     compat::experimental::kernel_properties kernel_props{
+         syclex::sub_group_size<cute::intel::sg_size>, intelex::grf_size<256>};
+     compat::experimental::launch_policy policy{
+-        sycl_grid, sycl_block, launch_props, kernel_props};
+-    compat::experimental::launch<cutlass::device_kernel<FMHAKernel>>(
++        sycl_grid, sycl_block, kernel_props,
++        compat::experimental::local_mem_size{static_cast<size_t>(smem_size)}};
++    compat::experimental::launch<xpu_graph_safe::device_kernel<FMHAKernel>>(
+         policy, queue, params);
+   }
+ };
+diff --git a/csrc/xpu/attn/xe_2/paged_decode.hpp b/csrc/xpu/attn/xe_2/paged_decode.hpp
+--- a/csrc/xpu/attn/xe_2/paged_decode.hpp
++++ b/csrc/xpu/attn/xe_2/paged_decode.hpp
+@@ -23,6 +23,20 @@
+ 
+ using namespace cute;
+ 
++namespace xpu_graph_safe {
++// Graph-capturable kernel entry: receives dynamic shared memory via a SYCL
++// local_accessor (compat::experimental::local_mem_size on the launch_policy)
++// instead of the work_group_scratch_memory extension, which the SYCL Graph
++// extension rejects (makes full-attention decode UN-capturable -> blocks XPU
++// cudagraph). Mirrors cutlass::device_kernel's local-accessor overload; the
++// compat launch functor appends the local-mem ptr as the kernel's last arg.
++template <typename Operator>
++void device_kernel(typename Operator::Params const& params, char* smem) {
++  Operator op;
++  op(params, smem);
++}
++}  // namespace xpu_graph_safe
++
+ using _576 = cute::Int<576>;
+ 
+ using decode_policy_q8_h64_p64 = decode_policy_qpacked_head<_8, _64, _64>;
+@@ -420,14 +434,12 @@ struct DecodeKernelLauncher {
+ 
+     // Launch parameters depend on whether SYCL compiler supports work-group
+     // scratch memory extension
+-    compat::experimental::launch_properties launch_props{
+-        syclex::work_group_scratch_size(smem_size),
+-    };
+     compat::experimental::kernel_properties kernel_props{
+         syclex::sub_group_size<cute::intel::sg_size>, intelex::grf_size<256>};
+     compat::experimental::launch_policy policy{
+-        sycl_grid, sycl_block, launch_props, kernel_props};
+-    compat::experimental::launch<cutlass::device_kernel<FMHAKernel>>(
++        sycl_grid, sycl_block, kernel_props,
++        compat::experimental::local_mem_size{static_cast<size_t>(smem_size)}};
++    compat::experimental::launch<xpu_graph_safe::device_kernel<FMHAKernel>>(
+         policy, queue, params);
+ 
+     // event.wait();
+@@ -439,17 +451,15 @@ struct DecodeKernelLauncher {
+       const auto reduce_sycl_block = compat::dim3(block.x, block.y, block.z);
+       const auto reduce_sycl_grid =
+           compat::dim3(reduce_grid.x, reduce_grid.y, reduce_grid.z);
+-      compat::experimental::launch_properties launch_props_reduce{
+-          syclex::work_group_scratch_size(reduce_smem_size),
+-      };
+       compat::experimental::launch_policy reduce_policy{
+           reduce_sycl_grid,
+           reduce_sycl_block,
+-          launch_props_reduce,
+-          kernel_props};
++          kernel_props,
++          compat::experimental::local_mem_size{
++              static_cast<size_t>(reduce_smem_size)}};
+ 
+       compat::experimental::launch<
+-          cutlass::device_kernel<ReductionSplitKernel>>(
++          xpu_graph_safe::device_kernel<ReductionSplitKernel>>(
+           reduce_policy, queue, reduce_params);
+       // reduce_event.wait();
+     }

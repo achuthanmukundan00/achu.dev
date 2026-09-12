@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">115K prior tokens, one request</title>
+  <desc id="chart-description">At 115,404 prior tokens, Qwen 35B-A3B AutoRound reached 3,377 prompt and 47.03 generation tokens per second. Its Q4_K_S GGUF row reached 528 prompt and 42.63 generation tokens per second. Ornith showed a similar result. Qwen 27B AutoRound reached 1,025 prompt and 21.73 generation tokens per second, while GGUF reached 130 and 10.69.</desc>
+  <rect width="1200" height="720" fill="#111313" />
+  <text x="56" y="62" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="650">115K prior tokens, one request</text>
+  <text x="56" y="102" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">PP2048 + TG512 · one measured run per cell</text>
+  <text x="405" y="142" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Prompt tok/s</text>
+<text x="850" y="142" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Generation tok/s</text>
+<line x1="405" y1="158" x2="735" y2="158" stroke="#343837" stroke-width="2" />
+<line x1="850" y1="158" x2="1110" y2="158" stroke="#343837" stroke-width="2" />
+<text x="56" y="204" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen 27B · AutoRound</text>
+<rect x="405" y="180" width="96.59986278497065" height="32" fill="#e5e7e4" />
+<text x="511.59986278497064" y="205" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">1025</text>
+<rect x="850" y="180" width="112.98338046566171" height="32" fill="#e5e7e4" />
+<text x="972.9833804656618" y="205" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">21.73</text>
+<text x="56" y="278" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen 27B · Q4_K_S</text>
+<rect x="405" y="254" width="12.291262498185354" height="32" fill="#555a57" />
+<text x="427.29126249818535" y="279" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">130</text>
+<rect x="850" y="254" width="55.567837993051285" height="32" fill="#555a57" />
+<text x="915.5678379930513" y="279" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">10.69</text>
+<text x="56" y="352" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen 35B-A3B · AutoRound</text>
+<rect x="405" y="328" width="318.41547900733883" height="32" fill="#e5e7e4" />
+<text x="713.4154790073388" y="353" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">3377</text>
+<rect x="850" y="328" width="244.56079494346693" height="32" fill="#e5e7e4" />
+<text x="1084.560794943467" y="353" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">47.03</text>
+<text x="56" y="426" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen 35B-A3B · Q4_K_S</text>
+<rect x="405" y="402" width="49.786192509199445" height="32" fill="#555a57" />
+<text x="464.78619250919945" y="427" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">528</text>
+<rect x="850" y="402" width="221.69746272971727" height="32" fill="#555a57" />
+<text x="1061.6974627297172" y="427" text-anchor="end" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">42.63</text>
+<text x="56" y="500" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Ornith 35B · AutoRound</text>
+<rect x="405" y="476" width="312.34585432606815" height="32" fill="#e5e7e4" />
+<text x="707.3458543260681" y="501" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">3313</text>
+<rect x="850" y="476" width="248.69941258962334" height="32" fill="#e5e7e4" />
+<text x="1088.6994125896233" y="501" text-anchor="end" fill="#111313" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">47.83</text>
+<text x="56" y="574" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Ornith 35B · Q4_K_S</text>
+<rect x="405" y="550" width="49.6028976549656" height="32" fill="#555a57" />
+<text x="464.6028976549656" y="575" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">526</text>
+<rect x="850" y="550" width="221.99045636243844" height="32" fill="#555a57" />
+<text x="1061.9904563624384" y="575" text-anchor="end" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">42.69</text>
+</svg>

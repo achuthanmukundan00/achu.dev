@@ -1,2 +1,4 @@
-# Redirect www.achu.dev → achu.dev
-https://www.achu.dev/* https://achu.dev/:splat 301
+# Keep the public portfolio on one canonical origin.
+https://www.achumukundan.dev/* https://achumukundan.dev/:splat 301
+/lab /notes 301
+/lab/ /notes 301

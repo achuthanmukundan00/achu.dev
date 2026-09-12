@@ -1,29 +1,23 @@
-/**
- * Centralized links — single source of truth for all external URLs.
- * Import this file wherever links are rendered.
- */
-
+/** Centralized external links used across the site. */
 export const links = {
   github: "https://github.com/achuthanmukundan00",
   linkedin: "https://www.linkedin.com/in/achu-m",
   email: "achuthanmukundan00@gmail.com",
+  skaft: "https://skaft.org",
   watchyourtemper: "https://watchyourtemper.com",
-  resumePdf: "#", // TODO Phase 2: real PDF download
 
-  // Project-specific links
-  relayRepo: "https://achuthanmukundan00.github.io/relay",
-  relayDocs: "#",
-  relayLive: "#",
-  synaxRepo: "https://github.com/achuthanmukundan00/synax",
-  synaxDocs: "#",
-  synaxLive: "#",
-  wytosRepo: "https://github.com/achuthanmukundan00/wytOS",
-  temperCloudRepo: "https://github.com/achuthanmukundan00/temper-cloud",
-  watchyourtemperRepo: "https://github.com/achuthanmukundan00/watchyourtemper",
-  packageNameGenRepo: "https://github.com/achuthanmukundan00/package-name-gen",
-  autoCareerRepo: "https://github.com/achuthanmukundan00/AutoCareer",
+  octet: "https://octet.skaft.org",
+  octetDocs: "https://octet.skaft.org/octet/docs/",
+  octetRepo: "https://github.com/skaft-software/octet",
+  resampleLab: "https://rlab.watchyourtemper.com",
   resampleLabRepo: "https://github.com/achuthanmukundan00/Resample-Lab",
-  suitcaseDocs: "https://suitcase-docs.pages.dev",
+  temperPlayerRepo: "https://github.com/achuthanmukundan00/temper-player",
+  leetcodeWizardRepo: "https://github.com/achuthanmukundan00/lc-prep-wizard",
+  promptTemplatesRepo:
+    "https://github.com/achuthanmukundan00/SWE-prompt-templates",
+  watchyourtemperRepo: "https://github.com/achuthanmukundan00/wyt-SPA",
+  packageNameGenRepo:
+    "https://github.com/achuthanmukundan00/package-name-gen",
 } as const;
 
 export type LinkKey = keyof typeof links;

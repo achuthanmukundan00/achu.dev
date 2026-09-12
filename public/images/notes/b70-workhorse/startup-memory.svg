@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+  <title id="chart-title">Memory reported by vLLM at startup</title>
+  <desc id="chart-description">vLLM reported model load and available KV memory for five tested configurations. Gemma 4 12B AutoRound loaded in 7.63 GiB with 19.13 GiB available for KV, while Gemma BF16 loaded in 22.73 GiB with 7.58 GiB available at a higher GPU memory utilization setting.</desc>
+  <rect width="1200" height="720" fill="#111313" />
+  <text x="56" y="62" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" font-weight="650">Memory reported by vLLM at startup</text>
+  <text x="56" y="102" text-anchor="start" fill="#a4aaa6" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Reported buckets are separate; runtime overhead is omitted</text>
+  <rect x="56" y="126" width="28" height="20" fill="#e5e7e4" />
+<text x="96" y="144" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Model load</text>
+<rect x="265" y="126" width="28" height="20" fill="#858c88" />
+<text x="305" y="144" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Available KV</text>
+<text x="56" y="196" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen3.6 27B AutoRound</text>
+<rect x="450" y="170" width="426" height="30" fill="#e5e7e4" />
+<text x="886" y="195" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">17.75 GiB</text>
+<rect x="450" y="210" width="216.95999999999998" height="30" fill="#858c88" />
+<text x="676.96" y="235" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">9.04 GiB</text>
+<text x="56" y="294" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Qwen3.6 35B-A3B AutoRound</text>
+<rect x="450" y="268" width="470.40000000000003" height="30" fill="#e5e7e4" />
+<text x="930.4000000000001" y="293" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">19.60 GiB</text>
+<rect x="450" y="308" width="136.56" height="30" fill="#858c88" />
+<text x="596.56" y="333" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">5.69 GiB</text>
+<text x="56" y="392" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Ornith 35B AutoRound</text>
+<rect x="450" y="366" width="457.44" height="30" fill="#e5e7e4" />
+<text x="917.44" y="391" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">19.06 GiB</text>
+<rect x="450" y="406" width="149.52" height="30" fill="#858c88" />
+<text x="609.52" y="431" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">6.23 GiB</text>
+<text x="56" y="490" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Gemma 4 12B AutoRound</text>
+<rect x="450" y="464" width="183.11999999999998" height="30" fill="#e5e7e4" />
+<text x="643.12" y="489" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">7.63 GiB</text>
+<rect x="450" y="504" width="459.12" height="30" fill="#858c88" />
+<text x="919.12" y="529" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">19.13 GiB</text>
+<text x="56" y="588" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">Gemma 4 12B BF16</text>
+<rect x="450" y="562" width="545.52" height="30" fill="#e5e7e4" />
+<text x="1005.52" y="587" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">22.73 GiB</text>
+<rect x="450" y="602" width="181.92000000000002" height="30" fill="#858c88" />
+<text x="641.9200000000001" y="627" text-anchor="start" fill="#f1f2ef" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" font-weight="400">7.58 GiB</text>
+</svg>
