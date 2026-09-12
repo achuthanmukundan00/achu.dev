@@ -92,11 +92,13 @@ const personSchema = {
     <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)}></script>
   </head>
   <body>
+    <!--email_off-->
     <a href="#main-content" class="skip-link">Skip to content</a>
     <Nav />
     <main id="main-content">
       <slot />
     </main>
     <Footer />
+    <!--/email_off-->
   </body>
 </html>
