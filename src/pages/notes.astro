@@ -20,7 +20,7 @@ import { seo } from "@data/site";
             <article>
               <div class="project-topline">
                 <h2>{note.title}</h2>
-                <span class="project-meta">{note.date}</span>
+                <time class="project-meta" datetime={note.updated ?? note.date}>{note.updated ? `Updated ${note.updated}` : note.date}</time>
               </div>
               <p>{note.summary}</p>
             </article>

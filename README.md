@@ -42,6 +42,13 @@ obfuscation from turning ordinary `mailto:` links into JavaScript-only links.
 This does not change the immutable asset or no-store evidence cache policies.
 After deployment, check actual email links as well as source/build output.
 
+The build also checks the August 20 B70 article: reduced measurements, means and
+sample deviations, deterministic charts, public data and update metadata. Regenerate
+its SVGs with `node scripts/generate-b70-qwen38-figures.mjs` after changing the
+Qwen3.8 evidence. Keep the older article data and image URLs intact; the new bundle
+uses dated filenames. The article's `updated` date records the rewrite, separately
+from its original publication date and the setup-as-of date in the prose.
+
 ## Main routes
 
 | Route | Purpose |

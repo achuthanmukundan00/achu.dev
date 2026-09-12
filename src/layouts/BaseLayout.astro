@@ -12,6 +12,7 @@ export interface Props {
   canonical?: string;
   ogType?: "website" | "article";
   publishedTime?: string;
+  modifiedTime?: string;
   noindex?: boolean;
   ogImage?: string;
   ogImageAlt?: string;
@@ -23,6 +24,7 @@ const {
   canonical,
   ogType = "website",
   publishedTime,
+  modifiedTime,
   noindex = false,
   ogImage = site.ogImage,
   ogImageAlt = "Achu Mukundan, software engineer",
@@ -82,6 +84,7 @@ const personSchema = {
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogImageAlt} />
     {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={pageTitle} />

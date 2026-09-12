@@ -21,7 +21,11 @@ export const GET: APIRoute = () => {
   ];
 
   const urls = paths
-    .map((path) => `  <url><loc>${new URL(path, site.url).toString()}</loc></url>`)
+    .map((path) => {
+      const note = notes.find((entry) => `${entry.slug}/` === path);
+      const lastmod = note ? `<lastmod>${note.updated ?? note.date}</lastmod>` : "";
+      return `  <url><loc>${new URL(path, site.url).toString()}</loc>${lastmod}</url>`;
+    })
     .join("\n");
 
   return new Response(

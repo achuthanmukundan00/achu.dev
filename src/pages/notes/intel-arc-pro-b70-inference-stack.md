@@ -1,287 +1,114 @@
 ---
 layout: ../../layouts/ArticleLayout.astro
-title: "My Intel Arc Pro B70 inference setup, with the numbers"
-description: "Patched vLLM, AutoRound INT4, a 47 tok/s run at 115K prior tokens, quality checks, and why MTP stayed off."
+title: "Ditching llm-scaler: Qwen3.8-27B on my B70"
+description: "Patching vLLM with GPT-5.6 Sol's help got me to a local setup I love: Qwen3.8-27B, working MTP4, and measured decode gains through 131K total context."
 date: 2026-07-25
+updated: 2026-09-12
 topic: "Local inference"
-ogImage: "/images/notes/b70-workhorse/og.png"
-ogImageAlt: "Intel Arc Pro B70 benchmark result: 3,377 prompt tokens per second and 47.03 generation tokens per second at 115,404 prior tokens"
+ogImage: "/images/notes/b70-workhorse/qwen38-og-20260820.png"
+ogImageAlt: "Intel Arc Pro B70 with Qwen3.8-27B and MTP4: 51.02 generation tokens per second at 16,384 prompt tokens; setup as of August 20, 2026"
 ---
 
-I have rebuilt the software on this B70 enough times that a working API response is only the first check. A model can load and answer a prompt while an important kernel is running on an unexpected path.
+**This is my setup as of August 20, 2026.** I rewrote this article because the conclusion changed. The earlier measurements are still available, but they are no longer the story of what I run.
 
-My current serving path is patched vLLM on XPU with AutoRound INT4 weights. I use Qwen3.6-27B for daily work and occasionally switch to Ornith-1.0-35B. For the benchmark in this report, Qwen3.6-35B-A3B processed a 115,404-token prefix at 3,377 prompt tokens per second and generated at 47.03 tokens per second. That was one request, one measured run, 2,048 new prompt tokens, 512 generated tokens, native KV, and MTP off. Ornith reached 47.83 generation tokens per second under the same workload.
+I love this setup now. The turning point was ditching llm-scaler as the basis of my serving setup and patching vLLM with GPT-5.6 Sol's help. The hardware was still the same Intel Arc Pro B70. What changed was the software I was willing to treat as fixed.
 
-This article records the machine, patches, settings, raw rows, and quality checks behind those numbers.
+I ended up with **Qwen3.8-27B, GPTQ INT4 weights, a BF16 MTP draft, FP8 KV cache, and XPU graphs**. MTP4 stays on. The pinned stack passed repeated populated-context tests all the way to **130,560 prompt tokens plus 512 output tokens**, then became my production profile.
 
-## The machine
+That is a much better ending than “I tried MTP and left it disabled.”
 
-| Part | Measured setup |
+## Getting out of the packaged stack
+
+llm-scaler was part of my earlier path into local inference. Eventually, I needed to work below that layer: the vLLM version, checkpoint packing, draft precision, graph behavior, and patches all mattered. Leaving that packaged stack behind let me change and pin those pieces directly.
+
+GPT-5.6 Sol helped me work through the vLLM patching. I think that is an important part of this story: I did not just find a different model file and get lucky with a fast response. I used a coding model to help work on the serving software, then checked the result on the actual GPU.
+
+The earlier failures were real. My Qwen3.6 AutoRound experiments had found both corrupted speculative output with graph replay and coherent-but-slow MTP without it. A later Qwen3.8 development-stack attempt also broke down under longer prompts. Those results described those combinations of software and weights. They were not a permanent verdict on the B70 or on MTP.
+
+The successful endpoint was not all code I invented. I reproduced the pinned Qwen3.8 recipe in [SergiioB's Intel Arc Pro B70 inference cookbook](https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook/tree/1378950ac875ab6962addd1ddaf44550d34c3103), including its checkpoint choice and two required runtime patches. That upstream work deserves credit. My result here is the working deployment and the repeated measurements on my machine.
+
+## The stack that finally worked
+
+| Piece | August 20 setup |
 | --- | --- |
-| GPU | Intel Arc Pro B70 (Battlemage G31) |
-| Memory | 32,656 MiB reported by PyTorch XPU |
-| Software | Ubuntu Linux, `xe` driver, Level Zero runtime |
-| XPU | One device, 256 compute units |
+| GPU | One Intel Arc Pro B70; 32,656 MiB reported by PyTorch XPU |
+| Host | Ubuntu 26.04 LTS, `xe` driver, 230 W GPU power cap |
+| Model | [Qwen3.8-27B GPTQ INT4, symmetric group-128, with BF16 MTP tensors](https://huggingface.co/SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16) |
+| Runtime | Pinned vLLM XPU image; installed vLLM `0.27.2rc1.dev77+gac7509e2b.xpu` |
+| Runtime patches | `patch_mtp_nightly.py`, then `patch_mtp_boundary.py` |
+| Execution | FP16 target compute, BF16 draft, FP8 KV cache, XPU graphs |
+| Speculation | MTP4: four proposed draft tokens per verification round |
+| Production limits | 131,072 total tokens; one sequence; scheduler ceiling 8,192 |
+| Production cache | Exact-prefix caching enabled after a separate functional canary |
 
-The [public device check](/data/b70-workhorse/device-evidence.txt) contains only the fields needed to confirm B70 execution through PyTorch XPU.
+The draft precision is explicit: `B70_MTP_BF16_DRAFT=1`. Graphs are enabled, not worked around by permanently turning them off. The checkpoint keeps the MTP tensors at 16-bit precision while the target weights use GPTQ INT4.
 
-## The software I ended up with
+I keep this as a **pinned compatibility bundle**, not a bag of flags to scatter onto whichever nightly happens to be newest. The [public setup and measurement record](/data/b70-workhorse/qwen38-20260820-methodology.json) includes the image digest, model revision, patch hashes, upstream recipe, and benchmark controls.
 
-My earlier B70 setup leaned on llama.cpp's SYCL backend. It is still useful, especially when I want to try a GGUF quickly. The current vLLM path gives me faster prompt processing on the models I run every day.
+The campaign validates that whole bundle. It does not isolate which individual patch, version, dtype, or setting fixed the previous failure. Ditching llm-scaler was the practical turning point for me; this is not a controlled benchmark claiming that removing a wrapper alone produces a particular speedup.
 
-I keep separate patched vLLM builds for the dense and MoE models. The dense path uses Intel's XPU support plus the workspace fix described below. The MoE path also carries model support and graph-safe Xe2 kernels.
+## MTP4 now earns its place
 
-The MoE path needed two changes beyond model support.
-
-First, DPC++ 2025.3 rejected `sycl_ext_oneapi_work_group_scratch_memory` while capturing an XPU graph. I changed the Xe2 paged-decode and multi-query chunk-prefill launches to pass dynamic shared memory through a local accessor. The full change is in [xe2-graph-capture.patch](/data/b70-workhorse/xe2-graph-capture.patch).
-
-Second, TurboQuant could grow its continuation-prefill dequantization workspace after graph capture. The runtime now reserves the largest K/V workspace before vLLM locks graph memory. The small patcher is available as [turboquant-workspace-patch.py](/data/b70-workhorse/turboquant-workspace-patch.py).
-
-The 35B benchmark server starts with the equivalent of:
-
-```text
-python -m vllm.entrypoints.openai.api_server \
-  --model "$MODEL" \
-  --served-model-name local-model \
-  --max-model-len 131072 \
-  --max-num-seqs 1 \
-  --max-num-batched-tokens 8192 \
-  --gpu-memory-utilization 0.90 \
-  --kv-cache-dtype auto \
-  --compilation-config \
-    '{"cudagraph_mode":"FULL_DECODE_ONLY","cudagraph_capture_sizes":[1,2]}'
-```
-
-The scheduler batch ceiling is 8,192 tokens. Context length is configured separately at 131,072. In a Gemma 8K pair, raising the scheduler ceiling from 4,096 to 8,192 changed prompt processing from 2,802.90 to 2,862.46 tokens per second. Decode stayed close at 45.64 and 45.43 tokens per second. Each cell was one run.
-
-The AutoRound checkpoints use symmetric 4-bit weights, group size 128, and `auto_round:auto_gptq` packing. Their metadata keeps selected gates and layers at higher precision. Gemma's QAT W4A16 checkpoint uses symmetric 4-bit group-32 weights through compressed-tensors. Native KV cache remained enabled for the main results.
-
-## How I measured it
-
-My benchmark harness launched each server and sent the same workload shape.
-
-The long-context command used these settings:
-
-```text
---pp 2048
---tg 512
---depth 115404
---runs 1
---warmup-runs 0
---exact-tg
---latency-mode generation
---no-cache
-```
-
-Here, `depth` is the existing prefix before the 2,048-token measured prompt. It is not the final fill. The headline request ended at 117,964 tokens, about 90% of the configured 131,072-token window.
-
-Before the measured request, the client sent a short user warmup, a system-and-probe warmup, a fixed coherence check, and a latency probe. `--warmup-runs 0` means it did not run a second full 115K workload as warmup.
-
-Every throughput cell below is a single-run observation. There is no standard deviation or confidence interval for these rows. I use them to compare configurations on this machine, then rerun a cell when a result changes a decision.
-
-vLLM and llama.cpp had their own batch settings. vLLM used an 8,192-token scheduler ceiling. llama.cpp used batch and microbatch sizes of 4,096. The runtime, scheduler, kernels, and weight format change together, so the table compares complete serving paths.
-
-## The 115K-token run
+I wanted more than a shallow prompt that happened to look fast. The main comparison used exact populated prompts at four depths, one client request at a time, and exactly 512 output tokens per request. Each cell had a generic warmup, a full-output same-shape warmup, and **three measured runs** with distinct prompts. Prefix caching was disabled and every measured request recorded zero cache hits.
 
 <figure>
-  <img src="/images/notes/b70-workhorse/long-context-throughput.svg" alt="Six single-run long-context results. Qwen 35B-A3B AutoRound reached 3,377 prompt and 47.03 generation tokens per second; its Q4_K_S GGUF row reached 528 and 42.63. Ornith AutoRound reached 3,313 and 47.83; GGUF reached 526 and 42.69. Qwen 27B AutoRound reached 1,025 and 21.73; GGUF reached 130 and 10.69." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>131,072 context, 115,404 prior tokens, PP2048, TG512, concurrency 1. Each cell is one measured run.</figcaption>
+  <img src="/images/notes/b70-workhorse/qwen38-decode-20260820.svg" alt="Qwen3.8-27B mean decode rates on one B70, with sample-standard-deviation error bars. At 16,384 prompt tokens, no speculation measured 31.09 tok/s and MTP4 51.02. At 32,768: 29.76 and 47.91. At 65,536: 27.50 and 40.72. At 130,560: 24.05 and 36.48." width="1200" height="720" loading="lazy" decoding="async" />
+  <figcaption>Three measured runs per cell, 512 output tokens, concurrency 1, zero prefix-cache hits. Bars show mean decode rate; whiskers show ±1 sample standard deviation.</figcaption>
 </figure>
 
-| Model | Serving path | Weight file | Prompt tok/s | Generation tok/s |
-| --- | --- | --- | --- | --- |
-| Qwen3.6-27B | vLLM, AutoRound | 17.69 GiB | 1,024.544 | 21.728 |
-| Qwen3.6-27B | llama.cpp, Q4_K_S | 15.01 GiB | 130.362 | 10.686 |
-| Qwen3.6-35B-A3B | vLLM, AutoRound | 20.02 GiB | 3,377.134 | 47.031 |
-| Qwen3.6-35B-A3B | llama.cpp, Q4_K_S | 19.92 GiB | 528.035 | 42.634 |
-| Ornith-1.0-35B | vLLM, AutoRound | 19.05 GiB | 3,312.759 | 47.827 |
-| Ornith-1.0-35B | llama.cpp, Q4_K_S | 19.46 GiB | 526.091 | 42.690 |
+| Actual prompt tokens | No speculation, tok/s | MTP4, tok/s | Decode speedup |
+| ---: | ---: | ---: | ---: |
+| 16,384 | 31.09 ± 0.01 | 51.02 ± 0.47 | 1.64× |
+| 32,768 | 29.76 ± 0.00 | 47.91 ± 3.82 | 1.61× |
+| 65,536 | 27.50 ± 0.01 | 40.72 ± 2.21 | 1.48× |
+| 130,560 | 24.05 ± 0.01 | 36.48 ± 3.80 | 1.52× |
 
-The Qwen 35B files are close in size, which makes that pair useful. The vLLM path generated about 10% faster and processed the long prompt about 6.4 times faster in these two runs. The result includes all of the runtime differences listed above.
+These are means ± sample standard deviations, not confidence intervals. Decode is measured after the first generated token using the client monotonic clock: the remaining 511 tokens divided by the post-first-token interval. The rounded `0.00` is a small nonzero deviation, not perfectly identical runs.
 
-For the Qwen 35B AutoRound row, time to first response was 34.9 seconds and the timed benchmark phase took 50.8 seconds. The prompt and generation rates describe different phases of the request.
+All **12 MTP4 measured completions** passed the recorded mechanical checks and output-coherence review, as did the 12 no-spec controls. The full-context MTP4 replicates were **32.11, 38.94, and 38.41 tok/s**. There was no recorded EngineCore failure, OOM, graph failure, speculative-state error, or GPU reset during this campaign.
 
-## Memory at startup
+The comparison is between the two pinned recipe configurations. No-spec used `gpu_memory_utilization=0.90`; MTP4 used `0.88`. The benchmark server allowed 64 sequences, but the client sent only one request at a time. The final production profile is stricter: one sequence, with prefix caching enabled. I have not relabeled the uncached lab matrix as a fresh benchmark of that cached production profile.
 
-vLLM prints model allocation and available KV memory after profiling. These are separate reported buckets, and runtime overhead sits outside the chart.
+What matters to me is the change in conclusion: MTP4 was coherent through the tested context range and delivered **1.48–1.64× faster decode**. It was no longer a feature I had to leave off to trust the result.
+
+## Faster decode is not the same as a faster whole request
+
+The B70 still has to process the prompt. That matters a lot at the top of the context window.
 
 <figure>
-  <img src="/images/notes/b70-workhorse/startup-memory.svg" alt="vLLM startup memory. Qwen 27B AutoRound loaded in 17.75 GiB with 9.04 GiB available for KV. Qwen 35B-A3B used 19.60 and 5.69. Ornith 35B used 19.06 and 6.23. Gemma 12B AutoRound used 7.63 and 19.13. Gemma 12B BF16 used 22.73 and 7.58." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>The BF16 Gemma row used 0.98 GPU memory utilization. The other rows used 0.90.</figcaption>
+  <img src="/images/notes/b70-workhorse/qwen38-latency-20260820.svg" alt="Mean end-to-end request time for 512 output tokens, split into time to first token and the remaining generation interval. No-spec versus MTP4: 26.42 versus 20.36 seconds at 16,384 prompt tokens; 40.22 versus 34.55 at 32,768; 76.76 versus 73.02 at 65,536; 185.38 versus 185.71 at 130,560." width="1200" height="720" loading="lazy" decoding="async" />
+  <figcaption>Same uncached requests as the decode chart. Prompt ingestion dominates the full-context result; each stacked bar is a mean, not a single representative run.</figcaption>
 </figure>
 
-| Model | Model load | Available KV | KV capacity | GPU memory setting |
-| --- | --- | --- | --- | --- |
-| Qwen3.6-27B AutoRound | 17.75 GiB | 9.04 GiB | 144,079 tokens | 0.90 |
-| Qwen3.6-35B-A3B AutoRound | 19.60 GiB | 5.69 GiB | 289,626 tokens | 0.90 |
-| Ornith-1.0-35B AutoRound | 19.06 GiB | 6.23 GiB | 317,109 tokens | 0.90 |
-| Gemma 4 12B AutoRound | 7.63 GiB | 19.13 GiB | 700,098 tokens | 0.90 |
-| Gemma 4 12B BF16 | 22.73 GiB | 7.58 GiB | 205,455 tokens | 0.98 |
+At 16K, the 512-token request fell from **26.42 to 20.36 seconds** overall. At 32K it fell from **40.22 to 34.55 seconds**. Those are useful changes.
 
-The 12B AutoRound checkpoint leaves much more room for cache and concurrent requests. The BF16 row was a fit probe at 0.98, not a current serving setting. I now cap the Intel profiles at 0.90 to keep practical cache and runtime headroom.
+At 130,560 prompt tokens, MTP4 took about **171.59 seconds to the first token**, and the whole request took **185.71 seconds**, versus **185.38 seconds** without speculation. Decode was faster; the full request was effectively tied because the extra time before the first token consumed the gain.
 
-## Gemma at shorter and deeper contexts
+The limit is **131,072 input plus output tokens**, not a promise to accept a 131,072-token prompt and then generate more. The tested boundary uses a 512-token output reserve. I see that maximum as room for a large ingestion or a long session, not as a low-latency turn.
 
-I used Gemma 4 12B to compare BF16, AutoRound, and the QAT W4A16 checkpoint in the same vLLM environment.
+## Turning a good run into the setup I use
 
-<figure>
-  <img src="/images/notes/b70-workhorse/gemma-4k-throughput.svg" alt="Gemma 4 12B single-run throughput at 4K context. BF16 reached 4,420 prompt and 21.26 generation tokens per second. AutoRound reached 3,364 and 51.86. QAT W4A16 reached 628 and 19.27." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>Depth 1,126, PP2048, TG512, concurrency 1. W4A16 quality was not measured in the paired suite.</figcaption>
-</figure>
+The August 20 migration promoted the working stack to my request-driven serving profile. The backend starts when needed, shuts down after idle, and stays behind the manager rather than being exposed directly. The deployment record includes smoke checks, idle/restart checks, and an actual rollback-and-redeploy rehearsal.
 
-AutoRound's 51.86 generation tokens per second is useful for interactive work. BF16 processed the prompt faster but generated at 21.26 tokens per second. The W4A16 checkpoint reached 19.27 generation tokens per second and only 628 prompt tokens per second on this path.
+Production startup reported **17.38 GiB for model loading**, **5.65 GiB available for KV**, and **140,530 tokens of KV capacity** with prefix caching enabled. Those are startup allocation observations, not a breakdown of every byte of device memory. I kept the configured sequence limit below that reported capacity.
 
-Long prefixes reduce decode speed for both Gemma checkpoints:
+Prefix caching matters because coding sessions repeat context. In the separate activation canary, an exact repeat of a **43,264-token chat prompt reused 39,936 tokens** and returned identical output token IDs. A 94-token repeat had zero hits, consistent with the cache block granularity. This was a functional check, not a cache-speed benchmark or a complete eviction, restart, and tool-call qualification campaign.
 
-<figure>
-  <img src="/images/notes/b70-workhorse/gemma-depth.svg" alt="Gemma generation throughput by prefix depth. AutoRound measured 51.86 tokens per second at depth 1,126, 45.43 at 4,812, and 16.75 at 115,404. BF16 measured 21.26, 20.08, and 11.38." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>The depth axis is logarithmic. Every point is one run at concurrency 1.</figcaption>
-</figure>
+This August 20 profile is **text-only**, with tool calling configured through `qwen3_xml`. Vision is not enabled. I am also not claiming a new model-quality score: coherent benchmark completions are a necessary gate, not proof of coding-task success or full distributional equivalence.
 
-At 115,404 prior tokens, AutoRound still generated at 16.75 tokens per second. BF16 reached 11.38. Both rows fit completely on the B70.
+Those boundaries do not change how I feel about using it. This is the local setup I love now: the same B70, with a serving stack I can inspect and pin, a model I want to use, and MTP4 doing useful work instead of sitting disabled.
 
-For several shorter requests, aggregate throughput rises with concurrency:
+## Evidence, credits, and the earlier chapter
 
-<figure>
-  <img src="/images/notes/b70-workhorse/gemma-concurrency.svg" alt="Gemma aggregate generation throughput at 8K context. AutoRound measured 45.43 tokens per second at concurrency 1, 73.46 at concurrency 2, and 109.56 at concurrency 4. BF16 measured 20.08 at concurrency 1 and 64.85 at concurrency 4." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>Depth 4,812 with PP2048 and TG512 per request. Values are aggregate tokens per second.</figcaption>
-</figure>
+The new public bundle contains:
 
-The 109.56 figure is aggregate generation throughput across four requests. It should not be read as the speed of each request.
+- [All 24 reduced measured-run records](/data/b70-workhorse/qwen38-20260820-runs.jsonl), including timings, token counts, acceptance measurements, and original output hashes.
+- [The eight-cell summary and recorded correctness outcome](/data/b70-workhorse/qwen38-20260820-results.json).
+- [Setup, methodology, source hashes, and production differences](/data/b70-workhorse/qwen38-20260820-methodology.json).
+- [Bundle notes and reproduction boundaries](/data/b70-workhorse/qwen38-20260820-README.md), plus the [chart generator](/data/b70-workhorse/generate-b70-qwen38-figures.mjs).
 
-## I rebuilt the MTP path before rejecting it
+The recipe, checkpoint, and runtime patches are credited to the linked upstream cookbook and model repository. GPT-5.6 Sol helped me with the vLLM work. The throughput numbers are from the retained August 20 campaign, not new runs performed for this rewrite. The public reduction lets readers check the arithmetic; original prompts, completions, and private operational captures are not included, so it does not independently establish the recorded semantic review.
 
-Multi-token prediction uses a draft head to propose extra tokens, then asks the target model to verify them. It can help only when accepted tokens repay the extra draft and verification work.
+The [earlier version of this article](https://github.com/achuthanmukundan00/achu.dev/blob/d77952f54ae72e9c5dd29c913c487517f2728a54/src/pages/notes/intel-arc-pro-b70-inference-stack.md) and its [original evidence bundle](/data/b70-workhorse/README.md) remain available. That chapter covers Qwen3.6, AutoRound, Gemma, GGUF, and the MTP failures on those stacks. Its numbers have not been rewritten into Qwen3.8 results.
 
-My first Qwen3.6-35B-A3B MTP run failed coherence before timing. That was not enough evidence to blame MTP. The checkpoint's external AutoRound metadata described the target layers but omitted `mtp.layers`, so I built two controls: a BF16 MTP overlay and a corrected INT4 derivative whose metadata also covers the draft layer.
-
-With compilation enabled and XPU graph replay disabled, both variants passed all six deterministic coherence cases. On the corrected INT4 checkpoint, MTP off and MTP 1 also returned the same mean NLL, `2.100549`, and perplexity, `8.170654`, over the same 209 teacher-forced tokens.
-
-Turning target graph replay back on corrupted output again. I reproduced that boundary with the BF16 and corrected INT4 drafts, an eager draft against a graphed target, `PIECEWISE` graph mode, an alternate attention backend, and n-gram speculation. An input-copy setting failed during startup. This is a result for this patched XPU stack, not a claim about every graph implementation. On this stack, speculative decoding plus target graph replay is unsafe.
-
-I timed the coherent graph-disabled profiles separately. Both used the corrected 35B checkpoint, native KV, concurrency 1, a 2,048-token new prompt, an exact 512-token completion, fixed greedy controls, one discarded warmup, and three measured runs per depth. These are median generation rates:
-
-| Configured prior target | MTP off tok/s | MTP 1 tok/s | MTP 1 / off | Draft acceptance |
-| ---: | ---: | ---: | ---: | ---: |
-| 4,096 | 26.962 | 34.774 | 1.290× | 63.4% |
-| 32,768 | 27.188 | 25.120 | 0.924× | 72.4% |
-| 65,536 | 27.281 | 15.473 | 0.567× | 65.4% |
-| 81,920 | 27.215 | 13.039 | 0.479× | 64.3% |
-| 115,404 | 27.077 | 11.501 | 0.425× | 90.0% |
-
-At the deepest configured target, the new prompt and chat template brought the actual measurement prompt to 117,455 tokens. The request ended at 117,967 filled tokens after the 512-token completion.
-
-MTP 1 helped at 4K, lost by 32K, and was 57.5% slower at the 115K target despite 90% draft acceptance. Acceptance alone did not pay for the longer speculative round.
-
-The control for that table is the graph-disabled MTP-off profile at 27.08 tok/s. It is not interchangeable with the graph-enabled, non-speculative 47.03 tok/s result above. Subtracting 11.50 from 47.03 would mix execution modes. In a separate single-run llama.cpp SYCL check at the same 115,404-token workload, embedded MTP 1 also reduced Qwen 35B generation from 42.63 to 38.25 tok/s.
-
-I then tested [a dense 27B AutoRound MTP checkpoint](https://huggingface.co/lyf/Qwen3.6-27B-heretic-v2-mtp-int4-AutoRound) whose embedded metadata already covers both the target and draft layers. Compilation stayed on, graph replay stayed off, and MTP depths one through four used the same prompts and controls. Every profile passed 6/6 coherence cases. Three repeated 209-token likelihood checks had overlapping ranges, including a `0.003322` mean-NLL spread in MTP off itself.
-
-| MTP depth | 4K tok/s | 4K acceptance | 32K tok/s | 32K acceptance |
-| ---: | ---: | ---: | ---: | ---: |
-| Off | 27.006 | n/a | 24.838 | n/a |
-| 1 | 7.177 | 69.6% | 5.726 | 66.2% |
-| 2 | 8.510 | 52.7% | 6.661 | 48.5% |
-| 3 | 9.341 | 43.5% | 7.880 | 43.6% |
-| 4 | 9.206 | 33.2% | 7.227 | 32.1% |
-
-The 4K and 32K targets produced actual measurement prompts of 6,146 and 34,819 tokens after the new prompt and chat template. They ended at 6,658 and 35,331 filled tokens. MTP 3 was the best speculative profile, but reached only 34.6% and 31.7% of the matched MTP-off rate.
-
-The loss came from iteration cost. At 4K, a normal decode step took about 37.0 ms. An MTP-3 round took 247.6 ms and returned 2.31 output tokens on average. The round cost 6.69 times a baseline step, while three draft tokens can return at most four output tokens. Even perfect acceptance could not break even in this implementation. The checkpoint uses a full 5,120-wide dense draft layer and a large BF16 vocabulary head, followed by target verification and hybrid-attention state work. Safe graph-disabled execution also leaves those launches separate.
-
-Capacity also ruled out a 115K dense test. I report cold starts because warm compilation artifacts changed earlier capacity estimates. With MTP 4 and native KV, `gpu_memory_utilization` settings of 0.80, 0.85, and 0.90 produced 26,869, 36,372, and 46,202 KV-cache tokens. The 90% setting leaves room for the 32K comparison but cannot support a filled 115K MTP-4 run. That setting controls allocation capacity, not GPU compute utilization.
-
-Full 512-token output hashes differed across speculative profiles, but MTP off itself produced three different hashes at each depth. I do not attribute every long-generation difference to MTP, and the short checks do not establish broad quality or parity with the upstream checkpoint. They establish enough coherence to make the negative throughput result useful.
-
-I kept MTP disabled. The reduced [MTP investigation record](/data/b70-workhorse/rejected-mtp-result.json) contains the graph failure matrix, matched medians, repeated quality checks, and capacity sweep without host-specific commands or build identifiers.
-
-## Faster B70 posts measure different workloads
-
-The 47.03 tok/s row is not a claim that the B70 tops out at 47. It is a single-request serving result after 115,404 prior tokens. Several faster public numbers describe different work:
-
-| Public result | Conditions reported by its author |
-| --- | --- |
-| [About 130 tok/s](https://www.reddit.com/r/LocalLLM/comments/1uupa39/intel_arc_pro_b70_32gb_battlemage_with/) | Qwen3.6-35B-A3B UD-Q4_K_XL, llama.cpp Vulkan, embedded MTP, F16 KV, one coding prompt, 600 generated tokens at temperature 0.6, and a three-run median. The author labels the number shallow-context, says generation at 30K and beyond is roughly half, and treats 262K as capacity. |
-| [About 75 tok/s at 120K; 213 tok/s at concurrency 4](https://www.reddit.com/r/LocalLLM/comments/1ut5wjf/intel_arc_b70_qwen_36_35b_a3b_int4_autoround_mtp/) | vLLM, AutoRound INT4, FP16 KV, and MTP. The 75 figure is the author's napkin-math projection from a context curve, not a published measured 120K row. The 213 figure is aggregate throughput across four requests at about 120K combined context. Draft depth, generation length, controls, and run aggregation are not reported. |
-| [70.54 ± 0.12 tok/s](https://www.reddit.com/r/LocalLLaMA/comments/1tukrtf/qwen_3635ba3b_with_977_tks_prompt_processing_and/) | Qwen3.6-35B-A3B Q4_K_M, llama.cpp SYCL, Q8 KV, and a `tg128` llama-bench row, with no speculative configuration shown. The 262K figure is configured capacity; the filled decode depth for the speed row is not reported. |
-| [130.90 ± 13.08 tok/s at concurrency 32](https://www.reddit.com/r/LocalLLaMA/comments/1siar7y/intel_arc_pro_b70_32gb_performance_on_qwen3527bq4/) | Qwen3.5-27B AutoRound, vLLM without a speculative configuration, a 4,096-token server limit, and aggregate `tg512` throughput. The same table reports 5.22 tok/s per request at concurrency 32 and 13.43 tok/s at concurrency 1. |
-
-I think all of these observations can be real. None matches the checkpoint, backend, weight format, MTP mode, KV type, filled context, generation length, concurrency, controls, and run aggregation used for my 47.03 row. The closest deep-context claim is still an extrapolation with MTP enabled, while 213 tok/s is a batching result. A ranking needs a shared model and harness, not a conversion between these numbers.
-
-## KV compression stayed off too
-
-I tested compressed KV because the memory savings looked attractive. Qwen3.6-27B already fits the 115K workload with native KV, and the tested compressed modes were slower:
-
-| KV mode | Prompt tok/s | Generation tok/s |
-| --- | ---: | ---: |
-| Native | 1,024.544 | 21.728 |
-| TurboQuant K4/V4 | 1,026.517 | 11.071 |
-| TurboQuant K8/V4 | 1,034.029 | 7.501 |
-
-Those are single-run cells on the same long-context shape. They test performance, not cache-compression quality. I kept native KV for the serving profiles in this article.
-
-## What INT4 changed in the quality run
-
-I also needed a quality check before choosing a default. I ran a paired suite on Gemma 4 12B BF16 and AutoRound INT4 using the same runtime settings, tokenizer, explicit chat template, and datasets.
-
-The fixed-target scores are conditional assistant-target perplexity. They score known assistant continuations after the chat template. They are different from raw base-model perplexity.
-
-| Target set | Cases | Tokens | BF16 | AutoRound | AutoRound / BF16 |
-| --- | --- | --- | --- | --- | --- |
-| WikiText-2 prose | 16 | 11,074 | 66.2308 | 73.3801 | 1.1079× |
-| HumanEval canonical code | 64 | 3,968 | 3.7503 | 3.4881 | 0.9301× |
-
-AutoRound lost ground on held-out prose. It scored slightly better on these fixed HumanEval code targets. This HumanEval measurement is token likelihood over canonical completions; it is not a code execution pass rate.
-
-I also sampled 24 sequences in each direction and rescored 4,608 tokens per direction:
-
-| Direction | KL nats/token | 95% bootstrap interval |
-| --- | --- | --- |
-| BF16 to AutoRound | 0.11911 | `[0.09952, 0.14005]` |
-| AutoRound to BF16 | 0.11862 | `[0.08967, 0.14864]` |
-
-<figure>
-  <img src="/images/notes/b70-workhorse/gemma-quality.svg" alt="Paired Gemma quality results. AutoRound's conditional perplexity ratio was 1.108 on WikiText-2 and 0.930 on HumanEval code. Forward KL was 0.119 nats per token with a 95 percent interval from 0.100 to 0.140. Reverse KL was 0.119 with an interval from 0.090 to 0.149." width="1200" height="720" loading="lazy" decoding="async" />
-  <figcaption>The perplexity ratios use BF16 as 1.0. The KL estimates use rendered and retokenized samples.</figcaption>
-</figure>
-
-Both models also passed the same 18 deterministic needle cases from 4K through 126K tokens. That small matrix found no retrieval separation. It does not set an upper bound on retrieval failures.
-
-I keep BF16 as the teacher and fidelity reference. The prose regression and the two KL estimates show that AutoRound changed the distribution and lost information that BF16 retained. The HumanEval result keeps me from turning that into a claim that every task gets worse.
-
-The Monte Carlo KL calculation omits the stop-token decision because returned text was rendered and tokenized again. The estimate comes from finite samples over those rendered sequences. Exact full-vocabulary KL at aligned hidden states was outside this run.
-
-The [numeric summary](/data/b70-workhorse/quality-summary.json) and [quality run details](/data/b70-workhorse/quality-provenance.json) are in the public bundle. I did not record a revision for the evaluator script, so this evaluation cannot be recreated byte for byte. The public record keeps the shared controls, sampling settings, evaluation shape, and limitations.
-
-I keep the QAT W4A16 checkpoint for a future accuracy-sensitive comparison, but I have not run this paired suite against it. Its 4K throughput cell is published above. I will leave its quality position open until the matching evaluation is done.
-
-## Where GGUF still fits
-
-I still reach for llama.cpp and GGUF when I want a one-file demo, a quick model swap, or a simple SYCL server. The 35B Q4_K_S files also decoded reasonably well in the long-context table.
-
-Q4_K_S is too aggressive for me to use its similar file size as evidence of equal quality. I prefer Q5 or higher for coding work. A Qwen3.6-27B Q5_K_XL fit check estimated 18,563 MiB for model VRAM and 23,569 MiB total at 131K with Q8 KV, batch 2,048, and microbatch 512. The only speed check I found for that file was a shallow 1,101-token gate at about 8.6 generation tokens per second. There is no matched 115K quality and throughput run, so I left Q5_K_XL out of the comparison chart. The reduced record is in [gguf-q5-evidence.json](/data/b70-workhorse/gguf-q5-evidence.json).
-
-I still need to rerun both paths with matched context, cache format, scheduler limits, output checks, and the same quality suite. I have not run those matching tests yet.
-
-## How I check that the GPU ran it
-
-An HTTP 200 and a stream of tokens do not prove XPU execution. For the Qwen 35B result, the evidence chain is:
-
-1. The system device query identifies an Arc Pro B70 using the `xe` driver.
-2. PyTorch sees one Level Zero XPU with 32,656 MiB.
-3. vLLM initializes with `device_config=xpu`.
-4. The server selects its XPU Flash Attention backend.
-5. The server reports 19.6 GiB for model loading and 5.69 GiB available for the XPU KV cache.
-6. The client passes its coherence check and records the exact 115K workload.
-
-The reduced startup record and measured result are in [qwen35-runtime-evidence.txt](/data/b70-workhorse/qwen35-runtime-evidence.txt).
-
-## What I run now
-
-For daily work, I use Qwen3.6-27B with the patched dense vLLM build and AutoRound INT4 weights. I occasionally switch to Ornith-1.0-35B on the patched MoE build. MTP stays disabled for both. The Qwen3.6-35B-A3B checkpoint in this report was a benchmark target, not the model I keep in production.
-
-Gemma 4 12B remains a quality and throughput comparison in this report. BF16 is the fidelity reference, and W4A16 remains an evaluation target until it has a paired quality result.
-
-GGUF remains my easy demo and experimentation path. I choose Q5 or higher when output quality matters, as long as the context and batch profile still fit.
-
-The public bundle includes [all 19 selected result rows](/data/b70-workhorse/selected-results.jsonl), the reduced [quality summary](/data/b70-workhorse/quality-summary.json), the [MTP investigation](/data/b70-workhorse/rejected-mtp-result.json), [measurement details](/data/b70-workhorse/measurements.json), and a short [README](/data/b70-workhorse/README.md). The [chart generator source](/data/b70-workhorse/generate-b70-figures.mjs) is published with them.
+The lesson I took from it is not “MTP is bad” or “the B70 is slow.” It is that the serving stack was worth changing. Leaving llm-scaler behind and working through patched vLLM turned this from a collection of limitations into a machine I enjoy using.

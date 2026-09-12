@@ -1,0 +1,734 @@
+{
+  "schema": 1,
+  "setup_as_of": "2026-08-20",
+  "model": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+  "measurement_scope": "Historical single-client populated-context reproduction; not a fresh benchmark or a benchmark of the final prefix-cached production profile.",
+  "rows": {
+    "no-spec/16384": {
+      "prompt_tokens": 16384,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 31.09353845216687,
+        "median": 31.088675024762647,
+        "stdev": 0.009869373986223434,
+        "min": 31.08704464917286,
+        "max": 31.10489568256511,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 9.989501968,
+        "median": 9.995899668,
+        "stdev": 0.032121670235803215,
+        "min": 9.954662894,
+        "max": 10.017943342,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1640.1331212611171,
+        "median": 1639.0720739675196,
+        "stdev": 5.278808613227978,
+        "min": 1635.4654284488165,
+        "max": 1645.8618613670153,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 26.423785737333333,
+        "median": 26.424181737,
+        "stdev": 0.03207307704973487,
+        "min": 26.391516494,
+        "max": 26.455658981,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": null,
+      "accepted_tokens_per_step": null,
+      "verification_steps_per_s": null,
+      "acceptance_by_position": {},
+      "output_sha256": [
+        "57c4eb13334166e63501a58fee71b8b1cad78898f08fff25321881c054363ad1",
+        "7039648b4e502817fc550e943f792e4f6c0d2ac2915e088e0abace9c70bb4bb7",
+        "74b1f0e85192be4d09e793158e206c8c1705c6ba7d99361a3ac979b298066cb7"
+      ],
+      "mechanically_valid": true
+    },
+    "no-spec/32768": {
+      "prompt_tokens": 32768,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 29.760043775399225,
+        "median": 29.7596031002338,
+        "stdev": 0.001183259769119569,
+        "min": 29.759144087209844,
+        "max": 29.76138413875403,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 23.052667588333332,
+        "median": 23.053037193,
+        "stdev": 0.007736378520194566,
+        "min": 23.044753032,
+        "max": 23.06021254,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1421.440808740221,
+        "median": 1421.4179123412825,
+        "stdev": 0.4770410443529826,
+        "min": 1420.9756281803984,
+        "max": 1421.9288856989822,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 40.223341274,
+        "median": 40.222937545,
+        "stdev": 0.007605370691864229,
+        "min": 40.215945809,
+        "max": 40.231140468,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": null,
+      "accepted_tokens_per_step": null,
+      "verification_steps_per_s": null,
+      "acceptance_by_position": {},
+      "output_sha256": [
+        "59ce56b795683dab322b8898392b6fecf19591ec81e73e63758ea1da569317cf",
+        "4176c901435dfc321d63ce69372df4b3641b0ed8ac320efc69b6e70c60d04690",
+        "f0421e2aa87ad5cf6b479c8e0c81055c51c5f7e973907318f49bc96ec0721e95"
+      ],
+      "mechanically_valid": true
+    },
+    "no-spec/65536": {
+      "prompt_tokens": 65536,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 27.499589218289607,
+        "median": 27.50277224324718,
+        "stdev": 0.010350165422189483,
+        "min": 27.488021374403118,
+        "max": 27.50797403721852,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 58.17674359233333,
+        "median": 58.176341883,
+        "stdev": 0.0030510228604091797,
+        "min": 58.173913323,
+        "max": 58.179975571,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1126.4982546874803,
+        "median": 1126.5060311251816,
+        "stdev": 0.05907750654905312,
+        "min": 1126.4356740752335,
+        "max": 1126.5530588620256,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 76.75884109966667,
+        "median": 76.753858482,
+        "stdev": 0.009585088311133222,
+        "min": 76.75277355,
+        "max": 76.769891267,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": null,
+      "accepted_tokens_per_step": null,
+      "verification_steps_per_s": null,
+      "acceptance_by_position": {},
+      "output_sha256": [
+        "6091a57dc1862a3433711abca8fd5c3ea9394241acc00210676a38b5cec84f60",
+        "21d79ebbe1ab86854c37d288eaf57a547241f690e0440bd42165a6fc18e7c0b8",
+        "0f0f9d0dc9ef6509bf11dd9dcc9a8c473e4a7c3e1c3eb95d6558eb183d5c8f03"
+      ],
+      "mechanically_valid": true
+    },
+    "no-spec/130560": {
+      "prompt_tokens": 130560,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 24.053431034016594,
+        "median": 24.05097102351653,
+        "stdev": 0.005554141101352412,
+        "min": 24.049531736718674,
+        "max": 24.059790341814576,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 164.13230632,
+        "median": 164.129821589,
+        "stdev": 0.009971435556249072,
+        "min": 164.123812202,
+        "max": 164.143285169,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 795.4558322399948,
+        "median": 795.4678725413917,
+        "stdev": 0.04832484127244344,
+        "min": 795.4026256119887,
+        "max": 795.4969985666041,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 185.37667754666666,
+        "median": 185.371627153,
+        "stdev": 0.01149079293264476,
+        "min": 185.368576904,
+        "max": 185.389828583,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": null,
+      "accepted_tokens_per_step": null,
+      "verification_steps_per_s": null,
+      "acceptance_by_position": {},
+      "output_sha256": [
+        "cfb72e4d031a3aec4c23edfa1352011a255458bc2b55482fd13161d0eb92c323",
+        "f6aac143258cc31dd52923924f83348f7b8774620c1c5e75e6815524af134b0e",
+        "8ffd344e7eaf320b86705aeb4ad17fba8c032ab0a8a736cc9cfeb8512b5e6951"
+      ],
+      "mechanically_valid": true
+    },
+    "mtp4/16384": {
+      "prompt_tokens": 16384,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 51.02310773596428,
+        "median": 51.11181828929449,
+        "stdev": 0.47212314904455865,
+        "min": 50.51292191483087,
+        "max": 51.44458300376748,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 10.343230016,
+        "median": 10.348335948,
+        "stdev": 0.01415752262728285,
+        "min": 10.327227792,
+        "max": 10.354126308,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1584.033271220971,
+        "median": 1583.2497207598385,
+        "stdev": 2.169578474161052,
+        "min": 1582.3643166629217,
+        "max": 1586.4857762401527,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 20.358873252,
+        "median": 20.351814066,
+        "stdev": 0.08127853370077148,
+        "min": 20.281354551,
+        "max": 20.443451139,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": {
+        "mean": 0.5439628940733402,
+        "median": 0.546583850931677,
+        "stdev": 0.009194654118993352,
+        "min": 0.5337423312883436,
+        "max": 0.5515625,
+        "n": 3
+      },
+      "accepted_tokens_per_step": {
+        "mean": 2.175851576293361,
+        "median": 2.186335403726708,
+        "stdev": 0.03677861647597341,
+        "min": 2.1349693251533743,
+        "max": 2.20625,
+        "n": 3
+      },
+      "verification_steps_per_s": {
+        "mean": 16.108116306129578,
+        "median": 16.107892917030913,
+        "stdev": 0.004508582632726375,
+        "min": 16.103723570599634,
+        "max": 16.112732430758182,
+        "n": 3
+      },
+      "acceptance_by_position": {
+        "0": {
+          "mean": 0.7707246535584092,
+          "median": 0.7668711656441718,
+          "stdev": 0.02136090011274455,
+          "min": 0.7515527950310559,
+          "max": 0.79375,
+          "n": 3
+        },
+        "1": {
+          "mean": 0.578640653380584,
+          "median": 0.577639751552795,
+          "stdev": 0.020876898318607465,
+          "min": 0.558282208588957,
+          "max": 0.6,
+          "n": 3
+        },
+        "2": {
+          "mean": 0.4400829903847375,
+          "median": 0.43558282208588955,
+          "stdev": 0.011748326568845715,
+          "min": 0.43125,
+          "max": 0.453416149068323,
+          "n": 3
+        },
+        "3": {
+          "mean": 0.38640327896963,
+          "median": 0.38125,
+          "stdev": 0.015407304021252144,
+          "min": 0.37423312883435583,
+          "max": 0.40372670807453415,
+          "n": 3
+        }
+      },
+      "output_sha256": [
+        "e7fb586ece428ae0b52690a4e1ddaf81cc0e22904009d6d8aba83b220fba9653",
+        "7039648b4e502817fc550e943f792e4f6c0d2ac2915e088e0abace9c70bb4bb7",
+        "dcf401cdb48ed782f2cdeca1f535818697c536a6d06996f83ff5a7a5eda63232"
+      ],
+      "mechanically_valid": true,
+      "decode_speedup_vs_no_spec": 1.640955332711853,
+      "wall_speedup_vs_no_spec": 1.2979002035261227,
+      "estimated_e2e_crossover_output_tokens": 28.158443156989946
+    },
+    "mtp4/32768": {
+      "prompt_tokens": 32768,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 47.91307982555937,
+        "median": 48.71176148707902,
+        "stdev": 3.8174666486750306,
+        "min": 43.75945713052639,
+        "max": 51.268020859072706,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 23.840120658666667,
+        "median": 23.838559573,
+        "stdev": 0.004190332250877955,
+        "min": 23.836934951,
+        "max": 23.844867452,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1374.4897160547528,
+        "median": 1374.5796972193593,
+        "stdev": 0.2415709859343881,
+        "min": 1374.2160683410118,
+        "max": 1374.6733826038874,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 34.55178144966666,
+        "median": 34.328839218,
+        "stdev": 0.8727815425700829,
+        "min": 33.812094418,
+        "max": 35.514410713,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": {
+        "mean": 0.5429285228020659,
+        "median": 0.5534591194968553,
+        "stdev": 0.06234514413394477,
+        "min": 0.4759887005649718,
+        "max": 0.5993377483443708,
+        "n": 3
+      },
+      "accepted_tokens_per_step": {
+        "mean": 2.1717140912082638,
+        "median": 2.2138364779874213,
+        "stdev": 0.24938057653577908,
+        "min": 1.9039548022598871,
+        "max": 2.3973509933774833,
+        "n": 3
+      },
+      "verification_steps_per_s": {
+        "mean": 15.154641316548412,
+        "median": 15.156888603611673,
+        "stdev": 0.004329737077712488,
+        "min": 15.149649999452015,
+        "max": 15.157385346581547,
+        "n": 3
+      },
+      "acceptance_by_position": {
+        "0": {
+          "mean": 0.789151808184925,
+          "median": 0.7947019867549668,
+          "stdev": 0.01326676147979771,
+          "min": 0.7740112994350282,
+          "max": 0.7987421383647799,
+          "n": 3
+        },
+        "1": {
+          "mean": 0.5778374540808967,
+          "median": 0.5723270440251572,
+          "stdev": 0.05537494319775158,
+          "min": 0.5254237288135594,
+          "max": 0.6357615894039735,
+          "n": 3
+        },
+        "2": {
+          "mean": 0.4547868466462553,
+          "median": 0.48427672955974843,
+          "stdev": 0.09332198696577179,
+          "min": 0.3502824858757062,
+          "max": 0.5298013245033113,
+          "n": 3
+        },
+        "3": {
+          "mean": 0.34993798229618694,
+          "median": 0.3584905660377358,
+          "stdev": 0.09172394098894177,
+          "min": 0.2542372881355932,
+          "max": 0.4370860927152318,
+          "n": 3
+        }
+      },
+      "output_sha256": [
+        "7c32162cde10b9146b0579f997ca97ff18bd45009a1adec29862839e55a71838",
+        "a6087742fedc1cef81f69f26e2f2dd3b118bb7cd0d44a7843dbb2140e9275fe5",
+        "b01f8fe45f1c316bfba5c9aec528c811cc46039da37893ff6ba96fc81973815b"
+      ],
+      "mechanically_valid": true,
+      "decode_speedup_vs_no_spec": 1.6099801528237714,
+      "wall_speedup_vs_no_spec": 1.1641466687497832,
+      "estimated_e2e_crossover_output_tokens": 61.8533269371196
+    },
+    "mtp4/65536": {
+      "prompt_tokens": 65536,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 40.72284747858973,
+        "median": 40.16392689041974,
+        "stdev": 2.20806587957052,
+        "min": 38.847949222986834,
+        "max": 43.15666632236262,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 60.44747095533334,
+        "median": 60.446518677,
+        "stdev": 0.0050994702230159165,
+        "min": 60.442914752,
+        "max": 60.452979437,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 1084.1810132861292,
+        "median": 1084.1980883993665,
+        "stdev": 0.09146160512770989,
+        "min": 1084.0822174579034,
+        "max": 1084.2627340011175,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 73.01990027533334,
+        "median": 73.175838967,
+        "stdev": 0.6721418300631542,
+        "min": 72.283495676,
+        "max": 73.600366183,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": {
+        "mean": 0.4947486772486772,
+        "median": 0.4828571428571429,
+        "stdev": 0.04224665000288121,
+        "min": 0.4597222222222222,
+        "max": 0.5416666666666666,
+        "n": 3
+      },
+      "accepted_tokens_per_step": {
+        "mean": 1.9789947089947089,
+        "median": 1.9314285714285715,
+        "stdev": 0.16898660001152485,
+        "min": 1.8388888888888888,
+        "max": 2.1666666666666665,
+        "n": 3
+      },
+      "verification_steps_per_s": {
+        "mean": 13.706913248652205,
+        "median": 13.684209119643112,
+        "stdev": 0.04146278479533922,
+        "min": 13.681761143293041,
+        "max": 13.754769483020459,
+        "n": 3
+      },
+      "acceptance_by_position": {
+        "0": {
+          "mean": 0.7586831275720165,
+          "median": 0.76,
+          "stdev": 0.01362804905250538,
+          "min": 0.7444444444444445,
+          "max": 0.7716049382716049,
+          "n": 3
+        },
+        "1": {
+          "mean": 0.5395355673133451,
+          "median": 0.5142857142857142,
+          "stdev": 0.05147996289565316,
+          "min": 0.5055555555555555,
+          "max": 0.5987654320987654,
+          "n": 3
+        },
+        "2": {
+          "mean": 0.38641387419165196,
+          "median": 0.37714285714285717,
+          "stdev": 0.04182721170730816,
+          "min": 0.35,
+          "max": 0.43209876543209874,
+          "n": 3
+        },
+        "3": {
+          "mean": 0.2943621399176955,
+          "median": 0.28,
+          "stdev": 0.0638769695249048,
+          "min": 0.2388888888888889,
+          "max": 0.36419753086419754,
+          "n": 3
+        }
+      },
+      "output_sha256": [
+        "06853ced4291ff1973aa7e654b4d65ac2b33c200f0848ca09389dd0d31fef3aa",
+        "915113b82224a4f4216c98956665d242b9898b9cddcedaf61c3aa2dd31c5151a",
+        "2a5398d452414c2f78705017f0d1bf4560c31c9f3388cf9e7ae49eb003cdb1e5"
+      ],
+      "mechanically_valid": true,
+      "decode_speedup_vs_no_spec": 1.480852937668811,
+      "wall_speedup_vs_no_spec": 1.0512044088013686,
+      "estimated_e2e_crossover_output_tokens": 192.3051245505727
+    },
+    "mtp4/130560": {
+      "prompt_tokens": 130560,
+      "completion_tokens": [
+        512,
+        512,
+        512
+      ],
+      "decode_tok_s": {
+        "mean": 36.484644486225,
+        "median": 38.407533985308,
+        "stdev": 3.8018132595256273,
+        "min": 32.10550226015897,
+        "max": 38.940897213208025,
+        "n": 3
+      },
+      "ttft_s": {
+        "mean": 171.593322059,
+        "median": 171.588009456,
+        "stdev": 0.03419759649477242,
+        "min": 171.56209167,
+        "max": 171.629865051,
+        "n": 3
+      },
+      "prefill_input_per_ttft_tok_s": {
+        "mean": 760.8687907565019,
+        "median": 760.8923281639866,
+        "stdev": 0.151630056764632,
+        "min": 760.7067683774263,
+        "max": 761.0072757280926,
+        "n": 3
+      },
+      "wall_s": {
+        "mean": 185.70779100166666,
+        "median": 184.934546372,
+        "stdev": 1.5608224789322682,
+        "min": 184.68454227,
+        "max": 187.504284363,
+        "n": 3
+      },
+      "prefix_cache_hits": 0.0,
+      "acceptance": {
+        "mean": 0.5400557845728835,
+        "median": 0.5791190864600326,
+        "stdev": 0.08270462254201881,
+        "min": 0.44505494505494503,
+        "max": 0.5959933222036727,
+        "n": 3
+      },
+      "accepted_tokens_per_step": {
+        "mean": 2.1350767890241578,
+        "median": 2.3051948051948052,
+        "stdev": 0.33302663667027005,
+        "min": 1.7513513513513514,
+        "max": 2.348684210526316,
+        "n": 3
+      },
+      "verification_steps_per_s": {
+        "mean": 11.593799431359727,
+        "median": 11.583202302167553,
+        "stdev": 0.025904872007265486,
+        "min": 11.574873255846246,
+        "max": 11.623322736065381,
+        "n": 3
+      },
+      "acceptance_by_position": {
+        "0": {
+          "mean": 0.7611958335642546,
+          "median": 0.7987012987012987,
+          "stdev": 0.07424879810629192,
+          "min": 0.6756756756756757,
+          "max": 0.8092105263157895,
+          "n": 3
+        },
+        "1": {
+          "mean": 0.587728073254389,
+          "median": 0.6381578947368421,
+          "stdev": 0.09720146239288152,
+          "min": 0.4756756756756757,
+          "max": 0.6493506493506493,
+          "n": 3
+        },
+        "2": {
+          "mean": 0.43855153855153856,
+          "median": 0.4805194805194805,
+          "stdev": 0.09008932806662477,
+          "min": 0.33513513513513515,
+          "max": 0.5,
+          "n": 3
+        },
+        "3": {
+          "mean": 0.34760134365397527,
+          "median": 0.37662337662337664,
+          "stdev": 0.07270778847488206,
+          "min": 0.2648648648648649,
+          "max": 0.40131578947368424,
+          "n": 3
+        }
+      },
+      "output_sha256": [
+        "e2a2b7bca5c865bac68243a874b3b44ae3746139a39f7b01aadf490a925e7861",
+        "7b756d99b2d3402f913cb0ac4ce83d23fafa45aad7350805e12aa12ac0294dce",
+        "eb7b0cb26f6d8176d592205845d5a297a74a943fb51426d3b1e58be593e2b95e"
+      ],
+      "mechanically_valid": true,
+      "decode_speedup_vs_no_spec": 1.5168166418598688,
+      "wall_speedup_vs_no_spec": 0.9982170190425826,
+      "estimated_e2e_crossover_output_tokens": 526.710025752911
+    }
+  },
+  "correctness": {
+    "reviewed_utc": "2026-08-20T06:43:00Z",
+    "criteria": [
+      "exact prompt-token count reported by endpoint",
+      "exact 512-token completion",
+      "zero prefix-cache hits",
+      "no malformed replacement characters",
+      "no repetitive or multilingual garbage degeneration",
+      "coherent response through the retained completion",
+      "server remained healthy"
+    ],
+    "no-spec": {
+      "16384": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "32768": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "65536": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "130560": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      }
+    },
+    "mtp4": {
+      "16384": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "32768": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "65536": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      },
+      "130560": {
+        "valid_runs": [
+          1,
+          2,
+          3
+        ],
+        "status": "valid"
+      }
+    },
+    "totals": {
+      "measured_requests": 24,
+      "valid_requests": 24,
+      "mtp4_requests": 12,
+      "valid_mtp4_requests": 12,
+      "engine_failures": 0,
+      "gpu_resets_during_campaign": 0
+    },
+    "conclusion": "The exact patched 0.27.2 cookbook MTP4 tuple passed the populated-context n=3 matrix through 130,560 prompt plus 512 output tokens. This validates the tuple, not any individual patch or version change in isolation."
+  },
+  "scope_warning": "This validates the complete patched cookbook tuple. It does not isolate which runtime, kernel, dtype, scheduler, memory setting, environment gate, or patch fixed the dev799 failure."
+}

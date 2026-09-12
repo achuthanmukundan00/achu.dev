@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630"><rect x="0" y="0" width="1200" height="630" fill="#111313" /><text x="64" y="78" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" fill="#a4aaa6" text-anchor="start">ACHU MUKUNDAN · AUGUST 20 SETUP</text>
+<text x="64" y="183" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" fill="#f1f2ef" text-anchor="start">Qwen3.8-27B + MTP4</text>
+<text x="64" y="269" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="64" fill="#f1f2ef" text-anchor="start">The B70 setup I love</text>
+<line x1="64" y1="322" x2="1136" y2="322" stroke="#343837" stroke-width="2" />
+<text x="64" y="385" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" fill="#a4aaa6" text-anchor="start">Ditching llm-scaler. Patching vLLM.</text>
+<text x="64" y="471" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="58" fill="#f1f2ef" text-anchor="start">51.02 generation tok/s</text>
+<text x="64" y="535" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" fill="#a4aaa6" text-anchor="start">16,384 prompt + 512 output tokens · mean of 3 runs</text>
+<text x="64" y="585" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="28" fill="#a4aaa6" text-anchor="start">Working through the stack with GPT-5.6 Sol</text></svg>
