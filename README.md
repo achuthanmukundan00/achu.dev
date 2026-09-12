@@ -35,7 +35,12 @@ The development server runs at `http://localhost:4321`.
 npm run build
 ```
 
-The build command runs `astro check` before generating the static site in `dist/`.
+The build command runs `astro check`, generates the static site in `dist/`, then
+checks that email links remain inside the shared layout's Cloudflare
+`email_off` exclusion. Keep those HTML comments: they prevent CDN email
+obfuscation from turning ordinary `mailto:` links into JavaScript-only links.
+This does not change the immutable asset or no-store evidence cache policies.
+After deployment, check actual email links as well as source/build output.
 
 ## Main routes
 
