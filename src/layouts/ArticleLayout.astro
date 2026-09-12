@@ -7,6 +7,7 @@ interface ArticleFrontmatter {
   title: string;
   description: string;
   date: string | Date;
+  updated?: string | Date;
   topic?: string;
   tags?: string[];
   ogImage?: string;
@@ -22,11 +23,13 @@ const {
   title,
   description,
   date,
+  updated,
   topic = "Engineering note",
   ogImage,
   ogImageAlt,
 } = frontmatter;
 const publishedDate = new Date(date).toISOString().slice(0, 10);
+const modifiedDate = updated ? new Date(updated).toISOString().slice(0, 10) : undefined;
 const articleUrl = new URL(Astro.url.pathname, site.url).toString();
 
 const articleSchema = {
@@ -35,6 +38,7 @@ const articleSchema = {
   headline: title,
   description,
   datePublished: publishedDate,
+  dateModified: modifiedDate,
   author: {
     "@type": "Person",
     name: site.fullName,
@@ -51,6 +55,7 @@ const articleSchema = {
   canonical={articleUrl}
   ogType="article"
   publishedTime={publishedDate}
+  modifiedTime={modifiedDate}
   ogImage={ogImage}
   ogImageAlt={ogImageAlt}
 >
@@ -59,7 +64,8 @@ const articleSchema = {
       <header class="article-header">
         <a class="back-link" href="/notes">Back to notes</a>
         <p class="meta">
-          {topic} · <time datetime={publishedDate}>{publishedDate}</time>
+          {topic} · Published <time datetime={publishedDate}>{publishedDate}</time>
+          {modifiedDate && <> · Updated <time datetime={modifiedDate}>{modifiedDate}</time></>}
         </p>
         <h1>{title}</h1>
         <p class="lead">{description}</p>

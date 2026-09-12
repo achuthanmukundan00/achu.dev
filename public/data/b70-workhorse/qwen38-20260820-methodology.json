@@ -1,0 +1,216 @@
+{
+  "schema": 1,
+  "setup_as_of": "2026-08-20",
+  "hardware": {
+    "gpu": "Intel Arc Pro B70",
+    "reported_xpu_memory_mib": 32656,
+    "power_cap_w": 230,
+    "driver": "xe",
+    "os": "Ubuntu 26.04 LTS"
+  },
+  "model": {
+    "repository": "SergiioB/Qwen3.8-27B-GPTQ-Int4-sym-G128-MTP-BF16",
+    "revision": "9d189a60e4c0ad7f9f47cd94bfa393ca10b3924e",
+    "quantization": "GPTQ INT4 symmetric group-128, desc_act=false",
+    "target_dtype": "FP16",
+    "draft_dtype": "BF16"
+  },
+  "runtime": {
+    "image": "vllm/vllm-openai-xpu@sha256:f01e24f6c7ff01f1e0662234255a1372297d1dbd89d003cf13c8fad3eab1ba4f",
+    "vllm": "0.27.2rc1.dev77+gac7509e2b.xpu",
+    "vllm_xpu_kernels": "0.1.12.3",
+    "patches_in_order": [
+      {
+        "path": "references/cookbook/patches/patch_mtp_nightly.py",
+        "sha256": "4d7a02c4ea10ca7c00dc89ad927fa3dafa747dbf0553d2adf24e30a3c53e9c14"
+      },
+      {
+        "path": "references/cookbook/patches/patch_mtp_boundary.py",
+        "sha256": "41d2f74e5fef1f074b76b5a90dd1016de437228431802cfb1fa7bd7ce4cc9b50"
+      }
+    ]
+  },
+  "cookbook": {
+    "repo": "https://github.com/SergiioB/intel-arc-pro-b70-inference-cookbook.git",
+    "commit": "1378950ac875ab6962addd1ddaf44550d34c3103",
+    "recipe": "docs/qwen38-27/QWEN38-VLLM-XPU.md",
+    "recipe_contract": "pinned f01e24f6 image, BF16 draft, two required patches, cache disabled"
+  },
+  "benchmark": {
+    "generator": "references/cookbook/benchmarks/b70-generate-exact-prompts.py",
+    "generator_sha256": "9977790927d97d5141214f46b8700fc7509e5012726e81c1dae9e232ce1c73f2",
+    "harness": "references/cookbook/benchmarks/b70-realworld-context-harness.py",
+    "harness_sha256": "3588d677a70d13f8ae5a05727e7348899746b9fac69aa9171fefe6e8967a01f9",
+    "prompt_set": "artifacts/exact-prompts.json",
+    "prompt_set_sha256": "0e693026e72c200fe0a935efd35424dc29a9c9d50e3d304247c8f66877a70bf4",
+    "actual_prompt_tokens": [
+      16384,
+      32768,
+      65536,
+      130560
+    ],
+    "output_tokens": 512,
+    "measured_repetitions": 3,
+    "same_shape_full_output_warmups": 1,
+    "generic_warmups": 1,
+    "temperature": 0.0,
+    "ignore_eos": true,
+    "concurrency": 1,
+    "prefix_requirement": "zero cache hits",
+    "timing": "client monotonic SSE; post-first decode",
+    "correctness": "full output retained; mechanical repetition/malformed-text gate after each cell; manual semantic review before promotion"
+  },
+  "benchmark_serving": {
+    "quantization": "gptq",
+    "dtype": "float16",
+    "max_model_len": 131072,
+    "gpu_memory_utilization": {
+      "no-spec": 0.9,
+      "mtp4": 0.88
+    },
+    "kv_cache_dtype": "fp8",
+    "max_num_seqs": 64,
+    "max_num_batched_tokens": 8192,
+    "prefix_caching": false,
+    "language_model_only": true,
+    "speculative_modes": {
+      "no-spec": null,
+      "mtp4": 4
+    },
+    "environment": {
+      "VLLM_TARGET_DEVICE": "xpu",
+      "ZE_FLAT_DEVICE_HIERARCHY": "COMPOSITE",
+      "ZE_AFFINITY_MASK": "0",
+      "B70_MTP_BF16_DRAFT": "1",
+      "VLLM_XPU_ENABLE_XPU_GRAPH": "1",
+      "PYTORCH_ALLOC_CONF": "expandable_segments:True"
+    },
+    "power_cap_uw": 230000000
+  },
+  "production": {
+    "profile": "qwen38-gptq-mtp4-stable",
+    "max_model_len": 131072,
+    "max_num_seqs": 1,
+    "max_num_batched_tokens": 8192,
+    "gpu_memory_utilization": 0.88,
+    "kv_cache_dtype": "fp8",
+    "mtp_depth": 4,
+    "prefix_caching": true,
+    "language_model_only": true,
+    "tool_call_parser": "qwen3_xml",
+    "reported_model_load_gib": 17.38,
+    "reported_available_kv_gib": 5.65,
+    "reported_kv_capacity_tokens": 140530,
+    "lifecycle": "Request-driven backend; idle shutdown; recorded smoke, restart, and rollback/redeploy checks passed."
+  },
+  "prefix_cache_canary": {
+    "scope": "Separate quick functional canary, not the throughput matrix or full eviction/restart/tool-call qualification.",
+    "exact_repeat_chat_prompt_tokens": 43264,
+    "cold_cached_tokens": 0,
+    "warm_cached_tokens": 39936,
+    "output_token_ids_identical": true,
+    "short_repeat_chat_prompt_tokens": 94,
+    "short_repeat_cached_tokens": 0
+  },
+  "source_files": [
+    {
+      "file": "REPORT.md",
+      "sha256": "9b57faed807b9ce9dc64e57f94e1ba01206fca4c1d6e9c2637a39df0bc304058"
+    },
+    {
+      "file": "manifest.json",
+      "sha256": "da6171864344fcb9bd14fa7648dc1e9a7940bc7e41f514eb63a49996ccba180c"
+    },
+    {
+      "file": "SHA256SUMS",
+      "sha256": "355fd8b494db722500efdfe87bf328a1daae8e6428aa21ed70fd2ed474daf657"
+    },
+    {
+      "file": "results/summary.json",
+      "sha256": "019b3078e55d18c82514cdada94a8feabb1673fb9afd9a3e839bf74dc735d787"
+    },
+    {
+      "file": "results/correctness-review.json",
+      "sha256": "15abca8a3a77e7c55404b7a3af7c52e6b853a5fee6701b79f1882d378d40516c"
+    },
+    {
+      "file": "scripts/summarize.py",
+      "sha256": "2640bbe90c6d0e23bc2cb64610974881d793ec5bb007b5c762e4f8c3250025b8"
+    },
+    {
+      "file": "scripts/validate_cell.py",
+      "sha256": "59313df38ad022508a8d34b1fc6adebbef5c26dd1c5bb33b0cae80854579ad4e"
+    },
+    {
+      "file": "results/mtp4/ctx-16384/results.json",
+      "sha256": "522f977f18114dec253614f665a727b1138706597b6ae917249981a6a4299f91"
+    },
+    {
+      "file": "results/mtp4/ctx-16384/validation.json",
+      "sha256": "ed46897ba9463be8140dfb3276ac36cc5b3dac2f35ffb4cb32a00cc27ac1fe8f"
+    },
+    {
+      "file": "results/mtp4/ctx-32768/results.json",
+      "sha256": "9af08e982af2b03c96d18fd4ff15951fb11039fad09c0cb6204f306de212bf8f"
+    },
+    {
+      "file": "results/mtp4/ctx-32768/validation.json",
+      "sha256": "e67f837b07a63e3b7c9239917b50bc0bba95258f6c35a6bdebce6f971721f935"
+    },
+    {
+      "file": "results/mtp4/ctx-65536/results.json",
+      "sha256": "df7805ad23204400fc4d946229178da724b106e38347cc83c466668d15dd4c06"
+    },
+    {
+      "file": "results/mtp4/ctx-65536/validation.json",
+      "sha256": "de235e84003daf3f668efcc212e255f3be021d4eea8b0ae0dce08388c9503d65"
+    },
+    {
+      "file": "results/mtp4/ctx-130560/results.json",
+      "sha256": "0f36128919b425bea828eb3b58cb1f418dcf88090b469b677bcb3d2064000203"
+    },
+    {
+      "file": "results/mtp4/ctx-130560/validation.json",
+      "sha256": "5a7cbc37423ea0e39ed8f38595a1daf34d6c5bc6cfcbb98632558fb5df555e23"
+    },
+    {
+      "file": "results/no-spec/ctx-16384/results.json",
+      "sha256": "360c9a0ea61ac5feb6edbf291d977a1315acb87c40bbc8f87afa695a59be49de"
+    },
+    {
+      "file": "results/no-spec/ctx-16384/validation.json",
+      "sha256": "7bb76d143adb2f58f330f35e7eb8771c509ecc232ea25a1b57d8f2485a48deaa"
+    },
+    {
+      "file": "results/no-spec/ctx-32768/results.json",
+      "sha256": "ea81f91f9c29d5860783af4edafd4c9c8f02cf3a87049015bbb10db75e8669f2"
+    },
+    {
+      "file": "results/no-spec/ctx-32768/validation.json",
+      "sha256": "3be35703214f7ef0fe1307b369a1ab26a24240010e6bb78b29c836f30b8bf3cb"
+    },
+    {
+      "file": "results/no-spec/ctx-65536/results.json",
+      "sha256": "c36318b9e75fc54f5e01d8b8e527852551e47921261e85359df31dcb83b1f803"
+    },
+    {
+      "file": "results/no-spec/ctx-65536/validation.json",
+      "sha256": "7562dd8c73c0dd151e47f60fd22d49ae0ee801dc11e77bba6fa5c1d8cd07645a"
+    },
+    {
+      "file": "results/no-spec/ctx-130560/results.json",
+      "sha256": "1657c3a4150b0851b24eefb643ed24d4c0361661d25795d32714ec6efe8a0b78"
+    },
+    {
+      "file": "results/no-spec/ctx-130560/validation.json",
+      "sha256": "53eaca3a066f35a0a59c3ad58321aa061b8829f5f686972c58a5ad60ee18262d"
+    }
+  ],
+  "production_source_hashes": {
+    "PRODUCTION-SETUP.md": "9da8fc07586e14e438b951d857f14a6689f9023fd086c2f614b1b4e4649203d5",
+    "KNOWN-LIMITATIONS.md": "f5b5357b5d88ebe7572078006f38b517ea649b669d3047a81f0dc11b89c7ba40",
+    "PREFIX-CACHE.md": "5889d19962fadc4a77c6ead0c4788319bb226dda8caee8044b645920e43edefc",
+    "DEPLOYMENT-REPORT.md": "6c6c9b36af4b7f7c36fb924a49fa776299433a31e65296ce6c1e381c3ed571c4"
+  },
+  "public_reduction": "Timing/count records and original output hashes only. No raw prompts/completions, hostnames, endpoint addresses, process data, credentials, private deployment commands, or model weights. Original outputs and semantic review are private; the public bundle supports arithmetic verification, not independent re-adjudication of output quality."
+}

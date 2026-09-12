@@ -30,7 +30,7 @@ const featuredProjects = projects.filter((project) => project.featured);
             <article>
               <div class="project-topline">
                 <h3>{note.title}</h3>
-                <time class="project-meta" datetime={note.date}>{note.date}</time>
+                <time class="project-meta" datetime={note.updated ?? note.date}>{note.updated ? `Updated ${note.updated}` : note.date}</time>
               </div>
               <p>{note.summary}</p>
             </article>

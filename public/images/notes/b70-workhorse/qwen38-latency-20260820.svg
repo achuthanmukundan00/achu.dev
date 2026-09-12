@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="720" viewBox="0 0 1200 720" role="img" aria-labelledby="chart-title chart-description">
+<title id="chart-title">The whole request still has to ingest the prompt</title><desc id="chart-description">Mean request latency split into time to first token and the remaining generation interval. No speculation versus MTP4: 26.42 versus 20.36 seconds at 16,384 prompt tokens; 40.22 versus 34.55 at 32,768; 76.76 versus 73.02 at 65,536; 185.38 versus 185.71 at 130,560.</desc>
+<rect x="0" y="0" width="1200" height="720" fill="#111313" />
+<text x="56" y="60" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="36" fill="#f1f2ef" text-anchor="start">The whole request still has to ingest the prompt</text>
+<text x="56" y="101" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="start">Intel Arc Pro B70 · Qwen3.8-27B · 3 measured runs per cell</text>
+<text x="56" y="147" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">Prompt tokens</text>
+<rect x="360" y="127" width="24" height="20" fill="#555a57" />
+<text x="396" y="145" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">Time to first token</text>
+<rect x="635" y="127" width="24" height="20" fill="#e5e7e4" />
+<text x="671" y="145" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">Remaining generation</text>
+<line x1="360" y1="168" x2="360" y2="575" stroke="#343837" stroke-width="2" />
+<text x="360" y="611" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="middle">0</text>
+<line x1="530" y1="168" x2="530" y2="575" stroke="#343837" stroke-width="2" />
+<text x="530" y="611" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="middle">50</text>
+<line x1="700" y1="168" x2="700" y2="575" stroke="#343837" stroke-width="2" />
+<text x="700" y="611" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="middle">100</text>
+<line x1="870" y1="168" x2="870" y2="575" stroke="#343837" stroke-width="2" />
+<text x="870" y="611" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="middle">150</text>
+<line x1="1040" y1="168" x2="1040" y2="575" stroke="#343837" stroke-width="2" />
+<text x="1040" y="611" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="middle">200</text>
+<text x="56" y="224" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="25" fill="#f1f2ef" text-anchor="start">16,384</text>
+<text x="190" y="207" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">No spec</text>
+<rect x="360" y="185" width="33.9643066912" height="27" fill="#555a57" />
+<rect x="393.9643066912" y="185" width="55.87656481573334" height="27" fill="#e5e7e4" />
+<text x="1144" y="208" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">26.42 s</text>
+<text x="190" y="244" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">MTP4</text>
+<rect x="360" y="222" width="35.1669820544" height="27" fill="#555a57" />
+<rect x="395.1669820544" y="222" width="34.053187002399994" height="27" fill="#e5e7e4" />
+<text x="1144" y="245" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">20.36 s</text>
+<text x="56" y="327" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="25" fill="#f1f2ef" text-anchor="start">32,768</text>
+<text x="190" y="310" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">No spec</text>
+<rect x="360" y="288" width="78.37906980033333" height="27" fill="#555a57" />
+<rect x="438.37906980033335" y="288" width="58.38029053126667" height="27" fill="#e5e7e4" />
+<text x="1144" y="311" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">40.22 s</text>
+<text x="190" y="347" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">MTP4</text>
+<rect x="360" y="325" width="81.05641023946667" height="27" fill="#555a57" />
+<rect x="441.0564102394667" y="325" width="36.41964668939999" height="27" fill="#e5e7e4" />
+<text x="1144" y="348" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">34.55 s</text>
+<text x="56" y="430" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="25" fill="#f1f2ef" text-anchor="start">65,536</text>
+<text x="190" y="413" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">No spec</text>
+<rect x="360" y="391" width="197.80092821393333" height="27" fill="#555a57" />
+<rect x="557.8009282139333" y="391" width="63.17913152493335" height="27" fill="#e5e7e4" />
+<text x="1144" y="414" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">76.76 s</text>
+<text x="190" y="450" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">MTP4</text>
+<rect x="360" y="428" width="205.52140124813334" height="27" fill="#555a57" />
+<rect x="565.5214012481333" y="428" width="42.746259688000016" height="27" fill="#e5e7e4" />
+<text x="1144" y="451" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">73.02 s</text>
+<text x="56" y="533" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="25" fill="#f1f2ef" text-anchor="start">130,560</text>
+<text x="190" y="516" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">No spec</text>
+<rect x="360" y="494" width="558.049841488" height="27" fill="#555a57" />
+<rect x="918.049841488" y="494" width="72.23086217066664" height="27" fill="#e5e7e4" />
+<text x="1144" y="517" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">185.38 s</text>
+<text x="190" y="553" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="21" fill="#a4aaa6" text-anchor="start">MTP4</text>
+<rect x="360" y="531" width="583.4172950006" height="27" fill="#555a57" />
+<rect x="943.4172950006" y="531" width="47.98919440506665" height="27" fill="#e5e7e4" />
+<text x="1144" y="554" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="24" fill="#f1f2ef" text-anchor="end">185.71 s</text>
+<text x="56" y="655" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="start">Mean request time in seconds · 512 output tokens · same uncached matrix</text>
+<text x="56" y="689" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif" font-size="22" fill="#a4aaa6" text-anchor="start">Full context: decode is faster, but the whole request is effectively tied.</text>
+</svg>
