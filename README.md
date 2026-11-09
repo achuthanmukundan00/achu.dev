@@ -6,7 +6,6 @@ Personal blog and portfolio for [Achu Mukundan](https://achumukundan.dev), a sof
 
 - A single-column homepage: introduction, writing, and every project
 - Three project pages with source links and concise implementation notes, including [octet](https://octet.skaft.org) ([latest release](https://github.com/skaft-software/octet/releases/latest), [documentation](https://octet.skaft.org/octet/docs/))
-- An HTML resume
 - Technical notes, including the Intel Arc Pro B70 inference write-up, plus an [RSS feed](/rss.xml)
 - Canonical, Open Graph, Twitter Card, and structured metadata
 
@@ -83,7 +82,6 @@ from this file, so a release never needs a copy edit.
 | `/` | Introduction, writing, and all projects |
 | `/work` | Project index and implementation notes |
 | `/notes` | Writing index |
-| `/resume` | Experience, education, and technical work |
 | `/contact` | Email and professional links |
 | `/rss.xml` | RSS feed of published notes |
 

@@ -440,69 +440,14 @@ svg {
   width: 6.25rem;
 }
 
-/* ---------- resume ---------- */
-
-.entry + .entry {
-  margin-top: 2.25rem;
-}
-
-.entry-head {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  gap: 1rem;
-}
-
-.entry h3,
-.spec h3 {
-  font-size: 1rem;
-}
-
-.entry-org {
-  color: var(--ink-2);
-}
-
-.entry-side {
-  flex: none;
-  color: var(--ink-3);
-  font: 0.75rem/1.6 var(--mono);
-}
-
-.entry-copy {
-  margin-top: 0.6rem;
-}
-
-.entry-list,
 .article-prose ul,
 .article-prose ol {
   margin-top: 0.6rem;
   padding-left: 1.1rem;
 }
 
-.entry-list li + li {
-  margin-top: 0.3rem;
-}
-
-.entry-list li::marker,
 .article-prose li::marker {
   color: var(--ink-3);
-}
-
-.spec-grid {
-  display: grid;
-  gap: 1rem;
-}
-
-.spec {
-  display: grid;
-  grid-template-columns: 7rem 1fr;
-  gap: 1rem;
-}
-
-.spec h3 {
-  color: var(--ink-3);
-  font: 400 0.75rem/1.65rem var(--mono);
-  letter-spacing: 0;
 }
 
 /* ---------- case study ---------- */

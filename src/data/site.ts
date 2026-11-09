@@ -7,7 +7,7 @@ export const site = {
   location: "Toronto, Canada",
   url: "https://achumukundan.dev",
   locale: "en_CA",
-  ogImage: "/og.png?v=2",
+  ogImage: "/og.png?v=3",
 } as const;
 
 export const seo = {
@@ -22,10 +22,6 @@ export const seo = {
   notes: {
     description:
       "Writing by Achu Mukundan on local inference, developer tools, coding agents, and audio software.",
-  },
-  resume: {
-    description:
-      "Resume for Achu Mukundan, a Toronto software engineer with experience in conversational AI and developer tools.",
   },
   contact: {
     description:
