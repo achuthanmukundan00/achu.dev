@@ -1,0 +1,126 @@
+<!doctype html>
+<!--
+  Source for public/og.png (1200x630). Re-render with:
+  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --headless=new \
+    --hide-scrollbars --force-device-scale-factor=1 --window-size=1200,630 \
+    --screenshot="$PWD/public/og.png" "file://$PWD/scripts/og.html"
+-->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<style>
+  @font-face { font-family: "LG"; src: url("../public/fonts/local/LocalGrotesk.woff2") format("woff2-variations"); font-weight: 400 700; }
+  @font-face { font-family: "LGT"; src: url("../public/fonts/local/LocalGrotesk-Regular.woff2") format("woff2"); }
+  @font-face { font-family: "LM"; src: url("../public/fonts/local/LocalMono-Regular.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "LM"; src: url("../public/fonts/local/LocalMono-Bold.woff2") format("woff2"); font-weight: 700; }
+
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    position: relative;
+    background-color: #0f0f0e;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)' opacity='.07'/%3E%3C/svg%3E");
+    color: #dddcd5;
+    font-family: "LGT", sans-serif;
+    -webkit-font-smoothing: antialiased;
+    padding: 92px 96px;
+  }
+
+  .tape {
+    position: relative;
+    display: inline-block;
+    background: #8d9284;
+    color: #151613;
+    font: 700 22px/1 "LM", monospace;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 12px 30px 10px;
+    clip-path: polygon(
+      1.5% 6%, 14% 2%, 31% 5%, 48% 1%, 66% 4%, 83% 2%, 98.5% 5%,
+      97% 22%, 100% 38%, 97.5% 55%, 99.5% 74%, 98% 96%,
+      84% 98%, 67% 95%, 50% 99%, 33% 96%, 16% 99%, 1% 95%,
+      3% 76%, 0 58%, 2.5% 40%, 0.5% 22%
+    );
+  }
+  .tape::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(#ffffff26, transparent 45%, #00000014),
+      repeating-linear-gradient(98deg, transparent 0 5px, #ffffff12 5px 6px);
+  }
+  .label { transform: rotate(-2deg); transform-origin: left center; }
+
+  /* stray strip on the corner, like it's holding the card to a wall */
+  .corner {
+    position: absolute;
+    top: 34px;
+    right: -34px;
+    width: 230px;
+    height: 46px;
+    padding: 0;
+    opacity: 0.9;
+    transform: rotate(38deg);
+  }
+
+  h1 {
+    margin-top: 58px;
+    font-family: "LG", sans-serif;
+    font-weight: 600;
+    font-size: 104px;
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+  h1 span { display: inline-block; }
+
+  .lede {
+    margin-top: 34px;
+    font-size: 34px;
+    line-height: 1.4;
+    color: #dddcd5;
+  }
+  .lede .dim { color: inherit; }
+
+  .foot {
+    position: absolute;
+    left: 96px;
+    right: 96px;
+    bottom: 64px;
+    display: flex;
+    justify-content: space-between;
+    font: 400 22px/1 "LM", monospace;
+    color: #6a6961;
+  }
+</style>
+</head>
+<body>
+  <span class="tape corner" aria-hidden="true"></span>
+  <span class="tape label">Software engineer</span>
+  <h1 id="name">Achu Mukundan</h1>
+  <p class="lede">
+    🇨🇦&nbsp; Developer tools, local AI systems,<br />
+    <span class="dim">and alchemy with audio.</span>
+  </p>
+  <div class="foot">
+    <span>achumukundan.dev</span>
+    <span>writing / work / resume</span>
+  </div>
+  <script>
+    // Same hand-set letters as the site, but seeded so the image is reproducible.
+    let seed = 7;
+    const rnd = (a, b) => {
+      seed = (seed * 16807) % 2147483647;
+      return a + ((seed - 1) / 2147483646) * (b - a);
+    };
+    const h = document.getElementById("name");
+    h.innerHTML = [...h.textContent]
+      .map((c) =>
+        c === " "
+          ? " "
+          : `<span style="font-weight:${Math.round(rnd(530, 680))};transform:translateY(${rnd(-0.035, 0.035).toFixed(3)}em) rotate(${rnd(-2.2, 2.2).toFixed(2)}deg) scaleX(${rnd(0.94, 1.07).toFixed(3)})">${c}</span>`
+      )
+      .join("");
+  </script>
+</body>
+</html>

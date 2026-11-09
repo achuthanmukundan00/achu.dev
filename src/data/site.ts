@@ -7,7 +7,7 @@ export const site = {
   location: "Toronto, Canada",
   url: "https://achumukundan.dev",
   locale: "en_CA",
-  ogImage: "/og.png",
+  ogImage: "/og.png?v=2",
 } as const;
 
 export const seo = {
