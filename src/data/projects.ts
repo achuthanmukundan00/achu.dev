@@ -70,6 +70,30 @@ export const projects: Project[] = [
     ],
   },
   {
+    slug: "local",
+    title: "Local",
+    tagline: "A variable grotesk and mono type system for screens full of text.",
+    status: "pre-alpha",
+    releaseRepo: "skaft-software/local-typeface",
+    stack: ["FontForge", "Python", "OpenType"],
+    description:
+      "Local is Skaft Software's open type system: Local Grotesk for interfaces and editorial text, and Local Mono for code and terminals, both variable from 400 to 700.",
+    summary:
+      "Local pairs a proportional sans, Local Grotesk, with a 616-unit monospaced face, Local Mono. It is built for interfaces, documentation, code, and terminals, and it is the type on this site.",
+    problem:
+      "More tools now answer in paragraphs, so more of the day is spent reading text on screens. I wanted a face that stays calm and legible for long sessions without looking anonymous.",
+    solution:
+      "Local starts from Swiss spacing discipline, then adds open counters, distinct look-alikes like I, l and 1, slightly lower visual weight, and curves whose widest point lands just off-center. It draws on legibility ideas valued by some dyslexic and low-vision readers as a design intention, not a clinical claim.",
+    whatIBuilt:
+      "Local Grotesk is a modified TeX Gyre Heros and Local Mono a modified IBM Plex Mono. The repository holds the editable FontForge masters, designspaces for the variable builds, and Python scripts that record each transformation from the upstream sources so a release can be rebuilt deterministically.",
+    techFocus:
+      "Releases ship static, variable, WOFF2, and Nerd Font builds. Each one passes fontlint, the OpenType Sanitizer, HarfBuzz shaping at 400, 550 and 700, exact 616-unit Mono width checks, and variable-axis outline checks on control glyphs.",
+    links: [
+      { label: "Specimen", url: "https://skaft.org/local/" },
+      { label: "Source", url: "https://github.com/skaft-software/local-typeface" },
+    ],
+  },
+  {
     slug: "resample-lab",
     title: "Resample Lab",
     tagline: "Turn one sound into a sample pack in the browser.",

@@ -21,6 +21,13 @@
       "url": "https://github.com/achuthanmukundan00/Resample-Lab/releases/tag/v0.1.0-rc1",
       "publishedAt": "2026-05-16T16:29:46Z",
       "prerelease": true
+    },
+    "skaft-software/local-typeface": {
+      "tag": "v0.53.0",
+      "name": "Local 0.53",
+      "url": "https://github.com/skaft-software/local-typeface/releases/tag/v0.53.0",
+      "publishedAt": "2026-07-30T03:20:35Z",
+      "prerelease": false
     }
   }
 }
