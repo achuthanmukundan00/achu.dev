@@ -1,9 +1,8 @@
 ---
 const navItems = [
-  { href: "/work", label: "Work" },
-  { href: "/notes", label: "Notes" },
-  { href: "/resume", label: "Resume" },
-  { href: "/contact", label: "Contact" },
+  { href: "/notes", label: "writing" },
+  { href: "/work", label: "work" },
+  { href: "/resume", label: "resume" },
 ];
 
 const pathname = Astro.url.pathname;
@@ -11,8 +10,8 @@ const isActive = (href: string) => pathname === href || pathname.startsWith(`${h
 ---
 
 <header class="site-header">
-  <div class="site-shell header-inner">
-    <a href="/" class="wordmark" aria-label="Achu Mukundan, home">Achu Mukundan</a>
+  <div class="shell header-inner">
+    <a href="/" class="brand" aria-label="Achu Mukundan, home">Achu Mukundan</a>
     <nav class="primary-nav" aria-label="Primary navigation">
       {navItems.map((item) => (
         <a href={item.href} aria-current={isActive(item.href) ? "page" : undefined}>

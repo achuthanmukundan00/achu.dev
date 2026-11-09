@@ -68,6 +68,11 @@ assert.ok(html.includes('property="og:image" content="https://achumukundan.dev/i
 assert.ok(read("dist/sitemap.xml").includes("<lastmod>2026-09-12</lastmod>"));
 for (const name of ["dist/index.html", "dist/notes/index.html"]) {
   assert.ok(read(name).includes("Ditching llm-scaler"));
-  assert.ok(read(name).includes("Updated 2026-09-12"));
 }
+assert.ok(
+  read("dist/notes/intel-arc-pro-b70-inference-stack/index.html").includes(
+    '<time datetime="2026-09-12">2026-09-12</time>',
+  ),
+  "article page must show the updated date",
+);
 console.log("B70 article: 24 measured records, 8 means/sample SDs, deterministic SVGs, public data, source endpoint and update metadata verified.");

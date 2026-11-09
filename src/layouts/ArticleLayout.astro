@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import { links } from "@data/links";
 import { site } from "@data/site";
 
 interface ArticleFrontmatter {
@@ -10,6 +9,7 @@ interface ArticleFrontmatter {
   updated?: string | Date;
   topic?: string;
   tags?: string[];
+  draft?: boolean;
   ogImage?: string;
   ogImageAlt?: string;
 }
@@ -25,6 +25,7 @@ const {
   date,
   updated,
   topic = "Engineering note",
+  draft = false,
   ogImage,
   ogImageAlt,
 } = frontmatter;
@@ -58,11 +59,22 @@ const articleSchema = {
   modifiedTime={modifiedDate}
   ogImage={ogImage}
   ogImageAlt={ogImageAlt}
+  noindex={draft}
 >
   <div class="article-shell">
     <article>
       <header class="article-header">
-        <a class="back-link" href="/notes">Back to notes</a>
+        <div class="article-actions">
+          <a class="back-link" href="/notes"><span aria-hidden="true">←</span> All writing</a>
+          <button
+            class="copy-page-button"
+            type="button"
+            data-copy-page
+            aria-label="Copy this article as Markdown"
+            title="Copy the article as Markdown for an AI assistant"
+          >Copy page</button>
+          <span class="copy-page-status" data-copy-page-status role="status" aria-live="polite"></span>
+        </div>
         <p class="meta">
           {topic} · Published <time datetime={publishedDate}>{publishedDate}</time>
           {modifiedDate && <> · Updated <time datetime={modifiedDate}>{modifiedDate}</time></>}
@@ -74,12 +86,6 @@ const articleSchema = {
       <div class="article-prose">
         <slot />
       </div>
-
-      <footer class="article-footer">
-        <p>
-          Questions or corrections? <a href={`mailto:${links.email}`}>Email me</a>.
-        </p>
-      </footer>
     </article>
   </div>
 
@@ -100,5 +106,166 @@ const articleSchema = {
     updateScrollableRegions();
     window.addEventListener("load", updateScrollableRegions, { once: true });
     window.addEventListener("resize", updateScrollableRegions);
+  </script>
+  <script is:inline>
+    (() => {
+      const button = document.querySelector("[data-copy-page]");
+      const status = document.querySelector("[data-copy-page-status]");
+      const article = document.querySelector(".article-shell article");
+      const prose = article?.querySelector(".article-prose");
+      if (!(button instanceof HTMLButtonElement) || !(prose instanceof HTMLElement)) return;
+
+      const escapeTableCell = (value) => value.replace(/\|/g, "\\|").replace(/\s+/g, " ").trim();
+      const renderInline = (node) => {
+        if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? "";
+        if (!(node instanceof Element)) return "";
+
+        const children = Array.from(node.childNodes).map(renderInline).join("");
+        switch (node.tagName) {
+          case "A": {
+            const href = node.getAttribute("href");
+            if (!href) return children;
+            return `[${children || href}](${new URL(href, window.location.href).href.replace(/\)/g, "%29")})`;
+          }
+          case "STRONG":
+          case "B":
+            return `**${children}**`;
+          case "EM":
+          case "I":
+            return `*${children}*`;
+          case "CODE": {
+            const value = node.textContent ?? "";
+            let fence = "`";
+            while (value.includes(fence)) fence += "`";
+            return `${fence}${value}${fence}`;
+          }
+          case "BR":
+            return "  \n";
+          case "IMG": {
+            const src = node.getAttribute("src");
+            return src
+              ? `![${(node.getAttribute("alt") ?? "").replace(/\]/g, "\\]")}](${new URL(src, window.location.href).href})`
+              : "";
+          }
+          default:
+            return children;
+        }
+      };
+
+      const renderList = (list, depth = 0) =>
+        Array.from(list.children)
+          .filter((item) => item.tagName === "LI")
+          .map((item, index) => {
+            const nestedLists = Array.from(item.children).filter((child) =>
+              child.matches("ul, ol"),
+            );
+            const content = Array.from(item.childNodes)
+              .filter((child) => !(child instanceof Element && child.matches("ul, ol")))
+              .map(renderInline)
+              .join("")
+              .trim();
+            const marker = list.tagName === "OL" ? `${index + 1}.` : "-";
+            const line = `${"  ".repeat(depth)}${marker} ${content}`.trimEnd();
+            return [line, ...nestedLists.map((nested) => renderList(nested, depth + 1))].join("\n");
+          })
+          .join("\n");
+
+      const renderBlocks = (container) =>
+        Array.from(container.children)
+          .map(renderBlock)
+          .filter(Boolean)
+          .join("\n\n");
+
+      const renderBlock = (element) => {
+        switch (element.tagName) {
+          case "H1":
+          case "H2":
+          case "H3":
+          case "H4": {
+            const level = Number(element.tagName.slice(1));
+            return `${"#".repeat(level)} ${renderInline(element).trim()}`;
+          }
+          case "P":
+            return renderInline(element).trim();
+          case "UL":
+          case "OL":
+            return renderList(element);
+          case "PRE": {
+            const code = element.querySelector("code") ?? element;
+            const value = code.textContent ?? "";
+            const language = Array.from(code.classList)
+              .find((name) => name.startsWith("language-"))
+              ?.slice("language-".length) ?? "";
+            let fence = "```";
+            while (value.includes(fence)) fence += "`";
+            return `${fence}${language}\n${value.replace(/\n+$/, "")}\n${fence}`;
+          }
+          case "TABLE": {
+            const rows = Array.from(element.querySelectorAll("tr")).map((row) =>
+              Array.from(row.cells).map((cell) => escapeTableCell(renderInline(cell))),
+            );
+            if (rows.length === 0) return "";
+            const header = rows[0];
+            const separator = header.map(() => "---");
+            return [header, separator, ...rows.slice(1)]
+              .map((row) => `| ${row.join(" | ")} |`)
+              .join("\n");
+          }
+          case "FIGURE": {
+            const image = element.querySelector("img");
+            const src = image?.getAttribute("src");
+            const alt = (image?.getAttribute("alt") ?? "").replace(/\]/g, "\\]");
+            const imageMarkdown = src
+              ? `![${alt}](${new URL(src, window.location.href).href})`
+              : "";
+            const caption = element.querySelector("figcaption");
+            return [imageMarkdown, caption ? renderInline(caption).trim() : ""]
+              .filter(Boolean)
+              .join("\n\n");
+          }
+          case "BLOCKQUOTE":
+            return renderBlocks(element)
+              .split("\n")
+              .map((line) => `> ${line}`)
+              .join("\n");
+          case "HR":
+            return "---";
+          default:
+            return renderBlocks(element) || renderInline(element).trim();
+        }
+      };
+
+      const copyAsMarkdown = async () => {
+        const title = article.querySelector(".article-header h1")?.textContent?.trim() ?? "Article";
+        const description = article.querySelector(".article-header .lead")?.textContent?.trim() ?? "";
+        const dates = Array.from(article.querySelectorAll(".article-header time"));
+        const topic = article.querySelector(".article-header .meta")?.textContent?.split(" · ")[0]?.trim();
+        const source = document.querySelector('link[rel="canonical"]')?.href ?? window.location.href;
+        const metadata = [
+          topic ? `Topic: ${topic}` : "",
+          dates[0] ? `Published: ${dates[0].getAttribute("datetime")}` : "",
+          dates[1] ? `Updated: ${dates[1].getAttribute("datetime")}` : "",
+          `Source: ${source}`,
+        ].filter(Boolean);
+        const markdown = [`# ${title}`, description, metadata.join("\n"), "---", renderBlocks(prose)]
+          .filter(Boolean)
+          .join("\n\n");
+
+        await navigator.clipboard.writeText(markdown);
+
+        button.textContent = "Copied!";
+        if (status) status.textContent = "Article copied as Markdown.";
+        window.setTimeout(() => {
+          button.textContent = "Copy page";
+          if (status) status.textContent = "";
+        }, 2000);
+      };
+
+      button.addEventListener("click", () => {
+        copyAsMarkdown().catch(() => {
+          if (status) status.textContent = "Could not copy the article.";
+        });
+      });
+    })();
   </script>
 </BaseLayout>

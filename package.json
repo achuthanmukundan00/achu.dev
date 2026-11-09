@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro check && astro build && node scripts/check-email-links.mjs && node scripts/check-b70-article.mjs",
+    "build": "node scripts/sync-releases.mjs && astro check && astro build && node scripts/check-email-links.mjs && node scripts/check-b70-article.mjs",
     "preview": "astro preview",
     "check": "astro check",
-    "lint": "astro check"
+    "lint": "astro check",
+    "releases": "node scripts/sync-releases.mjs"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",

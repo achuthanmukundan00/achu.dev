@@ -1,0 +1,9 @@
+# Opens reviewable updates after this file reaches the default branch.
+# No auto-merge or external-code-execution permission is enabled here.
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5

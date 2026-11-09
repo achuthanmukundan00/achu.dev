@@ -1,18 +1,26 @@
 /** Project descriptions and implementation notes. Keep claims concrete and source-backed. */
 import { links } from "./links";
+import releases from "./releases.json";
 
 export interface ProjectLink {
   label: string;
   url: string;
 }
 
+export interface Release {
+  tag: string;
+  name: string;
+  url: string;
+  publishedAt: string;
+  prerelease: boolean;
+}
+
 export interface Project {
   slug: string;
   title: string;
   tagline: string;
-  category: string;
   status: string;
-  year: string;
+  releaseRepo?: string;
   stack: string[];
   description: string;
   summary: string;
@@ -21,59 +29,52 @@ export interface Project {
   whatIBuilt: string;
   techFocus: string;
   links: ProjectLink[];
-  nextSteps: string;
-  featured: boolean;
+}
+
+const releaseRepos = releases.repos as Record<string, Release | null>;
+
+/** Latest release for a project, refreshed by `scripts/sync-releases.mjs`. */
+export function latestRelease(repo?: string): Release | null {
+  return repo ? (releaseRepos[repo] ?? null) : null;
+}
+
+/** Version tag when a repository cuts releases, otherwise the short status. */
+export function projectStatus(project: Project): string {
+  return latestRelease(project.releaseRepo)?.tag ?? project.status.split(" · ")[0];
 }
 
 export const projects: Project[] = [
   {
     slug: "ygg", // Keep the existing public project URL.
     title: "octet",
-    tagline: "A Rust terminal coding agent for cloud and local models.",
-    category: "Developer tools",
-    status: "v0.7.6 · open source",
-    year: "2026",
+    tagline: "A Rust terminal coding agent, extensible in any language.",
+    status: "open source",
+    releaseRepo: "skaft-software/octet",
     stack: ["Rust", "TUI", "LLM protocols"],
     description:
-      "A Rust terminal coding agent for cloud and local models, with disk-backed sessions and subprocess extensions.",
+      "octet is a free, open-source terminal coding agent written in Rust. It reads code, edits files, and runs tests with the model you choose, and extensions run beside it in any language.",
     summary:
-      "octet is the terminal coding agent I'm building at Skaft. It connects to cloud and local models and saves resumable sessions on disk.",
+      "octet is a terminal coding agent written in Rust. It reads code, edits files, and runs tests with the model you choose. Extensions run in separate processes, so tools can be written in any language.",
     problem:
-      "I started the project because I wanted to use local models on real repositories. The agents I tried often sent large hidden prompts, assumed reliable cloud-grade tool calls, and made it difficult to see the model's context and permissions.",
+      "I wanted a coding agent that could open my Ableton sessions, hear the audio, and use my computer in the same model context. The agents I liked either could not take audio input or would not let me choose the model.",
     solution:
-      "octet uses a small, explicit agent loop. Model traffic goes directly to the selected endpoint, and users choose which tools are available. Project instructions load only from trusted workspaces. Conversations are stored as append-only, branchable JSONL on disk.",
+      "octet keeps Pi's agent recipe and rebuilds the host in Rust: the model loop, tools, sessions, and terminal rendering run in one native process. Extensions run beside it over JSON-RPC 2.0, so they can be written in any language without rebuilding the agent.",
     whatIBuilt:
-      "The Rust workspace separates model clients, the agent runtime, coding tools, and terminal rendering. Extensions run as subprocesses.",
+      "The Rust host owns model communication, the coding loop, sessions, and rendering. First-party extensions add computer use with Cua Driver, multi-model subagents, web search, MCP, and codemode; Pi compatibility ships separately as an experimental, per-extension package.",
     techFocus:
-      "The implementation work covers provider request types, tool approvals, crash-safe disk sessions, and terminal rendering. The linked ygg v0.3.0-alpha release and prompt-budget test are historical references, not current feature or prompt-size claims.",
+      "Extensions are separate processes speaking JSON-RPC 2.0, with SDKs for Python, TypeScript, Rust, and C++; the coding loop itself needs neither Node nor Python. Sessions are resumable and branchable, and the agent can be steered or given queued follow-ups while it works.",
     links: [
       { label: "Product page", url: links.octet },
       { label: "Source", url: links.octetRepo },
       { label: "Documentation", url: links.octetDocs },
-      {
-        label: "v0.7.6 release",
-        url: `${links.octetRepo}/releases/tag/v0.7.6`,
-      },
-      {
-        label: "Historical ygg v0.3.0-alpha release",
-        url: "https://github.com/skaft-software/ygg/releases/tag/v0.3.0-alpha",
-      },
-      {
-        label: "Historical ygg prompt-budget test",
-        url: "https://github.com/skaft-software/ygg/blob/v0.3.0-alpha/crates/ygg-coding-agent/src/resources.rs#L1115-L1133",
-      },
     ],
-    nextSteps:
-      "I'll keep using the pre-1.0 release on repository work, improve local-model support, publish reproducible measurements, and fix rough edges before stabilizing the interfaces.",
-    featured: true,
   },
   {
     slug: "resample-lab",
     title: "Resample Lab",
     tagline: "Turn one sound into a sample pack in the browser.",
-    category: "Audio software",
     status: "live · active development",
-    year: "2026",
+    releaseRepo: "achuthanmukundan00/Resample-Lab",
     stack: ["TypeScript", "Web Audio", "Web Workers"],
     description:
       "A deterministic DSP tool that stretches, granulates, degrades, loops, and exports audio in the browser.",
@@ -94,17 +95,13 @@ export const projects: Project[] = [
         url: "https://github.com/achuthanmukundan00/Resample-Lab",
       },
     ],
-    nextSteps:
-      "I'll profile the slowest presets on larger inputs, expand the listening-test set, and improve the transforms based on what I use in music sessions.",
-    featured: true,
   },
   {
     slug: "temper-player",
     title: "TemperPlayer",
     tagline: "A native macOS music player with Zig decoding and DSP.",
-    category: "Systems · Audio",
-    status: "v0.1 · downloadable",
-    year: "2026",
+    status: "downloadable",
+    releaseRepo: "achuthanmukundan00/temper-player",
     stack: ["SwiftUI", "Zig", "AVFoundation"],
     description:
       "A native macOS player with real-time spectrograms, multiband analysis, and a phase-vocoder pitch engine.",
@@ -123,76 +120,8 @@ export const projects: Project[] = [
         label: "Source and download",
         url: "https://github.com/achuthanmukundan00/temper-player",
       },
-      {
-        label: "v0.1 release",
-        url: "https://github.com/achuthanmukundan00/temper-player/releases/tag/v0.1.0",
-      },
     ],
-    nextSteps:
-      "I'll finish hardening the current library and playback changes, test on more Macs and audio devices, and add formats after their playback paths are measured and reliable.",
-    featured: true,
-  },
-  {
-    slug: "lc-prep-wizard",
-    title: "LeetCode Prep Wizard",
-    tagline: "A local practice queue built around spaced repetition.",
-    category: "Learning tool",
-    status: "in progress",
-    year: "2026",
-    stack: ["Next.js", "SQLite", "Monaco"],
-    description:
-      "A local dashboard for scheduling review, tracking pattern mastery, and running Python solutions against local tests.",
-    summary:
-      "I built this to turn my solved-problem history into a review schedule. The app imports the NeetCode 150, schedules problems by performance, groups progress by pattern, and keeps practice data in a local SQLite database.",
-    problem:
-      "I was inconsistent about returning to old problems after enough time had passed to test my recall. Streak and completion counters did not tell me which problem I should review next.",
-    solution:
-      "The dashboard separates due reviews from new work and updates each problem's interval and mastery after a session. The practice page keeps the prompt, editor, tests, notes, and result together.",
-    whatIBuilt:
-      "I built the Next.js interface, SQLite schema and routes, review scheduler, XP and pattern summaries, NeetCode importer, Monaco editor, and a Python judge with public and hidden local cases. I still use and change the current branch as a local app.",
-    techFocus:
-      "The work covers local persistence, spaced-repetition scheduling, problem metadata normalization, code-execution boundaries, attempt tracking, and a focused practice interface.",
-    links: [
-      {
-        label: "Source",
-        url: "https://github.com/achuthanmukundan00/lc-prep-wizard",
-      },
-    ],
-    nextSteps:
-      "I'll use it through a full interview-prep cycle, tune the scheduler with my recall data, and document the runner and backup model before treating it as finished.",
-    featured: false,
-  },
-  {
-    slug: "watchyourtemper",
-    title: "watchyourtemper.com",
-    tagline: "An artist site and merch store running on Cloudflare.",
-    category: "Web · Music",
-    status: "live",
-    year: "2025 to 2026",
-    stack: ["React", "Cloudflare Workers", "Stripe"],
-    description:
-      "The web home for my music project, with a custom visual system and a Worker-backed store.",
-    summary:
-      "I built watchyourtemper.com for my music project. It publishes releases and visual work, and the same repository includes the merch catalog, checkout, fulfillment, and order-state backend.",
-    problem:
-      "I wanted more control than a link page or stock storefront gave me. The site needed to carry the visual direction of the music, load quickly, and validate commerce data on the server.",
-    solution:
-      "A React SPA handles the media-heavy interface. A Cloudflare Worker serves the app and API from one deployment, validates products and prices before checkout, and stores order and webhook state in Durable Objects.",
-    whatIBuilt:
-      "I designed and implemented the frontend, responsive visual system, Worker routes, Printful catalog integration, Stripe checkout lifecycle, webhook handling, order confirmation flow, request logging, and deployment configuration.",
-    techFocus:
-      "The stack uses React and Vite, Cloudflare Workers and Durable Objects, server-owned pricing, Stripe and Printful webhooks, and media performance work for the visual design.",
-    links: [
-      { label: "Visit site", url: "https://watchyourtemper.com" },
-      {
-        label: "Source",
-        url: "https://github.com/achuthanmukundan00/wyt-SPA",
-      },
-    ],
-    nextSteps:
-      "I'll keep the site stable while adding pages for releases, events, and occasional merch drops.",
-    featured: false,
-  },
+  }
 ];
 
 export function getProject(slug: string): Project | undefined {

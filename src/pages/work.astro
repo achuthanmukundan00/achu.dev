@@ -6,19 +6,13 @@ import { seo } from "@data/site";
 ---
 
 <BaseLayout title="Work" description={seo.work.description}>
-  <div class="site-shell">
-    <header class="page-header">
+  <div class="shell">
+    <header class="page-head">
       <h1>Work</h1>
-      <p class="lead">
-        A few projects I've built across developer tools, local AI, audio, and web
-        software. Each project includes source and implementation notes.
-      </p>
     </header>
 
-    <section class="section" aria-label="Projects">
-      <div class="project-list">
-        {projects.map((project) => <ProjectCard project={project} />)}
-      </div>
-    </section>
+    <ul class="rows" aria-label="Projects">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </ul>
   </div>
 </BaseLayout>

@@ -1,0 +1,26 @@
+{
+  "updatedAt": "2026-11-09",
+  "repos": {
+    "skaft-software/octet": {
+      "tag": "v0.10.3",
+      "name": "octet 0.10.3",
+      "url": "https://github.com/skaft-software/octet/releases/tag/v0.10.3",
+      "publishedAt": "2026-11-07T03:10:22Z",
+      "prerelease": false
+    },
+    "achuthanmukundan00/temper-player": {
+      "tag": "v0.2.0",
+      "name": "v0.2.0 — Library management and reliability",
+      "url": "https://github.com/achuthanmukundan00/temper-player/releases/tag/v0.2.0",
+      "publishedAt": "2026-09-24T21:45:42Z",
+      "prerelease": false
+    },
+    "achuthanmukundan00/Resample-Lab": {
+      "tag": "v0.1.0-rc1",
+      "name": "Resample Lab v0.1.0-rc1",
+      "url": "https://github.com/achuthanmukundan00/Resample-Lab/releases/tag/v0.1.0-rc1",
+      "publishedAt": "2026-05-16T16:29:46Z",
+      "prerelease": true
+    }
+  }
+}

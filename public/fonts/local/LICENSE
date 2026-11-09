@@ -1,0 +1,56 @@
+LOCAL TYPE SYSTEM — LICENSING NOTICE
+
+Local modifications and original project materials:
+Copyright 2026 Skaft Software.
+
+This repository contains multiple open-source font works. No single license
+replaces the licenses inherited from their respective upstream sources.
+
+1. Local Grotesk
+
+Local Grotesk is a modified and renamed version of TeX Gyre Heros 2.004. It is
+distributed under the GUST Font License included at:
+
+  LICENSES/GUST-FONT-LICENSE.txt
+
+2. Local Mono
+
+Local Mono is a modified and renamed version of IBM Plex Mono 2.5.0. It is
+distributed under the SIL Open Font License 1.1 included at:
+
+  LICENSES/IBM-PLEX-OFL.txt
+
+The upstream Reserved Font Name "Plex" is not used by Local.
+
+3. LocalMono Nerd Font Mono
+
+The Local Mono portions remain under SIL OFL 1.1. Added Nerd Fonts glyphs
+retain their respective upstream copyrights and licenses. See:
+
+  LICENSES/NERD-FONTS-LICENSE
+  LICENSES/NERD-FONTS-LICENSE-AUDIT.md
+
+4. Project scripts and documentation
+
+Unless a file states otherwise, Skaft Software grants permission to use,
+copy, modify, and distribute the original scripts and documentation in this
+repository under the MIT License:
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+

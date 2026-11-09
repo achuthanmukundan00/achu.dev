@@ -1,32 +1,18 @@
 ---
 import BaseLayout from "@layouts/BaseLayout.astro";
+import NoteRow from "@components/note/NoteRow.astro";
 import { notes } from "@data/notes";
 import { seo } from "@data/site";
 ---
 
-<BaseLayout title="Notes" description={seo.notes.description}>
-  <div class="site-shell">
-    <header class="page-header">
-      <h1>Notes</h1>
-      <p class="lead">
-        Writing about local inference, coding tools, and audio software as I work on them.
-      </p>
+<BaseLayout title="Writing" description={seo.notes.description}>
+  <div class="shell">
+    <header class="page-head">
+      <h1>Writing</h1>
     </header>
 
-    <section class="section" aria-label="Published notes">
-      <div class="note-list">
-        {notes.map((note) => (
-          <a class="note-item" href={note.slug}>
-            <article>
-              <div class="project-topline">
-                <h2>{note.title}</h2>
-                <time class="project-meta" datetime={note.updated ?? note.date}>{note.updated ? `Updated ${note.updated}` : note.date}</time>
-              </div>
-              <p>{note.summary}</p>
-            </article>
-          </a>
-        ))}
-      </div>
-    </section>
+    <ul class="posts" aria-label="Published notes">
+      {notes.map((note) => <NoteRow note={note} />)}
+    </ul>
   </div>
 </BaseLayout>

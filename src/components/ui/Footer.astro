@@ -1,17 +1,16 @@
 ---
 import { links } from "@data/links";
 import { site } from "@data/site";
-
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer">
-  <div class="site-shell footer-inner">
-    <span>&copy; {year} {site.fullName}. Toronto, Canada.</span>
+  <div class="shell footer-inner">
+    <span>&copy; {new Date().getFullYear()} {site.fullName}</span>
     <div class="footer-links">
-      <a href={`mailto:${links.email}`}>Email</a>
-      <a href={links.github} target="_blank" rel="noopener noreferrer me">GitHub</a>
-      <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">LinkedIn</a>
+      <a href={`mailto:${links.email}`}>email</a>
+      <a href={links.github} target="_blank" rel="noopener noreferrer me">github</a>
+      <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">linkedin</a>
+      <a href="/rss.xml">rss</a>
     </div>
   </div>
 </footer>

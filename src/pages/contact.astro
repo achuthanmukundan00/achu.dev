@@ -5,32 +5,24 @@ import { seo } from "@data/site";
 ---
 
 <BaseLayout title="Contact" description={seo.contact.description}>
-  <div class="site-shell">
-    <header class="page-header">
+  <div class="shell">
+    <header class="page-head">
       <h1>Contact</h1>
-      <p class="lead">Email is the best way to reach me.</p>
-      <p class="body-copy">
-        I'm based in Toronto and looking for early-career software engineering roles.
-        I'm especially interested in developer tools, AI infrastructure, and audio software,
-        and I'm open to other kinds of software work.
-      </p>
     </header>
 
-    <section class="section" aria-label="Contact links">
-      <div class="contact-list">
-        <a class="contact-item" href={`mailto:${links.email}`}>
-          <span>Email</span>
-          <strong>{links.email}</strong>
-        </a>
-        <a class="contact-item" href={links.github} target="_blank" rel="noopener noreferrer me">
-          <span>GitHub</span>
-          <strong>achuthanmukundan00</strong>
-        </a>
-        <a class="contact-item" href={links.linkedin} target="_blank" rel="noopener noreferrer me">
-          <span>LinkedIn</span>
-          <strong>Achu Mukundan</strong>
-        </a>
-      </div>
-    </section>
+    <div class="contact-list">
+      <a class="contact-item" href={`mailto:${links.email}`}>
+        <span class="label">Email</span>
+        <span class="value">{links.email}</span>
+      </a>
+      <a class="contact-item" href={links.github} target="_blank" rel="noopener noreferrer me">
+        <span class="label">GitHub</span>
+        <span class="value">achuthanmukundan00</span>
+      </a>
+      <a class="contact-item" href={links.linkedin} target="_blank" rel="noopener noreferrer me">
+        <span class="label">LinkedIn</span>
+        <span class="value">Achu Mukundan</span>
+      </a>
+    </div>
   </div>
 </BaseLayout>

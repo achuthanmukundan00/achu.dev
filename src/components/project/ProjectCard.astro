@@ -1,22 +1,21 @@
 ---
-import type { Project } from "@data/projects";
+import { projectStatus, type Project } from "@data/projects";
 
 export interface Props {
   project: Project;
+  showStatus?: boolean;
 }
 
-const { project } = Astro.props;
+const { project, showStatus = true } = Astro.props;
+const status = projectStatus(project);
 ---
 
-<article class="project-item">
-  <div class="project-topline">
-    <h3><a href={`/work/${project.slug}`}>{project.title}</a></h3>
-    <span class="project-meta">{project.status}</span>
-  </div>
-  <p>{project.description}</p>
-  <div class="link-row project-links">
-    {project.links.slice(0, 2).map((link) => (
-      <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
-    ))}
-  </div>
-</article>
+<li>
+  <a class="row" href={`/work/${project.slug}`}>
+    <span class="row-main">
+      <span class="row-title">{project.title}</span>
+      <span class="row-desc">{project.tagline}</span>
+    </span>
+    {showStatus && <span class="row-side">{status}</span>}
+  </a>
+</li>

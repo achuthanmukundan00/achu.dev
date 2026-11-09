@@ -17,11 +17,11 @@ export const seo = {
   },
   work: {
     description:
-      "Projects by Achu Mukundan, including a Rust coding agent, browser audio tools, and web applications.",
+      "Projects by Achu Mukundan: a Rust terminal coding agent, browser audio tools, and a native macOS music player.",
   },
   notes: {
     description:
-      "Notes by Achu Mukundan on local inference, developer tools, coding agents, and audio software.",
+      "Writing by Achu Mukundan on local inference, developer tools, coding agents, and audio software.",
   },
   resume: {
     description:

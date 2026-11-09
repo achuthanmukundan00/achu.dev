@@ -4,56 +4,42 @@ import { links } from "@data/links";
 import { projects } from "@data/projects";
 import { notes } from "@data/notes";
 import ProjectCard from "@components/project/ProjectCard.astro";
+import NoteRow from "@components/note/NoteRow.astro";
 import { seo } from "@data/site";
-
-const featuredProjects = projects.filter((project) => project.featured);
 ---
 
 <BaseLayout title="Home" description={seo.home.description}>
-  <div class="site-shell">
-    <header class="intro">
-      <h1>Achu Mukundan</h1>
-      <p class="body-copy">
-        I'm a software engineer in Toronto. I build developer tools, local AI software,
-        and audio tools.
+  <div class="shell">
+    <header class="hero">
+      <h1 class="sr-only">Achu Mukundan</h1>
+      <p class="lede">
+        Software engineer in <span role="img" aria-label="Canada">🇨🇦</span><br />
+        I build developer tools, local AI systems, and do alchemy with audio.
       </p>
+      <div class="inline-links">
+        <a href={`mailto:${links.email}`}>Email</a>
+        <a href={links.github} target="_blank" rel="noopener noreferrer me">GitHub</a>
+        <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">LinkedIn</a>
+        <a href="/resume">Resume</a>
+      </div>
     </header>
 
     <section class="section" aria-labelledby="writing-heading">
-      <div class="section-heading">
+      <div class="section-head">
         <h2 id="writing-heading">Writing</h2>
-        <a href="/notes">All notes</a>
       </div>
-      <div class="note-list">
-        {notes.map((note) => (
-          <a class="note-item" href={note.slug}>
-            <article>
-              <div class="project-topline">
-                <h3>{note.title}</h3>
-                <time class="project-meta" datetime={note.updated ?? note.date}>{note.updated ? `Updated ${note.updated}` : note.date}</time>
-              </div>
-              <p>{note.summary}</p>
-            </article>
-          </a>
-        ))}
-      </div>
+      <ul class="posts">
+        {notes.map((note) => <NoteRow note={note} />)}
+      </ul>
     </section>
 
-    <section class="section" aria-labelledby="work-heading">
-      <div class="section-heading">
-        <h2 id="work-heading">Selected projects</h2>
-        <a href="/work">All projects</a>
+    <section class="section" aria-labelledby="projects-heading">
+      <div class="section-head">
+        <h2 id="projects-heading">Projects</h2>
       </div>
-      <div class="project-list">
-        {featuredProjects.map((project) => <ProjectCard project={project} />)}
-      </div>
+      <ul class="rows">
+        {projects.map((project) => <ProjectCard project={project} showStatus={false} />)}
+      </ul>
     </section>
-
-    <nav class="link-row contact-links" aria-label="Contact and resume">
-      <a href={`mailto:${links.email}`}>Email</a>
-      <a href="/resume">Resume</a>
-      <a href={links.github} target="_blank" rel="noopener noreferrer me">GitHub</a>
-      <a href={links.linkedin} target="_blank" rel="noopener noreferrer me">LinkedIn</a>
-    </nav>
   </div>
 </BaseLayout>

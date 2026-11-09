@@ -1,15 +1,19 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import { site } from "@data/site";
-import type { Project } from "@data/projects";
+import { latestRelease, type Project } from "@data/projects";
 
 export interface Props {
   project: Project;
 }
 
 const { project } = Astro.props;
+const release = latestRelease(project.releaseRepo);
 const projectUrl = new URL(`/work/${project.slug}/`, site.url).toString();
 const sourceUrl = project.links.find((link) => link.label.toLowerCase().includes("source"))?.url;
+const links = release
+  ? [{ label: "Latest release", url: release.url }, ...project.links]
+  : project.links;
 const projectSchema = {
   "@context": "https://schema.org",
   "@type": "SoftwareSourceCode",
@@ -18,6 +22,8 @@ const projectSchema = {
   url: projectUrl,
   codeRepository: sourceUrl,
   programmingLanguage: project.stack,
+  softwareVersion: release?.tag,
+  dateModified: release?.publishedAt,
   author: {
     "@type": "Person",
     name: site.fullName,
@@ -29,30 +35,36 @@ const projectSchema = {
 <BaseLayout title={project.title} description={project.description} canonical={projectUrl}>
   <script is:inline type="application/ld+json" set:html={JSON.stringify(projectSchema)}></script>
 
-  <div class="site-shell">
-    <article class="case-study">
-      <header class="project-header">
-        <a class="back-link" href="/work">Back to work</a>
-        <p class="meta">{project.category} · {project.status}</p>
+  <div class="shell">
+    <article>
+      <header class="case-head">
+        <a class="back-link" href="/work"><span aria-hidden="true">←</span> All work</a>
         <h1>{project.title}</h1>
-        <p class="body-copy">{project.summary}</p>
-        <p class="project-meta">{project.stack.join(" / ")} · {project.year}</p>
-        <div class="link-row">
-          {project.links.map((link) => (
-            <a href={link.url} target="_blank" rel="noopener noreferrer">
-              {link.label}
-            </a>
+        <p class="lede">{project.summary}</p>
+        <div class="case-links">
+          {links.map((link) => (
+            <a href={link.url} target="_blank" rel="noopener noreferrer">{link.label}</a>
           ))}
         </div>
       </header>
 
-      <section class="section" aria-labelledby="implementation-heading">
-        <h2 id="implementation-heading">Implementation</h2>
-        <div class="prose-block">
+      <div class="case-body">
+        <section class="case-section" aria-labelledby="problem-heading">
+          <h2 id="problem-heading">Problem</h2>
+          <p>{project.problem}</p>
+        </section>
+
+        <section class="case-section" aria-labelledby="approach-heading">
+          <h2 id="approach-heading">Approach</h2>
+          <p>{project.solution}</p>
+        </section>
+
+        <section class="case-section" aria-labelledby="implementation-heading">
+          <h2 id="implementation-heading">Implementation</h2>
           <p>{project.whatIBuilt}</p>
           <p>{project.techFocus}</p>
-        </div>
-      </section>
+        </section>
+      </div>
     </article>
   </div>
 </BaseLayout>

@@ -64,10 +64,14 @@ const personSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0a0b0b" />
+    <meta name="theme-color" content="#0f0f0e" />
+    <meta name="color-scheme" content="dark" />
     <meta name="author" content={site.fullName} />
     <meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+    <link rel="preload" href="/fonts/local/LocalGrotesk-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/local/LocalGrotesk.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate" type="application/rss+xml" title="Achu Mukundan" href="/rss.xml" />
     {!noindex && <link rel="canonical" href={canonicalUrl} />}
 
     <title>{pageTitle}</title>
@@ -102,6 +106,58 @@ const personSchema = {
       <slot />
     </main>
     <Footer />
+    <script is:inline>
+      // Hand-set headings: each letter gets a fixed weight, tilt and stretch.
+      // Only the tape strips animate.
+      (() => {
+        const rand = (a, b) => a + Math.random() * (b - a);
+        const fix = (n, u = "") => n.toFixed(3) + u;
+        const headings = document.querySelectorAll(
+          ".brand, .page-head h1, .empty-state h1, .case-head h1, .article-header h1, .article-prose h2, .article-prose h3"
+        );
+        for (const el of headings) {
+          if (el.dataset.boil) continue;
+          el.dataset.boil = "";
+          if (!el.children.length && !el.hasAttribute("aria-label")) {
+            el.setAttribute("aria-label", el.textContent.trim());
+          }
+          const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+          const nodes = [];
+          while (walker.nextNode()) nodes.push(walker.currentNode);
+          for (const node of nodes) {
+            const frag = document.createDocumentFragment();
+            for (const part of node.textContent.split(/(\s+)/)) {
+              if (!part) continue;
+              if (/^\s+$/.test(part)) {
+                frag.append(part);
+                continue;
+              }
+              const word = document.createElement("span");
+              word.className = "boil-word";
+              word.setAttribute("aria-hidden", "true");
+              for (const ch of part) {
+                const l = document.createElement("span");
+                l.className = "boil-letter";
+                l.textContent = ch;
+                l.style.setProperty("--w", Math.round(rand(530, 680)));
+                l.style.setProperty("--r0", fix(rand(-2.2, 2.2), "deg"));
+                l.style.setProperty("--y0", fix(rand(-0.035, 0.035), "em"));
+                l.style.setProperty("--s0", fix(rand(0.94, 1.07)));
+                word.append(l);
+              }
+              frag.append(word);
+            }
+            node.replaceWith(frag);
+          }
+        }
+        for (const tape of document.querySelectorAll(".tape, .section-head h2")) {
+          tape.style.setProperty("--d", fix(-rand(0, 0.6), "s"));
+          tape.style.setProperty("--t0", fix(rand(-2.2, -0.6), "deg"));
+          tape.style.setProperty("--t1", fix(rand(-2.2, -0.6), "deg"));
+          tape.style.setProperty("--t2", fix(rand(-2.2, -0.6), "deg"));
+        }
+      })();
+    </script>
     <!--/email_off-->
   </body>
 </html>

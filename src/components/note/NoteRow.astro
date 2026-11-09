@@ -1,0 +1,16 @@
+---
+import type { NoteEntry } from "@data/notes";
+
+export interface Props {
+  note: NoteEntry;
+}
+
+const { note } = Astro.props;
+---
+
+<li>
+  <a class="post" href={note.slug}>
+    <time class="post-date" datetime={note.date}>{note.date}</time>
+    <span class="post-title">{note.title}</span>
+  </a>
+</li>
